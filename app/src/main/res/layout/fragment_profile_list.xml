@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/profile_fragment" xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/windowBackground"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/detailsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary_dark"
+        android:orientation="vertical"
+        android:padding="10.0dip">
+
+        <TextView
+            android:id="@+id/num_liked"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:fontFamily="@string/light_font"
+            android:gravity="center" android:text="@string/like_engine_summary"
+            android:textColor="#ffffffff"
+            android:textSize="16.0sp"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <GridView
+            android:id="@+id/gridView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:horizontalSpacing="2.0dip"
+            android:numColumns="3"
+            android:paddingBottom="100dp"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="2.0dip"/>
+
+        <!--<Button
+            android:id="@+id/like_button" android:layout_width="match_parent"
+            android:layout_height="38.0dip" android:background="@drawable/button_shape"
+            android:clickable="false" android:text="Like All!" android:textColor="#ffffffff"
+            android:textStyle="bold"/>-->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal">
+
+            <com.melnykov.fab.FloatingActionButton
+                android:id="@+id/like_all_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_like_all"
+                fab:fab_colorNormal="@color/primary"
+                fab:fab_colorPressed="@color/primary_pressed"
+                fab:fab_colorRipple="@color/ripple"/>
+
+            <com.melnykov.fab.FloatingActionButton
+                android:id="@+id/like_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_like_grid"
+                fab:fab_colorNormal="@color/primary"
+                fab:fab_colorPressed="@color/primary_pressed"
+                fab:fab_colorRipple="@color/ripple"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

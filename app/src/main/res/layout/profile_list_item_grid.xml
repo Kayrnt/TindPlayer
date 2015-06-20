@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent" android:layout_height="wrap_content"
+             android:orientation="vertical">
+
+    <fr.kayrnt.tindplayer.view.SquareNetworkImageView
+        android:id="@+id/profile_thumb_grid" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/creator"/>
+
+    <TextView
+        android:id="@+id/nameAndAge_grid" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_gravity="bottom"
+        android:background="#66000000" android:paddingBottom="2dip" android:paddingLeft="2dip"
+        android:paddingTop="2dip" android:textColor="#ffffffff" android:textSize="12sp"/>
+
+    <View
+        android:id="@+id/passScreen" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:background="#80000000"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:contentDescription="@string/pass_icon"
+        android:id="@+id/passIcon" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/pass"
+        android:visibility="gone"/>
+</FrameLayout>

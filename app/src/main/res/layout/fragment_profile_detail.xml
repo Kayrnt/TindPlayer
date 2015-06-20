@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:id="@+id/profile_detail_fragment"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/windowBackground">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/photo_container" android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/image_pager" android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.viewpagerindicator.CirclePageIndicator
+                android:id="@+id/circle_indicator" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_gravity="bottom"
+                android:layout_marginBottom="10.0dip" android:gravity="bottom"/>
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/profile_content" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_below="@id/photo_container"
+            android:orientation="vertical" android:padding="16.0dip">
+
+            <TextView
+                android:id="@+id/profile_detail" style="?android:attr/textAppearanceLarge"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:alpha="@string/lighter" android:text="@string/name_and_age_ph"/>
+
+            <LinearLayout
+                android:id="@+id/distance_activity" android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/distance" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:alpha="@string/light"
+                    android:text="@string/distance_ph"/>
+
+                <TextView
+                    android:id="@+id/last_active" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:layout_marginLeft="16.0dip"
+                    android:alpha="@string/light" android:fontFamily="@string/light_font"
+                    android:text="@string/last_active_ph"/>
+            </LinearLayout>
+
+            <com.gc.materialdesign.views.ButtonRectangle
+                android:id="@+id/detail_action_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/primary"
+                android:visibility="gone"
+                android:layout_margin="10dp"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/about_label" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_marginTop="16.0dip"
+                android:alpha="@string/lighter" android:text="@string/about_name_ph"
+                android:textAppearance="?android:textAppearanceMedium"/>
+
+            <TextView
+                android:id="@+id/bio" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:alpha="@string/light"
+                android:fontFamily="@string/light_font" android:lineSpacingExtra="0.5sp"
+                android:text="@string/bio_ph"/>
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>
