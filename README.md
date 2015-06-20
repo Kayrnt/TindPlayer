@@ -13,6 +13,9 @@ So feel free to use directly the apk or tweak it.
 There are few concurrency bugs that need to be addressed for specific corner cases but I didn't
 had time to dig into them.
 
+For more info & screenshot :
+https://kayrnt.wordpress.com/2015/02/08/tindplayer-yet-another-tinder-swiper-helper-on-android/
+
 Have fun !
 
 Features
