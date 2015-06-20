@@ -4,8 +4,8 @@ TindPlayer
 Context
 --------
 
-A toy app I made on my spare time earlier from december 2014 to february 2015.
-I'm quite busy with new project so I decided to open source the code of this app.
+TindPlayer is a toy app I made on my spare time earlier from december 2014 to february 2015.
+I'm quite busy with new projects so I decided to open source the code of this app.
 It used to be on the Play Store but due to a DMCA takedown notice it was removed
 and though the counter-notice has been issued and accepted, I'm too lazy to restore the app.
 So feel free to use directly the apk or tweak it.
