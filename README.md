@@ -28,6 +28,11 @@ TindPlayer uses the Tinder platform to provide some advanced options that does n
 
 On the main screen, the first button like everyone (loop) while the second will like those displayed. Holding down a photo displays the detail.
 
+Download
+--------
+
+* You can download the last version at : https://github.com/Kayrnt/TindPlayer/releases
+
 Using it
 --------
 
