@@ -11,9 +11,19 @@ import fr.kayrnt.tindplayer.client.TinderAPI;
 public class FacebookAccount {
 
     @Expose
+    public String id;
+    @Expose
     public String name;
     @Expose
     public String token;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

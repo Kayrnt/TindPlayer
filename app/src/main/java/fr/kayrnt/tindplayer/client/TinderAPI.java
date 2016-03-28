@@ -29,6 +29,7 @@ public abstract class TinderAPI implements IApi {
 
     public FacebookAccount account;
     public boolean authInProgress;
+    public String fbId;
     public String fbAuthToken;
     public int likeCount;
     public ProfileHistory likedProfiles;
@@ -82,8 +83,8 @@ public abstract class TinderAPI implements IApi {
     public abstract void likeProfileImpl(Profile profile, boolean shouldLike);
 
     public void addProfile(Profile profile) {
-            //I suspect GSON to fuck up with that value
-            profile.shouldLike = true;
+        //I suspect GSON to fuck up with that value
+        profile.shouldLike = true;
         synchronized (profiles) {
             profiles.add(profile);
         }

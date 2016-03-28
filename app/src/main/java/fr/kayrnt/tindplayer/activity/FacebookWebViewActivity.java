@@ -1,21 +1,21 @@
 package fr.kayrnt.tindplayer.activity;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.EditText;
 
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
+
+import org.json.JSONObject;
+
+import fr.kayrnt.tindplayer.MyApplication;
 import fr.kayrnt.tindplayer.R;
-
-import fr.kayrnt.tindplayer.client.TinderAPI;
-import fr.kayrnt.tindplayer.model.FacebookAccount;
-import fr.kayrnt.tindplayer.model.FacebookAccounts;
+import fr.kayrnt.tindplayer.api.all.APIAllErrorListener;
+import fr.kayrnt.tindplayer.api.facebookid.FacebookIdListener;
 import fr.kayrnt.tindplayer.utils.SessionManager;
 
 public class FacebookWebViewActivity extends ActionBarActivity {
@@ -46,50 +46,12 @@ public class FacebookWebViewActivity extends ActionBarActivity {
                 final String token = url.split("access_token=")[1].split("&")[0];
                 Log.i("AUTH_TOKEN", token);
 
-                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
-
-                // set title
-                alertDialogBuilder.setTitle(getString(R.string.dialog_facebook_new_title));
-                alertDialogBuilder.setMessage(getString(R.string.dialog_facebook_new_message));
-
-                // Set an EditText view to get user input
-                final EditText input = new EditText(activity);
-                input.setText(getString(R.string.input_default));
-                alertDialogBuilder.setView(input);
-
-                alertDialogBuilder.setPositiveButton(getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String accountName = input.getText().toString();
-                        TinderAPI.getInstance().account = new FacebookAccount();
-                        TinderAPI.getInstance().account.setToken(token);
-                        TinderAPI.getInstance().account.setName(accountName);
-                        TinderAPI.getInstance().account.setCurrentAccount();
-                        final FacebookAccounts accounts = FacebookAccounts.getAccounts();
-                        accounts.accounts.add(TinderAPI.getInstance().account);
-                        accounts.save();
-                        activity.sessionManager.createLoginSession(token);
-                        TinderAPI.getInstance().auth(activity);
-                        activity.finish();
-                    }
-                });
-
-                alertDialogBuilder.setNegativeButton(getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        activity.finish();
-                    }
-                });
-
-
-                alertDialogBuilder.setCancelable(false);
-
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        alertDialogBuilder.show();
-                    }
-                });
-
-
+                //get facebook id
+                String fbUrl = "https://graph.facebook.com/me?access_token=" + token;
+                FacebookIdListener facebookIdListener = new FacebookIdListener(activity, token);
+                JsonObjectRequest request = new JsonObjectRequest(fbUrl, null,
+                        facebookIdListener, facebookIdListener);
+                MyApplication.getInstance().queue().add(request);
 
             }
         }

@@ -54,7 +54,8 @@ public class FacebookLoginActivity extends ActionBarActivity {
             loginButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    TinderAPI.getInstance().session.createLoginSession(TinderAPI.getInstance().account.getToken());
+                    TinderAPI.getInstance().session.createLoginSession(TinderAPI.getInstance()
+                            .account.getId(), TinderAPI.getInstance().account.getToken());
                     TinderAPI.getInstance().auth(FacebookLoginActivity.this);
                     FacebookLoginActivity.this.finish();
                 }

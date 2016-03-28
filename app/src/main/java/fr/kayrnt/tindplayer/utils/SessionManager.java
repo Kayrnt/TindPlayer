@@ -15,6 +15,7 @@ import java.util.HashMap;
 
 public class SessionManager {
     private static final String IS_LOGIN = "IsLoggedIn";
+    public static final String KEY_FB_ID = "fb_id";
     public static final String KEY_FB_TOKEN = "fb_auth_token";
     public static final String KEY_TINDER_ID = "tinder_id";
     public static final String KEY_TINDER_TOKEN = "tinder_auth_token";
@@ -52,8 +53,9 @@ public class SessionManager {
         }
     }
 
-    public void createLoginSession(String fbAuthToken) {
+    public void createLoginSession(String fbId, String fbAuthToken) {
         this.editor.putBoolean(IS_LOGIN, true);
+        this.editor.putString(KEY_FB_ID, fbId);
         this.editor.putString(KEY_FB_TOKEN, fbAuthToken);
         this.editor.commit();
     }
@@ -68,6 +70,7 @@ public class SessionManager {
 
     public HashMap<String, String> getUserDetails() {
         HashMap<String, String> map = new HashMap<String, String>();
+        map.put(KEY_FB_ID, this.pref.getString(KEY_FB_ID, null));
         map.put(KEY_FB_TOKEN, this.pref.getString(KEY_FB_TOKEN, null));
         map.put(KEY_TINDER_TOKEN, this.pref.getString(KEY_TINDER_TOKEN, null));
         return map;

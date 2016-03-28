@@ -32,16 +32,14 @@ import fr.kayrnt.tindplayer.utils.GsonRequest;
 public class RealTinderAPI extends TinderAPI {
 
     public String ACCEPT = "*/*";
-    public String ACCEPT_ENCODING = "gzip, deflate";
     public String ACCEPT_LANGUAGE = "en;q=1, fr;q=0.9, de;q=0.8, zh-Hans;q=0.7, zh-Hant;q=0.6, ja;q=0.5";
     public String API_URL = "https://api.gotinder.com";
-    public String APP_VERSION = "123";
-    //    public String AUTHORIZATION = "";
+    public String APP_VERSION = "371";
     public String CONNECTION = "keep-alive";
     public String CONTENT_TYPE = "application/json; charset=utf-8";
-    public String OS_VERSION = "800000";
-    public String PLATFORM = "ios";
-    public String USER_AGENT = "Tinder/4.0.9 (iPhone; iOS 8.0; Scale/2.00)";
+    public String OS_VERSION = "90000000001";
+    public String PLATFORM = "android";
+    public String USER_AGENT = "Tinder/4.6.1 (iPhone; iOS 9.0.1; Scale/2.00)";
 
     @Override
     public void requestUsers() {
@@ -52,8 +50,10 @@ public class RealTinderAPI extends TinderAPI {
         String url = API_URL + "/auth";
         HashMap<String, String> map = new HashMap<String, String>();
         session = MyApplication.session();
+        fbId = session.getUserDetails().get("fb_id");
         fbAuthToken = session.getUserDetails().get("fb_auth_token");
         if (fbAuthToken != null) {
+            map.put("facebook_id", fbId);
             map.put("facebook_token", fbAuthToken);
             String body = new JSONObject(map).toString();
             GsonRequest<AuthAPIModel> request =
@@ -74,7 +74,6 @@ public class RealTinderAPI extends TinderAPI {
         map.put("Accept", ACCEPT);
         map.put("platform", PLATFORM);
         map.put("Connection", CONNECTION);
-        map.put("Accept-Encoding", ACCEPT_ENCODING);
         if (loggedIn) {
             map.put("X-Auth-Token", session.getTinderToken());
             map.put("Authorization", "Token token=\"" + session.getTinderToken() + "\"");
