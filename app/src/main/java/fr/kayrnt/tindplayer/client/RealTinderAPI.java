@@ -90,7 +90,7 @@ public class RealTinderAPI extends TinderAPI {
                 new GsonRequest<JSONObject>(Request.Method.GET,
                         API_URL + likeOrPassAPI +
                                 profile.getId(), JSONObject.class, getAuthHeaders(true), null,
-                        new LikeAPIListener(this, shouldLike, profile),
+                        new LikeAPIListener(this, profile),
                         new LikeAPIErrorListener(this, profile, shouldLike));
         MyApplication.getInstance().withSessionManager(request);
     }

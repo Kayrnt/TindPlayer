@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -39,7 +40,8 @@ public class ProfileAllAPIListener
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    tinderAPI.likeProfile(profile, profile.shouldLike);
+                    //stop process when we are done
+                    tinderAPI.likeProfile(profile, true);
                 }
             }
             try {
@@ -64,9 +66,16 @@ public class ProfileAllAPIListener
     @Override
     public void onResponse(final RecResponse recResponse) {
         Log.i("Profile All Listener", "response : " + recResponse);
-        if ((recResponse != null) && (recResponse.profiles != null)) {
+        ArrayList<Profile> filteredProfiles = new ArrayList<>();
+        if((recResponse != null) && (recResponse.profiles != null)) {
+            for (Profile profile : recResponse.profiles) {
+                if (!profile.getId().contains("tinder_rate_limited_id"))
+                    filteredProfiles.add(profile);
+            }
+        }
+        if (!filteredProfiles.isEmpty()) {
             synchronized (tinderAPI.profiles) {
-                tinderAPI.profiles.addAll(recResponse.profiles);
+                tinderAPI.profiles.addAll(filteredProfiles);
             }
             likeAll();
         } else {

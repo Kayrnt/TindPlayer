@@ -18,21 +18,21 @@ public class LikeAPIListener
         implements Response.Listener<JSONObject> {
 
     private TinderAPI tinderAPI;
-    private final boolean liked;
     private final Profile profile;
 
-    public LikeAPIListener(TinderAPI tinderAPI, boolean liked, Profile profile) {
+    public LikeAPIListener(TinderAPI tinderAPI, Profile profile) {
         this.tinderAPI = tinderAPI;
-        this.liked = liked;
         this.profile = profile;
     }
 
     @Override
     public void onResponse(JSONObject jsonObject) {
         Log.i("Like API Listener", "json : " + jsonObject);
-        if(jsonObject.optBoolean("match", false)){
-            Log.i("PROFILE MATCHED", this.profile.getId());
-            tinderAPI.addMatchProfile(profile);
+        if (jsonObject != null) {
+            if(jsonObject.optBoolean("match", false)){
+                Log.i("PROFILE MATCHED", this.profile.getId());
+                tinderAPI.addMatchProfile(profile);
+            }
         }
     }
 }
