@@ -1,5 +1,7 @@
 package fr.kayrnt.tindplayer.api.all;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -24,7 +26,9 @@ public class ProfileAllAPIListener
     private ProfileListFragment fragment;
     private Random random = new Random();
 
-    public ProfileAllAPIListener(TinderAPI tinderAPI, ProfileListFragment fragment) {
+    private int likedCount = 0;
+
+    public ProfileAllAPIListener(TinderAPI tinderAPI, final ProfileListFragment fragment) {
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
     }
@@ -42,6 +46,8 @@ public class ProfileAllAPIListener
                     }
                     //stop process when we are done
                     tinderAPI.likeProfile(profile, true);
+                    likedCount++;
+                    fragment.updateLikeAllCount(likedCount);
                 }
             }
             try {
@@ -58,16 +64,21 @@ public class ProfileAllAPIListener
         else fragment.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                fragment.updateProfileList();
+                stop();
             }
         });
+    }
+
+    public void stop() {
+        fragment.updateProfileList();
+        fragment.updateListUI();
     }
 
     @Override
     public void onResponse(final RecResponse recResponse) {
         Log.i("Profile All Listener", "response : " + recResponse);
         ArrayList<Profile> filteredProfiles = new ArrayList<>();
-        if((recResponse != null) && (recResponse.profiles != null)) {
+        if ((recResponse != null) && (recResponse.profiles != null)) {
             for (Profile profile : recResponse.profiles) {
                 if (!profile.getId().contains("tinder_rate_limited_id"))
                     filteredProfiles.add(profile);
@@ -89,6 +100,7 @@ public class ProfileAllAPIListener
                     fragment.updateListUI();
                 }
             });
+            fragment.disableLikeAllAlertDialog();
         }
     }
 

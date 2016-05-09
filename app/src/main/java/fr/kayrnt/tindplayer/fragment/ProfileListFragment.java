@@ -1,6 +1,8 @@
 package fr.kayrnt.tindplayer.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -50,13 +52,17 @@ public class ProfileListFragment extends Fragment {
     TinderAPI tinderAPI = TinderAPI.getInstance();
     public boolean stopLikeAll = false;
 
+    public void stopLikeAll(){
+        stopLikeAll = true;
+        likeAllButton.setColorNormalResId(R.color.primary);
+        likeAllButton.invalidate();
+        likeAllButton.setOnClickListener(likeAllListener);
+    }
+
     public View.OnClickListener stopLikeAllListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            stopLikeAll = true;
-            likeAllButton.setColorNormalResId(R.color.primary);
-            likeAllButton.invalidate();
-            likeAllButton.setOnClickListener(likeAllListener);
+            stopLikeAll();
         }
     };
 
@@ -228,6 +234,46 @@ public class ProfileListFragment extends Fragment {
             return true;
         }
 
+    }
+
+    /**
+     *  Alert dialog for like all
+     */
+
+    private AlertDialog alertDialog;
+
+    public void setupLikeAllAlertDialog() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                alertDialog = new AlertDialog.Builder(getActivity())
+                        .setMessage("Starting liking all...")
+                        .setPositiveButton("Stop", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                stopLikeAll();
+                            }
+                        }).show();
+            }
+        });
+    }
+
+    public void updateLikeAllCount(final int count){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                alertDialog.setMessage(count + " liked !");
+            }
+        });
+    }
+
+    public void disableLikeAllAlertDialog() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                alertDialog.hide();
+            }
+        });
     }
 
 }

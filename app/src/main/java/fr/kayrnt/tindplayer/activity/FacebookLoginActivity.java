@@ -40,8 +40,10 @@ public class FacebookLoginActivity extends ActionBarActivity {
 
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    TinderAPI.getInstance().account = (FacebookAccount) view.getTag();
-                    TinderAPI.getInstance().account.setCurrentAccount();
+                    if(view != null) {
+                        TinderAPI.getInstance().account = (FacebookAccount) view.getTag();
+                        TinderAPI.getInstance().account.setCurrentAccount();
+                    }
                 }
 
                 @Override

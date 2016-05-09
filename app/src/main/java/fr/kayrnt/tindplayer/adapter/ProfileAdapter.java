@@ -2,6 +2,7 @@ package fr.kayrnt.tindplayer.adapter;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,7 @@ public class ProfileAdapter extends ArrayAdapter<Profile> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        try {
             final Profile profile = getItem(position);
             LayoutInflater localLayoutInflater = (LayoutInflater) context.getSystemService(Context
                     .LAYOUT_INFLATER_SERVICE);
@@ -92,6 +94,9 @@ public class ProfileAdapter extends ArrayAdapter<Profile> {
                 profileView.passScreen.setVisibility(View.VISIBLE);
                 profileView.passIcon.setVisibility(View.VISIBLE);
             }
+        } catch (IndexOutOfBoundsException e) {
+            Log.w("profile adapter", "list not expected to be empty at position "+position);
+        }
 
         return convertView;
 
