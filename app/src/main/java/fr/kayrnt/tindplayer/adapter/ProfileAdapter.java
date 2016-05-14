@@ -59,8 +59,6 @@ public class ProfileAdapter extends ArrayAdapter<Profile> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        try {
-            final Profile profile = getItem(position);
             LayoutInflater localLayoutInflater = (LayoutInflater) context.getSystemService(Context
                     .LAYOUT_INFLATER_SERVICE);
             ProfileView profileView;
@@ -75,7 +73,8 @@ public class ProfileAdapter extends ArrayAdapter<Profile> {
                 convertView.setTag(profileView);
 
             } else profileView = (ProfileView) convertView.getTag();
-
+        try {
+            final Profile profile = getItem(position);
             profileView.profile = profile;
             profileView.name.setText(profile.getNameAndAge());
             if ((profile.getPhotos() != null) && (!profile.getPhotos().isEmpty()) && (!profile.getPhotos()
