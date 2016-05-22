@@ -57,6 +57,7 @@ public class ProfileListFragment extends Fragment {
         likeAllButton.setColorNormalResId(R.color.primary);
         likeAllButton.invalidate();
         likeAllButton.setOnClickListener(likeAllListener);
+        if(alertDialog.isShowing()) alertDialog.dismiss();
     }
 
     public View.OnClickListener stopLikeAllListener = new View.OnClickListener() {
@@ -72,8 +73,18 @@ public class ProfileListFragment extends Fragment {
             stopLikeAll = false;
             likeAllButton.setColorNormalResId(R.color.ripple);
             likeAllButton.invalidate();
+            alertDialog = new AlertDialog.Builder(getActivity())
+                    .setMessage("Starting liking all...")
+                    .setPositiveButton("Stop", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            stopLikeAll();
+                        }
+                    }).show();
+            likeAllCount = 0;
             new ProfileLikeAllTask(tinderAPI, ProfileListFragment.this).execute();
             likeAllButton.setOnClickListener(stopLikeAllListener);
+
         }
     };
 
@@ -241,28 +252,14 @@ public class ProfileListFragment extends Fragment {
      */
 
     private AlertDialog alertDialog;
+    private int likeAllCount = 0;
 
-    public void setupLikeAllAlertDialog() {
+    public void updateLikeAllCount(){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                alertDialog = new AlertDialog.Builder(getActivity())
-                        .setMessage("Starting liking all...")
-                        .setPositiveButton("Stop", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                stopLikeAll();
-                            }
-                        }).show();
-            }
-        });
-    }
-
-    public void updateLikeAllCount(final int count){
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                alertDialog.setMessage(count + " liked !");
+                likeAllCount++;
+                alertDialog.setMessage(likeAllCount + " liked !");
             }
         });
     }

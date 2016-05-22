@@ -19,7 +19,6 @@ public class ProfileLikeAllTask extends AsyncTask<Void, Void, Void> {
         super();
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
-        fragment.setupLikeAllAlertDialog();
     }
 
     @Override

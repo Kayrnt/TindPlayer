@@ -47,7 +47,7 @@ public class ProfileAllAPIListener
                     //stop process when we are done
                     tinderAPI.likeProfile(profile, true);
                     likedCount++;
-                    fragment.updateLikeAllCount(likedCount);
+                    fragment.updateLikeAllCount();
                 }
             }
             try {
