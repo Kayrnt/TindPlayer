@@ -8,13 +8,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.RequestFuture;
-
-import org.json.JSONObject;
 
 import fr.kayrnt.tindplayer.MyApplication;
 import fr.kayrnt.tindplayer.R;
-import fr.kayrnt.tindplayer.api.all.APIAllErrorListener;
 import fr.kayrnt.tindplayer.api.facebookid.FacebookIdListener;
 import fr.kayrnt.tindplayer.utils.SessionManager;
 

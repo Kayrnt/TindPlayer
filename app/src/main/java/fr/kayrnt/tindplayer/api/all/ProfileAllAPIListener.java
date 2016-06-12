@@ -26,8 +26,6 @@ public class ProfileAllAPIListener
     private ProfileListFragment fragment;
     private Random random = new Random();
 
-    private int likedCount = 0;
-
     public ProfileAllAPIListener(TinderAPI tinderAPI, final ProfileListFragment fragment) {
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
@@ -46,7 +44,6 @@ public class ProfileAllAPIListener
                     }
                     //stop process when we are done
                     tinderAPI.likeProfile(profile, true);
-                    likedCount++;
                     fragment.updateLikeAllCount();
                 }
             }
