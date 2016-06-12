@@ -255,13 +255,16 @@ public class ProfileListFragment extends Fragment {
     private int likeAllCount = 0;
 
     public void updateLikeAllCount(){
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                likeAllCount++;
-                alertDialog.setMessage(likeAllCount + " liked !");
-            }
-        });
+        Activity activity = getActivity();
+        if(activity != null) {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    likeAllCount++;
+                    alertDialog.setMessage(likeAllCount + " liked !");
+                }
+            });
+        } else stopLikeAll();
     }
 
     public void disableLikeAllAlertDialog() {
