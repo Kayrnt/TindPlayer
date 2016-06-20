@@ -33,7 +33,8 @@ public class ProfileAPIListener
         ArrayList<Profile> filteredProfiles = new ArrayList<>();
         if((recResponse != null) && (recResponse.profiles != null)) {
             for (Profile profile : recResponse.profiles) {
-                if (!profile.getId().contains("tinder_rate_limited_id"))
+                String id = profile.getId();
+                if (id != null && !id.contains("tinder_rate_limited_id"))
                     filteredProfiles.add(profile);
             }
         }

@@ -1,5 +1,6 @@
 package fr.kayrnt.tindplayer.api.all;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.util.Log;
@@ -58,12 +59,17 @@ public class ProfileAllAPIListener
         fragment.updateLikeCount();
 
         if (!fragment.stopLikeAll) new ProfileLikeAllTask(tinderAPI, fragment).execute();
-        else fragment.getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                stop();
+        else {
+            Activity activity = fragment.getActivity();
+            if (activity != null) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        stop();
+                    }
+                });
             }
-        });
+        }
     }
 
     public void stop() {

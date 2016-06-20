@@ -238,10 +238,14 @@ public class ProfileListFragment extends Fragment {
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
             Activity activity = ProfileListFragment.this.getActivity();
             Intent intent = new Intent(activity, ProfileDetailActivity.class);
-
-            intent.putExtra("item_id", tinderAPI.profiles.get(position).getId());
-            intent.putExtra("profile_type", "profile");
-            activity.startActivity(intent);
+            try {
+                intent.putExtra("item_id", tinderAPI.profiles.get(position).getId());
+                intent.putExtra("profile_type", "profile");
+                activity.startActivity(intent);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Toast.makeText(activity, "Unable to show profile details, please retry or " +
+                        "refresh", Toast.LENGTH_SHORT).show();
+            }
             return true;
         }
 
