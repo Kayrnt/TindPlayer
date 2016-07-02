@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -122,12 +122,12 @@ public class ProfileDetailFragment extends Fragment {
             type = getArguments().getString("profile_type");
             List<Profile> profiles = getProfileList(type);
             for (Profile currentProfile : profiles) {
-                if (id.equals(currentProfile.getId())) profile = currentProfile;
+                if (id != null && id.equals(currentProfile.getId())) profile = currentProfile;
             }
         }
 
         if ((profile != null) && (profile.getName() != null))
-            ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(profile.getName());
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(profile.getName());
 
         if (profile != null) {
             photoContainer = new PhotoAdapter(getChildFragmentManager(), profile.getPhotos());

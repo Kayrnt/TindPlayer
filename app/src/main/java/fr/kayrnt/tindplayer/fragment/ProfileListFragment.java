@@ -242,7 +242,7 @@ public class ProfileListFragment extends Fragment {
                 intent.putExtra("item_id", tinderAPI.profiles.get(position).getId());
                 intent.putExtra("profile_type", "profile");
                 activity.startActivity(intent);
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {
                 Toast.makeText(activity, "Unable to show profile details, please retry or " +
                         "refresh", Toast.LENGTH_SHORT).show();
             }

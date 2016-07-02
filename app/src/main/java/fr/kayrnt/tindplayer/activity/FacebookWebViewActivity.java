@@ -2,7 +2,7 @@ package fr.kayrnt.tindplayer.activity;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -14,7 +14,7 @@ import fr.kayrnt.tindplayer.R;
 import fr.kayrnt.tindplayer.api.facebookid.FacebookIdListener;
 import fr.kayrnt.tindplayer.utils.SessionManager;
 
-public class FacebookWebViewActivity extends ActionBarActivity {
+public class FacebookWebViewActivity extends AppCompatActivity {
     public SessionManager sessionManager;
 
     protected void onCreate(Bundle savedInstanceState) {

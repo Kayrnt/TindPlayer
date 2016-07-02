@@ -1,7 +1,6 @@
 package fr.kayrnt.tindplayer.api.profile;
 
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
@@ -30,7 +29,7 @@ public class ProfileListUpdateTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
 
-        if (tinderAPI.session.getTinderToken() != null)
+        if (tinderAPI.sessionManager.getTinderToken() != null)
             tinderAPI.getProfiles(fragment);
 
         return null;

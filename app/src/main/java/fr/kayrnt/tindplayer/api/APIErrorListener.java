@@ -21,7 +21,7 @@ public class APIErrorListener
 
     public void onErrorResponse(VolleyError volleyError) {
         this.tinderAPI.authInProgress = false;
-        this.tinderAPI.session.logoutUser();
+        this.tinderAPI.sessionManager.logoutUser();
     }
 
 }

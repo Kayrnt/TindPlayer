@@ -27,7 +27,7 @@ public class AuthenticationAPIListener implements Response.Listener<AuthAPIModel
         Log.i("Auth API Listener", "api : "+ authAPIModel);
         this.tinderAPI.token = authAPIModel.getToken();
         this.tinderAPI.tinderId = authAPIModel.getUser().getId();
-        this.tinderAPI.session.addTinderToken(this.tinderAPI.token);
+        this.tinderAPI.sessionManager.addTinderToken(this.tinderAPI.token);
         tinderAPI.mEditor.putString("tinder_id", this.tinderAPI.tinderId);
         tinderAPI.mEditor.apply();
         this.tinderAPI.goProfileList(activity);

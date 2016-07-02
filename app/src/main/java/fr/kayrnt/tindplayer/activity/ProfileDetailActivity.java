@@ -3,13 +3,13 @@ package fr.kayrnt.tindplayer.activity;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import fr.kayrnt.tindplayer.fragment.ProfileDetailFragment;
 import fr.kayrnt.tindplayer.R;
 
-public class ProfileDetailActivity extends ActionBarActivity {
+public class ProfileDetailActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

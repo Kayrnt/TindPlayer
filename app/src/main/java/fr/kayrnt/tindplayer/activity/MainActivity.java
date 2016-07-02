@@ -2,7 +2,7 @@ package fr.kayrnt.tindplayer.activity;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -15,7 +15,7 @@ import fr.kayrnt.tindplayer.R;
 import fr.kayrnt.tindplayer.adapter.MainPageAdapter;
 import fr.kayrnt.tindplayer.utils.SessionManager;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
     SessionManager sessionManager;
     ViewPager viewPager;
     MainPageAdapter pageAdapter;

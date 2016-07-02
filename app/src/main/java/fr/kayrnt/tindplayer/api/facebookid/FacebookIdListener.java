@@ -78,7 +78,9 @@ public class FacebookIdListener implements Response.Listener<JSONObject>, Respon
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    alertDialogBuilder.show();
+                    if(!activity.isFinishing()) {
+                        alertDialogBuilder.show();
+                    }
                 }
             });
         } catch (JSONException e) {

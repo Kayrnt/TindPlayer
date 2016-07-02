@@ -2,12 +2,11 @@ package fr.kayrnt.tindplayer.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 
@@ -17,7 +16,7 @@ import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.model.FacebookAccount;
 import fr.kayrnt.tindplayer.model.FacebookAccounts;
 
-public class FacebookLoginActivity extends ActionBarActivity {
+public class FacebookLoginActivity extends AppCompatActivity {
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +55,9 @@ public class FacebookLoginActivity extends ActionBarActivity {
             loginButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    TinderAPI.getInstance().session.createLoginSession(TinderAPI.getInstance()
-                            .account.getId(), TinderAPI.getInstance().account.getToken());
+                    TinderAPI.getInstance().getSessionManager().createLoginSession(
+                            TinderAPI.getInstance().account.getId(),
+                            TinderAPI.getInstance().account.getToken());
                     TinderAPI.getInstance().auth(FacebookLoginActivity.this);
                     FacebookLoginActivity.this.finish();
                 }

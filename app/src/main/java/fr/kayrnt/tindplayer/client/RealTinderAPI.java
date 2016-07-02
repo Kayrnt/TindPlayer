@@ -49,9 +49,9 @@ public class RealTinderAPI extends TinderAPI {
     public void auth(Activity activity) {
         String url = API_URL + "/auth";
         HashMap<String, String> map = new HashMap<String, String>();
-        session = MyApplication.session();
-        fbId = session.getUserDetails().get("fb_id");
-        fbAuthToken = session.getUserDetails().get("fb_auth_token");
+        sessionManager = MyApplication.session();
+        fbId = sessionManager.getUserDetails().get("fb_id");
+        fbAuthToken = sessionManager.getUserDetails().get("fb_auth_token");
         if (fbAuthToken != null) {
             map.put("facebook_id", fbId);
             map.put("facebook_token", fbAuthToken);
@@ -75,8 +75,8 @@ public class RealTinderAPI extends TinderAPI {
         map.put("platform", PLATFORM);
         map.put("Connection", CONNECTION);
         if (loggedIn) {
-            map.put("X-Auth-Token", session.getTinderToken());
-            map.put("Authorization", "Token token=\"" + session.getTinderToken() + "\"");
+            map.put("X-Auth-Token", sessionManager.getTinderToken());
+            map.put("Authorization", "Token token=\"" + sessionManager.getTinderToken() + "\"");
         }
         if (!loggedIn)
             map.put("Content-type", CONTENT_TYPE);

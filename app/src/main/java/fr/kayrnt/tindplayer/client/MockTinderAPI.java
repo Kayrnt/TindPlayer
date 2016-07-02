@@ -64,7 +64,7 @@ public class MockTinderAPI extends TinderAPI {
     public void auth(Activity activity) {
         token = "";
         tinderId = "";
-        session.addTinderToken(token);
+        sessionManager.addTinderToken(token);
         mEditor.putString("tinder_id", tinderId);
         mEditor.apply();
         goProfileList(activity);

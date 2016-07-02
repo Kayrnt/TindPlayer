@@ -40,7 +40,7 @@ public abstract class TinderAPI implements IApi {
     public int matchCount;
     public int offerCounter;
     public final LinkedList<Profile> profiles = new LinkedList<>();
-    public SessionManager session;
+    public SessionManager sessionManager;
     public String tinderId;
     public String token;
 
@@ -51,6 +51,13 @@ public abstract class TinderAPI implements IApi {
             activity.startActivity(localIntent);
             activity.finish();
         }
+    }
+
+    public SessionManager getSessionManager() {
+        if(sessionManager == null){
+            sessionManager = MyApplication.session();
+        }
+        return sessionManager;
     }
 
     @Override
@@ -107,7 +114,7 @@ public abstract class TinderAPI implements IApi {
         instance = null;
     }
 
-    public void initialize(Context paramContext) {
+    public void initialize() {
         initializeProperties();
         setupHistory();
     }
@@ -116,7 +123,7 @@ public abstract class TinderAPI implements IApi {
         if (instance == null) {
 //            instance = new MockTinderAPI();
             instance = new RealTinderAPI();
-            instance.initialize(MyApplication.getInstance().getApplicationContext());
+            instance.initialize();
         }
         return instance;
     }
@@ -181,7 +188,7 @@ public abstract class TinderAPI implements IApi {
     }
 
     public void initializeProperties() {
-        session = MyApplication.session();
+        sessionManager = MyApplication.session();
 //        email = UserEmailFetcher.getEmail(MyApplication.getInstance());
         mPrefs = MyApplication.getSharedPreferences();
         mEditor = mPrefs.edit();
