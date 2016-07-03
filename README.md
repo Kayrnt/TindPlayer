@@ -4,14 +4,11 @@ TindPlayer
 Context
 --------
 
-TindPlayer is a toy app I made on my spare time earlier from december 2014 to february 2015.
-I'm quite busy with new projects so I decided to open source the code of this app.
-It used to be on the Play Store but due to a DMCA takedown notice it was removed
-and though the counter-notice has been issued and accepted, I'm too lazy to restore the app.
-So feel free to use directly the apk or tweak it.
-
-There are few concurrency bugs that need to be addressed for specific corner cases but I didn't
-had time to dig into them.
+TindPlayer is a toy app I made on my spare time earlier since december 2014.
+Code is pretty dirty (it's mostly a proof of concept and doesn't reflect in any way what I do for
+ a living - I don't even program on Android nor Java anymore at work)
+I have a lot of other things going on so I may not fix/update things in a timely manner.
+Feel free to use directly the apk or tweak it.
 
 For more info & screenshot :
 https://kayrnt.wordpress.com/2015/02/08/tindplayer-yet-another-tinder-swiper-helper-on-android/

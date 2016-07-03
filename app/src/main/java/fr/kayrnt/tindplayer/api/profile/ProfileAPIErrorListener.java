@@ -32,7 +32,7 @@ public class ProfileAPIErrorListener
             this.tinderAPI.auth(null);
             Toast.makeText(fragment.getActivity(), "Authenticating...",
                     Toast.LENGTH_SHORT).show();
-            fragment.updateProfileList();
+            fragment.getMoreProfileAndUpdateUI();
 
         }
         fragment.updateListUI();

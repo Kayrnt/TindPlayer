@@ -4,11 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,31 +32,31 @@ import fr.kayrnt.tindplayer.activity.ProfileDetailActivity;
 import fr.kayrnt.tindplayer.adapter.ProfileAdapter;
 import fr.kayrnt.tindplayer.api.all.ProfileLikeAllTask;
 import fr.kayrnt.tindplayer.api.like.LikeTask;
-import fr.kayrnt.tindplayer.api.profile.LikedProfileSaveTask;
 import fr.kayrnt.tindplayer.api.profile.ProfileListUpdateTask;
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.model.Profile;
 import fr.kayrnt.tindplayer.utils.SessionManager;
 
-public class ProfileListFragment extends Fragment {
+public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     public ProfileAdapter listAdapter;
     public FloatingActionButton likeButton;
     public FloatingActionButton likeAllButton;
     SessionManager sessionManager;
     public TextView likedCount;
     public GridView profileGridView;
+    public SwipeRefreshLayout swipeRefreshLayout;
     Handler handler;
     Random random;
     LinearLayout profilesLayout;
     TinderAPI tinderAPI = TinderAPI.getInstance();
     public boolean stopLikeAll = false;
 
-    public void stopLikeAll(){
+    public void stopLikeAll() {
         stopLikeAll = true;
         likeAllButton.setColorNormalResId(R.color.primary);
         likeAllButton.invalidate();
         likeAllButton.setOnClickListener(likeAllListener);
-        if(alertDialog.isShowing()) alertDialog.dismiss();
+        if (alertDialog.isShowing()) alertDialog.dismiss();
     }
 
     public View.OnClickListener stopLikeAllListener = new View.OnClickListener() {
@@ -100,7 +99,7 @@ public class ProfileListFragment extends Fragment {
 
     public void updateLikeCount() {
         Activity activity = getActivity();
-        if(activity != null) {
+        if (activity != null) {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -117,10 +116,11 @@ public class ProfileListFragment extends Fragment {
         likeButton.setClickable(true);
         tinderAPI.saveProfileHistory();
         saveLikeCount();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
-    public void updateProfileList() {
-        if (tinderAPI.profiles.isEmpty()) {
+    public void getMoreProfileAndUpdateUI() {
+        if (tinderAPI.profiles.size() < 10) {
             new ProfileListUpdateTask(tinderAPI, this).execute();
         } else {
             updateListUI();
@@ -147,7 +147,7 @@ public class ProfileListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.action_refresh:
-                this.updateProfileList();
+                this.getMoreProfileAndUpdateUI();
                 return true;
             case R.id.action_switch_account:
                 this.sessionManager.switchUser();
@@ -162,6 +162,9 @@ public class ProfileListFragment extends Fragment {
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = layoutInflater.inflate(R.layout.fragment_profile_list, null);
         this.profileGridView = ((GridView) layout.findViewById(R.id.gridView));
+        this.swipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout);
+        this.swipeRefreshLayout.setOnRefreshListener(this);
+
         listAdapter = new ProfileAdapter(getActivity(), tinderAPI.profiles, false);
         this.profileGridView.setAdapter(listAdapter);
         ProfileItemListClickListener profileItemListClickListener = new
@@ -194,21 +197,18 @@ public class ProfileListFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
-        if (!getUserVisibleHint())
-        {
+        if (!getUserVisibleHint()) {
             return;
         }
         if ((this.sessionManager.hasTinderToken()) &&
                 (tinderAPI.profiles.isEmpty()))
-          updateProfileList();
+            getMoreProfileAndUpdateUI();
     }
 
     @Override
-    public void setUserVisibleHint(boolean visible)
-    {
+    public void setUserVisibleHint(boolean visible) {
         super.setUserVisibleHint(visible);
-        if (visible && isResumed())
-        {
+        if (visible && isResumed()) {
             //Only manually call onResume if fragment is already visible
             //Otherwise allow natural fragment lifecycle to call onResume
             onResume();
@@ -218,6 +218,16 @@ public class ProfileListFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("tab", "ProfileListFragment");
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getMoreProfileAndUpdateUI();
+            }
+        }, 2000);
     }
 
     public class ProfileItemListClickListener
@@ -252,15 +262,15 @@ public class ProfileListFragment extends Fragment {
     }
 
     /**
-     *  Alert dialog for like all
+     * Alert dialog for like all
      */
 
     private AlertDialog alertDialog;
     private int likeAllCount = 0;
 
-    public void updateLikeAllCount(){
+    public void updateLikeAllCount() {
         Activity activity = getActivity();
-        if(activity != null) {
+        if (activity != null) {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

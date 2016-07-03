@@ -3,6 +3,7 @@ package fr.kayrnt.tindplayer;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.support.multidex.MultiDexApplication;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 
@@ -16,7 +17,7 @@ import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 
 
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
     private static MyApplication myApplication;
     private static SessionManager sessionManager;
     private static SharedPreferences preferences;

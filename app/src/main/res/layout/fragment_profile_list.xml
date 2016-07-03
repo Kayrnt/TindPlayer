@@ -29,6 +29,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
         <GridView
             android:id="@+id/gridView"
             android:layout_width="match_parent"
@@ -39,6 +44,8 @@
             android:paddingBottom="100dp"
             android:stretchMode="columnWidth"
             android:verticalSpacing="2.0dip"/>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <!--<Button
             android:id="@+id/like_button" android:layout_width="match_parent"

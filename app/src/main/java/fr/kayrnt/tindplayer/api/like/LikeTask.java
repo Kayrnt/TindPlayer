@@ -66,7 +66,7 @@ public class LikeTask extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         fragment.updateListUI();
-        fragment.updateProfileList();
+        fragment.getMoreProfileAndUpdateUI();
 
     }
 }

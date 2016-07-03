@@ -1,15 +1,12 @@
 package fr.kayrnt.tindplayer.api.all;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Response;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import fr.kayrnt.tindplayer.client.TinderAPI;
@@ -73,7 +70,7 @@ public class ProfileAllAPIListener
     }
 
     public void stop() {
-        fragment.updateProfileList();
+        fragment.getMoreProfileAndUpdateUI();
         fragment.updateListUI();
     }
 
@@ -109,7 +106,10 @@ public class ProfileAllAPIListener
     }
 
     private void toast(final String newMessage) {
-        Toast.makeText(fragment.getActivity(), newMessage, Toast.LENGTH_SHORT).show();
+        Activity activity = fragment.getActivity();
+        if(!activity.isFinishing()) {
+            Toast.makeText(activity, newMessage, Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

@@ -1,13 +1,18 @@
 package fr.kayrnt.tindplayer.fragment;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -44,7 +49,7 @@ public class PositionFragment extends MapBasedFragment {
     @Override
     public void onMapCreated(GoogleMap googleMap) {
 //            LayoutInflater inflater = getActivity().getLayoutInflater();
-        if(googleMap!=null) {
+        if (googleMap != null) {
             map = googleMap;
             // Get LocationManager object from System Service LOCATION_SERVICE
             LocationManager locationManager = (LocationManager) getActivity().getSystemService
@@ -60,7 +65,23 @@ public class PositionFragment extends MapBasedFragment {
             map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
             // Get Current Location
-            Location myLocation = locationManager.getLastKnownLocation(provider);
+            Location myLocation = null;
+
+            if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission
+                    .ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission
+                            .ACCESS_COARSE_LOCATION) !=
+                            PackageManager.PERMISSION_GRANTED) {
+                Activity activity = getActivity();
+                if(!activity.isFinishing()) {
+                    Toast.makeText(activity, "We can't find your position to mark you", Toast
+                            .LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            myLocation = locationManager.getLastKnownLocation(provider);
+
 
              if(myLocation != null) {
 
