@@ -5,8 +5,10 @@ Context
 --------
 
 TindPlayer is a toy app I made on my spare time earlier since december 2014.
+
 Code is pretty dirty (it's mostly a proof of concept and doesn't reflect in any way what I do for
- a living - I don't even program on Android nor Java anymore at work)
+ a living - I don't even program on Android nor Java anymore at work.
+
 I have a lot of other things going on so I may not fix/update things in a timely manner.
 Feel free to use directly the apk or tweak it.
 
