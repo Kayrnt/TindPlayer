@@ -1,6 +1,9 @@
 package fr.kayrnt.tindplayer.activity;
 
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -54,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
         switch (paramMenuItem.getItemId()) {
             case R.id.action_settings:
                 sessionManager.logoutUser();
+                return true;
+            case R.id.action_feedback:
+                startActivity(new Intent(this, FeedbackActivity.class));
                 return true;
         }
         return super.onOptionsItemSelected(paramMenuItem);

@@ -239,9 +239,12 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             final ProfileAdapter.ProfileView profileView = (ProfileAdapter.ProfileView) view.getTag();
 //            profileView.profile.liked = !profileView.profile.liked;
-            profileView.profile.shouldLike = !profileView.profile.shouldLike;
-            profileView.passIcon.setVisibility(profileView.profile.shouldLike ? View.GONE : View.VISIBLE);
-            profileView.passScreen.setVisibility(profileView.profile.shouldLike ? View.GONE : View.VISIBLE);
+            if(profileView.profile != null) {
+                profileView.profile.shouldLike = !profileView.profile.shouldLike;
+                profileView.passIcon.setVisibility(profileView.profile.shouldLike ? View.GONE : View.VISIBLE);
+                profileView.passScreen.setVisibility(profileView.profile.shouldLike ? View.GONE : View.VISIBLE);
+            } else Toast.makeText(view.getContext(), "Profile corrupted, please retry if relevant",
+                    Toast.LENGTH_SHORT).show();
         }
 
         @Override

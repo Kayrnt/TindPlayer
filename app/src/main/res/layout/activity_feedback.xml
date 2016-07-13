@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/poll1_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/poll1_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="Poll 1"
+            android:layout_margin="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+        <View
+            android:id="@+id/separator"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/primary_dark"
+            android:layout_below="@+id/poll1_header"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            />
+
+        <TextView
+            android:id="@+id/poll1Question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Would you like following features:"
+            android:layout_below="@+id/separator"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+        <CheckBox
+            android:id="@+id/happnSupport_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Happn support"
+            android:layout_below="@+id/poll1Question"
+            android:layout_centerHorizontal="true"/>
+
+        <CheckBox
+            android:id="@+id/lovooSupport_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/happnSupport_checkbox"
+            android:layout_centerHorizontal="true"
+            android:text="Lovoo support"/>
+
+        <CheckBox
+            android:id="@+id/automatedSwipper_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lovooSupport_checkbox"
+            android:layout_centerHorizontal="true"
+            android:text="Automated like swipper doing it every day"/>
+
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/sendPoll1_button"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:background="@color/primary"
+            android:layout_below="@+id/automatedSwipper_checkbox"
+            android:layout_centerHorizontal="true"
+            android:text="Send poll 1 choices" />
+
+        <View
+            android:id="@+id/separator2"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/primary_dark"
+            android:layout_below="@+id/sendPoll1_button"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/poll1Completed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thank you for answering the poll 1"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <com.gc.materialdesign.views.ButtonRectangle
+        android:id="@+id/contact_button"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:background="@color/primary"
+        android:layout_gravity="center_horizontal"
+        android:text="More ? Drop me an email" />
+
+</LinearLayout>

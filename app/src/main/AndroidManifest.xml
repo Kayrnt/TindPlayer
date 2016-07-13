@@ -69,6 +69,12 @@
             android:label="@string/title_facebook_connect"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name="fr.kayrnt.tindplayer.activity.FeedbackActivity"
+            android:launchMode="singleTop"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
+
         <meta-data
             android:name="com.crashlytics.ApiKey"
             android:value="083456bddfe4f18953afd1f3c471c23c8875c862" />

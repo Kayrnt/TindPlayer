@@ -11,6 +11,7 @@
     <string name="add_account">Add an account</string>
     <string name="logout">Logout</string>
     <string name="refresh">Refresh</string>
+    <string name="feedback">Feedback</string>
     <string name="history_liked_summary">Liked</string>
     <string name="history_passed_summary">Passed</string>
     <string name="history_match_summary">Match</string>
@@ -34,7 +35,8 @@
     <string name="lighter">.65</string>
     <string name="profile_like_undo_button">Undo like</string>
     <string name="profile_like_button">Like</string>
-    <string name="select_account">Or select an account:</string>
+    <string name="select_account">Or select a registered account:</string>
     <string name="pass_icon">Pass icon</string>
+    <string name="choose_account">Add a Facebook account linked to Tinder to get started</string>
 
 </resources>
