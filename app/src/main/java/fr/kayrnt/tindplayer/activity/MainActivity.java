@@ -16,9 +16,11 @@ import java.util.List;
 import fr.kayrnt.tindplayer.MyApplication;
 import fr.kayrnt.tindplayer.R;
 import fr.kayrnt.tindplayer.adapter.MainPageAdapter;
+import fr.kayrnt.tindplayer.model.FacebookAccount;
+import fr.kayrnt.tindplayer.model.FacebookAccounts;
 import fr.kayrnt.tindplayer.utils.SessionManager;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends DrawerActivity {
     SessionManager sessionManager;
     ViewPager viewPager;
     MainPageAdapter pageAdapter;
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 viewPager.setCurrentItem(position);
             }
         });
-
+        initDrawer();
     }
 
     @Override

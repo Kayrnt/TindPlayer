@@ -1,6 +1,7 @@
 package fr.kayrnt.tindplayer.model;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
 
 import java.util.LinkedList;
 
@@ -13,6 +14,7 @@ public class FacebookAccounts {
 
     private static final String ACCOUNTS_KEY = "facebook_accounts";
 
+    @Expose
     public LinkedList<FacebookAccount> accounts = new LinkedList<FacebookAccount>();
 
     public boolean isEmpty() {
@@ -20,11 +22,11 @@ public class FacebookAccounts {
     }
 
     public static FacebookAccounts getFromJSON(String json) {
-        return new Gson().fromJson(json, FacebookAccounts.class);
+        return FacebookAccount.gson.fromJson(json, FacebookAccounts.class);
     }
 
     public String serialize() {
-        return new Gson().toJson(this);
+        return FacebookAccount.gson.toJson(this);
     }
 
 

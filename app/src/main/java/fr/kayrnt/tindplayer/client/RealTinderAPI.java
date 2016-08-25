@@ -50,8 +50,8 @@ public class RealTinderAPI extends TinderAPI {
         String url = API_URL + "/auth";
         HashMap<String, String> map = new HashMap<String, String>();
         sessionManager = MyApplication.session();
-        fbId = sessionManager.getUserDetails().get("fb_id");
-        fbAuthToken = sessionManager.getUserDetails().get("fb_auth_token");
+        String fbId = sessionManager.getUserDetails().get("fb_id");
+        String fbAuthToken = sessionManager.getUserDetails().get("fb_auth_token");
         if (fbAuthToken != null) {
             map.put("facebook_id", fbId);
             map.put("facebook_token", fbAuthToken);

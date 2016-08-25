@@ -9,13 +9,12 @@ import android.view.MenuItem;
 import fr.kayrnt.tindplayer.fragment.ProfileDetailFragment;
 import fr.kayrnt.tindplayer.R;
 
-public class ProfileDetailActivity extends AppCompatActivity {
+public class ProfileDetailActivity extends DrawerActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_detail);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        initDrawer();
         if (savedInstanceState == null) {
             Bundle bundle = new Bundle();
             bundle.putString("item_id", getIntent().getStringExtra("item_id"));

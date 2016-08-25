@@ -36,7 +36,7 @@ public class FacebookIdListener implements Response.Listener<JSONObject>, Respon
 
         try {
 
-            final String fbId = jsonObject.getString("id");
+            final long fbId = jsonObject.getLong("id");
 
             final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
 

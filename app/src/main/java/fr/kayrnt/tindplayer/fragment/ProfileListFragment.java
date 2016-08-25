@@ -21,6 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -56,7 +61,8 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
         likeAllButton.setColorNormalResId(R.color.primary);
         likeAllButton.invalidate();
         likeAllButton.setOnClickListener(likeAllListener);
-        if (alertDialog.isShowing()) alertDialog.dismiss();
+        if ((alertDialog != null) && alertDialog.isShowing())
+            alertDialog.dismiss();
     }
 
     public View.OnClickListener stopLikeAllListener = new View.OnClickListener() {
@@ -187,6 +193,7 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
         likeAllButton.setOnClickListener(likeAllListener);
 
         this.profilesLayout = ((LinearLayout) layout.findViewById(R.id.profile_fragment));
+
         return layout;
     }
 
@@ -239,7 +246,7 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             final ProfileAdapter.ProfileView profileView = (ProfileAdapter.ProfileView) view.getTag();
 //            profileView.profile.liked = !profileView.profile.liked;
-            if(profileView.profile != null) {
+            if (profileView.profile != null) {
                 profileView.profile.shouldLike = !profileView.profile.shouldLike;
                 profileView.passIcon.setVisibility(profileView.profile.shouldLike ? View.GONE : View.VISIBLE);
                 profileView.passScreen.setVisibility(profileView.profile.shouldLike ? View.GONE : View.VISIBLE);

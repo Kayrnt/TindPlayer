@@ -37,6 +37,7 @@
     <string name="profile_like_button">Like</string>
     <string name="select_account">Or select a registered account:</string>
     <string name="pass_icon">Pass icon</string>
-    <string name="choose_account">Add a Facebook account linked to Tinder to get started</string>
+    <string name="choose_account">Add an account to get started</string>
+    <string name="facebook_app_id">1509206796044599</string>
 
 </resources>

@@ -53,9 +53,9 @@ public class SessionManager {
         }
     }
 
-    public void createLoginSession(String fbId, String fbAuthToken) {
+    public void createLoginSession(Long fbId, String fbAuthToken) {
         this.editor.putBoolean(IS_LOGIN, true);
-        this.editor.putString(KEY_FB_ID, fbId);
+        this.editor.putString(KEY_FB_ID, fbId.toString());
         this.editor.putString(KEY_FB_TOKEN, fbAuthToken);
         this.editor.commit();
     }

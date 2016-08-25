@@ -1,5 +1,6 @@
 package fr.kayrnt.tindplayer.api.profile;
 
+import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -30,8 +31,8 @@ public class ProfileAPIErrorListener
                 (!this.tinderAPI.authInProgress)) {
             this.tinderAPI.authInProgress = true;
             this.tinderAPI.auth(null);
-            Toast.makeText(fragment.getActivity(), "Authenticating...",
-                    Toast.LENGTH_SHORT).show();
+            Activity activity = fragment.getActivity();
+            if(activity != null) Toast.makeText(activity, "Authenticating...", Toast.LENGTH_SHORT).show();
             fragment.getMoreProfileAndUpdateUI();
 
         }

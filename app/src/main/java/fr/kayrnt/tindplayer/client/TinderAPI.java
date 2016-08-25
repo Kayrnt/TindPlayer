@@ -28,9 +28,12 @@ public abstract class TinderAPI implements IApi {
     protected static TinderAPI instance = null;
 
     public FacebookAccount account;
+
+    public String tinderId;
+    public String token;
+
     public boolean authInProgress;
-    public String fbId;
-    public String fbAuthToken;
+
     public int likeCount;
     public ProfileHistory likedProfiles;
     public ProfileHistory passedProfiles;
@@ -41,8 +44,6 @@ public abstract class TinderAPI implements IApi {
     public int offerCounter;
     public final LinkedList<Profile> profiles = new LinkedList<>();
     public SessionManager sessionManager;
-    public String tinderId;
-    public String token;
 
     public void goProfileList(Activity activity) {
         authInProgress = false;

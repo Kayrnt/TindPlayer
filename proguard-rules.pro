@@ -94,3 +94,5 @@
 -keepnames class * implements android.os.Parcelable {
     public static final ** CREATOR;
 }
+
+-dontwarn com.squareup.okhttp.**

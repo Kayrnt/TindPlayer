@@ -73,57 +73,57 @@ public class PositionFragment extends MapBasedFragment {
                             .ACCESS_COARSE_LOCATION) !=
                             PackageManager.PERMISSION_GRANTED) {
                 Activity activity = getActivity();
-                if(!activity.isFinishing()) {
+                if (!activity.isFinishing()) {
                     Toast.makeText(activity, "We can't find your position to mark you", Toast
                             .LENGTH_SHORT).show();
                 }
                 return;
             }
 
-            myLocation = locationManager.getLastKnownLocation(provider);
+            if (provider == null) {
 
+                myLocation = locationManager.getLastKnownLocation(provider);
 
-             if(myLocation != null) {
+                if (myLocation != null) {
 
-                 // Get latitude of the current location
-                 double latitude = myLocation.getLatitude();
+                    // Get latitude of the current location
+                    double latitude = myLocation.getLatitude();
 
-                 // Get longitude of the current location
-                 double longitude = myLocation.getLongitude();
+                    // Get longitude of the current location
+                    double longitude = myLocation.getLongitude();
 
-                 // Create a LatLng object for the current location
-                 LatLng latLng = new LatLng(latitude, longitude);
+                    // Create a LatLng object for the current location
+                    LatLng latLng = new LatLng(latitude, longitude);
 
-                 // Show the current location in Google Map and Zoom in the Google Map
-                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, MAP_ZOOM));
+                    // Show the current location in Google Map and Zoom in the Google Map
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, MAP_ZOOM));
 
-                 MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(latitude,
-                         longitude)).title("Your actual position !").
-                         icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_maps_indicator_current_position));
+                    MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(latitude,
+                            longitude)).title("Your actual position !").
+                            icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_maps_indicator_current_position));
 
-                 map.addMarker(markerOptions);
+                    map.addMarker(markerOptions);
 
-                 map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                     @Override
-                     public void onMapClick(LatLng latLng) {
+                    map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                        @Override
+                        public void onMapClick(LatLng latLng) {
 
-                         if(marker == null){
-                             MarkerOptions markerOptions = new MarkerOptions().position(latLng).title
-                                     ("Tinder thinks you're  here !");
+                            if (marker == null) {
+                                MarkerOptions markerOptions = new MarkerOptions().position(latLng).title
+                                        ("Tinder thinks you're  here !");
 
-                             marker = map.addMarker(markerOptions);
-                         }
+                                marker = map.addMarker(markerOptions);
+                            } else marker.setPosition(latLng);
 
-                         else marker.setPosition(latLng);
-
-                         marker.setPosition(latLng);
-                         PositionAPIModel positionAPIModel = new PositionAPIModel();
-                         positionAPIModel.setLat(latLng.latitude);
-                         positionAPIModel.setLon(latLng.longitude);
-                         TinderAPI.getInstance().updatePosition(getActivity(), positionAPIModel);
-                     }
-                 });
-             }
+                            marker.setPosition(latLng);
+                            PositionAPIModel positionAPIModel = new PositionAPIModel();
+                            positionAPIModel.setLat(latLng.latitude);
+                            positionAPIModel.setLon(latLng.longitude);
+                            TinderAPI.getInstance().updatePosition(getActivity(), positionAPIModel);
+                        }
+                    });
+                }
+            }
         }
     }
 }
