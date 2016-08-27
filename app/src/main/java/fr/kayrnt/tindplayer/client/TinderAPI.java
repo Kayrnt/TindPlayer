@@ -46,10 +46,14 @@ public abstract class TinderAPI implements IApi {
     public SessionManager sessionManager;
 
     public void goProfileList(Activity activity) {
+        Log.i("Tinder API", "go profile activity");
         authInProgress = false;
         if (activity != null) {
-            Intent localIntent = new Intent(activity, MainActivity.class);
-            activity.startActivity(localIntent);
+            Intent intent = new Intent(activity, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            activity.startActivity(intent);
             activity.finish();
         }
     }
@@ -208,4 +212,5 @@ public abstract class TinderAPI implements IApi {
             listener, Response.ErrorListener errorListener);
 
     public abstract void updatePosition(Context context, PositionAPIModel position);
+
 }

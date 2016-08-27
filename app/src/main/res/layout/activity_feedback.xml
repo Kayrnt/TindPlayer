@@ -78,7 +78,7 @@
             android:layout_centerHorizontal="true"
             android:text="Automated like swipper doing it every day"/>
 
-        <com.gc.materialdesign.views.ButtonRectangle
+        <com.gc.materialdesign.views.ButtonRectangle2
             android:id="@+id/sendPoll1_button"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -110,7 +110,7 @@
         android:visibility="gone"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <com.gc.materialdesign.views.ButtonRectangle
+    <com.gc.materialdesign.views.ButtonRectangle2
         android:id="@+id/contact_button"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"

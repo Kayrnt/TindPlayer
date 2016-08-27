@@ -19,7 +19,7 @@ public class SessionManager {
     public static final String KEY_FB_TOKEN = "fb_auth_token";
     public static final String KEY_TINDER_ID = "tinder_id";
     public static final String KEY_TINDER_TOKEN = "tinder_auth_token";
-    Context _context;
+    public Context _context;
     SharedPreferences.Editor editor;
     SharedPreferences pref;
 
@@ -86,8 +86,6 @@ public class SessionManager {
 
     public void switchUser() {
         Intent intent = new Intent(this._context, FacebookLoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.setFlags(Intent.FLAG_RECEIVER_FOREGROUND);
         this._context.startActivity(intent);
 
         CookieManager.getInstance().removeAllCookie();

@@ -49,14 +49,14 @@
                     android:text="@string/last_active_ph"/>
             </LinearLayout>
 
-            <com.gc.materialdesign.views.ButtonRectangle
+            <com.gc.materialdesign.views.ButtonRectangle2
                 android:id="@+id/detail_action_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/primary"
                 android:visibility="gone"
                 android:layout_margin="10dp"
-                android:text="" />
+                android:text="placeholder" />
 
             <TextView
                 android:id="@+id/about_label" android:layout_width="wrap_content"

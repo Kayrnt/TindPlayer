@@ -2,6 +2,7 @@ package fr.kayrnt.tindplayer.client;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -52,6 +53,7 @@ public class RealTinderAPI extends TinderAPI {
         sessionManager = MyApplication.session();
         String fbId = sessionManager.getUserDetails().get("fb_id");
         String fbAuthToken = sessionManager.getUserDetails().get("fb_auth_token");
+        Log.i("Tinder API", "auth... id : "+fbId+ " token "+fbAuthToken);
         if (fbAuthToken != null) {
             map.put("facebook_id", fbId);
             map.put("facebook_token", fbAuthToken);

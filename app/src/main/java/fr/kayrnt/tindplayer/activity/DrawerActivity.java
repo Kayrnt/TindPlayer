@@ -3,11 +3,8 @@ package fr.kayrnt.tindplayer.activity;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -16,7 +13,6 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
@@ -27,7 +23,6 @@ import fr.kayrnt.tindplayer.R;
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.model.FacebookAccount;
 import fr.kayrnt.tindplayer.model.FacebookAccounts;
-import fr.kayrnt.tindplayer.utils.SessionManager;
 
 /**
  * by Kayrnt
@@ -48,7 +43,6 @@ public class DrawerActivity extends AppCompatActivity {
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
-                        if (!currentProfile) {
                             for (FacebookAccount account : FacebookAccounts.getAccounts().accounts) {
                                 if (profile.getIdentifier() == account.getProfileDrawerItem().getIdentifier()) {
                                     TinderAPI.getInstance().account = account;
@@ -59,7 +53,6 @@ public class DrawerActivity extends AppCompatActivity {
                                     TinderAPI.getInstance().auth(DrawerActivity.this);
                                     DrawerActivity.this.finish();
                                 }
-                            }
                         }
                         return false;
                     }
@@ -107,6 +100,14 @@ public class DrawerActivity extends AppCompatActivity {
         });
 
         if (TinderAPI.getInstance().account != null) {
+            PrimaryDrawerItem home = new PrimaryDrawerItem().withName("Home")
+                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                        @Override
+                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                            TinderAPI.getInstance().goProfileList(DrawerActivity.this);
+                            return true;
+                        }
+                    });
             PrimaryDrawerItem logout = new PrimaryDrawerItem().withName("Logout")
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                         @Override
@@ -123,8 +124,9 @@ public class DrawerActivity extends AppCompatActivity {
                     return true;
                 }
             });
-            drawer.addItem(logout);
+            drawer.addItem(home);
             drawer.addItem(addAccount);
+            drawer.addItem(logout);
         }
 
     }

@@ -1,5 +1,9 @@
 package fr.kayrnt.tindplayer.api;
 
+import android.app.Application;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
@@ -20,8 +24,12 @@ public class APIErrorListener
     }
 
     public void onErrorResponse(VolleyError volleyError) {
+        Log.i("APIErrorListener", "error : "+volleyError.getMessage());
         this.tinderAPI.authInProgress = false;
+        Toast.makeText(this.tinderAPI.sessionManager._context, volleyError.getMessage(), Toast.LENGTH_SHORT)
+                .show();
         this.tinderAPI.sessionManager.logoutUser();
+
     }
 
 }

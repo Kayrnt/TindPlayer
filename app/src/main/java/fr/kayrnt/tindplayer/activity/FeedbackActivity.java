@@ -6,10 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -18,7 +14,7 @@ import android.widget.TextView;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
-import com.gc.materialdesign.views.ButtonRectangle;
+import com.gc.materialdesign.views.ButtonRectangle2;
 
 import fr.kayrnt.tindplayer.R;
 
@@ -51,7 +47,7 @@ public class FeedbackActivity extends DrawerActivity {
             final CheckBox lovooSupport = (CheckBox) findViewById(R.id.lovooSupport_checkbox);
             final CheckBox automatedSwipper = (CheckBox) findViewById(R.id.automatedSwipper_checkbox);
 
-            ButtonRectangle poll1Button = (ButtonRectangle) findViewById(R.id.sendPoll1_button);
+            ButtonRectangle2 poll1Button = (ButtonRectangle2) findViewById(R.id.sendPoll1_button);
 
             poll1Button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -71,7 +67,7 @@ public class FeedbackActivity extends DrawerActivity {
             });
         }
 
-        ButtonRectangle contactButton = (ButtonRectangle) findViewById(R.id.contact_button);
+        ButtonRectangle2 contactButton = (ButtonRectangle2) findViewById(R.id.contact_button);
 
         contactButton.setOnClickListener(new View.OnClickListener() {
             @Override

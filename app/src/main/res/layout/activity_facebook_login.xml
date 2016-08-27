@@ -36,7 +36,7 @@
             android:gravity="center"
             android:text="@string/choose_account"/>
 
-        <com.gc.materialdesign.views.ButtonRectangle
+        <com.gc.materialdesign.views.ButtonRectangle2
             android:id="@+id/add_account_tinder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,9 +52,9 @@
                 android:layout_height="30dp"
                 android:src="@drawable/tinder"
                 />
-        </com.gc.materialdesign.views.ButtonRectangle>
+        </com.gc.materialdesign.views.ButtonRectangle2>
 
-        <com.gc.materialdesign.views.ButtonRectangle
+        <com.gc.materialdesign.views.ButtonRectangle2
             android:id="@+id/add_account_happn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                 android:src="@drawable/happn"
                 />
 
-        </com.gc.materialdesign.views.ButtonRectangle>
+        </com.gc.materialdesign.views.ButtonRectangle2>
 
         <TextView
             android:layout_width="wrap_content"

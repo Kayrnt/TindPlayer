@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 
 public class AdvSupportMapFragment extends SupportMapFragment {
@@ -40,10 +41,14 @@ public class AdvSupportMapFragment extends SupportMapFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // here, as doc say, the map can be initialized, or the service is not available
-        if (listener != null) {
-            listener.onMapCreated(getMap());
-        }
-
+        getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                if (listener != null) {
+                    listener.onMapCreated(googleMap);
+                }
+            }
+        });
     }
 
     /**

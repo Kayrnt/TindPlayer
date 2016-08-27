@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import fr.kayrnt.tindplayer.client.TinderAPI;
@@ -21,7 +22,7 @@ import fr.kayrnt.tindplayer.R;
 
 import fr.kayrnt.tindplayer.adapter.PhotoAdapter;
 
-import com.gc.materialdesign.views.ButtonRectangle;
+import com.gc.materialdesign.views.ButtonRectangle2;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class ProfileDetailFragment extends Fragment {
     DisplayMetrics metrics;
     private Profile profile;
     private String type;
-    ButtonRectangle actionButton;
+    ButtonRectangle2 actionButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -138,7 +139,7 @@ public class ProfileDetailFragment extends Fragment {
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
             viewPager.getLayoutParams().height = metrics.widthPixels;
             viewPager.setAdapter(photoContainer);
-            actionButton = (ButtonRectangle) view.findViewById(R.id.detail_action_button);
+            actionButton = (ButtonRectangle2) view.findViewById(R.id.detail_action_button);
             setupButton();
             circlePageIndicator = ((CirclePageIndicator) view.findViewById(R.id.circle_indicator));
             circlePageIndicator.setViewPager(viewPager);
