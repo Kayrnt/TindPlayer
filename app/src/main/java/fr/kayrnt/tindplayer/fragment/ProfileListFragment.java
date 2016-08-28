@@ -155,12 +155,6 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
             case R.id.action_refresh:
                 this.getMoreProfileAndUpdateUI();
                 return true;
-            case R.id.action_switch_account:
-                this.sessionManager.switchUser();
-                return true;
-            case R.id.action_settings:
-                this.sessionManager.logoutUser();
-                return true;
         }
         return super.onOptionsItemSelected(menuItem);
     }

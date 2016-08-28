@@ -43,13 +43,12 @@ public class DrawerActivity extends AppCompatActivity {
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
-                            for (FacebookAccount account : FacebookAccounts.getAccounts().accounts) {
+                            for (FacebookAccount account : FacebookAccounts.getInstance().accounts) {
                                 if (profile.getIdentifier() == account.getProfileDrawerItem().getIdentifier()) {
                                     TinderAPI.getInstance().account = account;
                                     TinderAPI.getInstance().account.setCurrentAccount();
-                                    TinderAPI.getInstance().getSessionManager().createLoginSession(
-                                            TinderAPI.getInstance().account.getId(),
-                                            TinderAPI.getInstance().account.getToken());
+                                    TinderAPI.getInstance().getSessionManager().saveLoginSession(
+                                            TinderAPI.getInstance().account);
                                     TinderAPI.getInstance().auth(DrawerActivity.this);
                                     DrawerActivity.this.finish();
                                 }
@@ -112,7 +111,8 @@ public class DrawerActivity extends AppCompatActivity {
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                         @Override
                         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                            TinderAPI.getInstance().getSessionManager().logoutUser();
+                            TinderAPI.getInstance().getSessionManager().logoutUser(DrawerActivity
+                                    .this);
                             return true;
                         }
                     });
@@ -120,7 +120,7 @@ public class DrawerActivity extends AppCompatActivity {
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                 @Override
                 public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                    TinderAPI.getInstance().getSessionManager().switchUser();
+                    TinderAPI.getInstance().getSessionManager().switchUser(DrawerActivity.this);
                     return true;
                 }
             });
@@ -142,7 +142,7 @@ public class DrawerActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         headerdrawer.clear();
-        for(FacebookAccount account: FacebookAccounts.getAccounts().accounts){
+        for(FacebookAccount account: FacebookAccounts.getInstance().accounts){
             headerdrawer.addProfiles(account.getProfileDrawerItem());
         }
     }

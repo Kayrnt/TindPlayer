@@ -37,6 +37,7 @@ public class FacebookIdListener implements Response.Listener<JSONObject>, Respon
         try {
 
             final long fbId = jsonObject.getLong("id");
+            final String name = jsonObject.getString("first_name");
 
             final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
 
@@ -46,21 +47,28 @@ public class FacebookIdListener implements Response.Listener<JSONObject>, Respon
 
             // Set an EditText view to get user input
             final EditText input = new EditText(activity);
-            input.setText(activity.getString(R.string.input_default));
+            input.setText(name);
             alertDialogBuilder.setView(input);
 
             alertDialogBuilder.setPositiveButton(activity.getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     String accountName = input.getText().toString();
-                    TinderAPI.getInstance().account = new FacebookAccount();
+                    final FacebookAccounts accounts = FacebookAccounts.getInstance();
+                    boolean accountAlreadyExists = false;
+                    for(FacebookAccount account: accounts.accounts){
+                        if(account.getId() == fbId) {
+                            TinderAPI.getInstance().account = account;
+                            accountAlreadyExists = true;
+                        }
+                    }
+                    if (!accountAlreadyExists) TinderAPI.getInstance().account = new FacebookAccount();
                     TinderAPI.getInstance().account.setId(fbId);
                     TinderAPI.getInstance().account.setToken(token);
                     TinderAPI.getInstance().account.setName(accountName);
                     TinderAPI.getInstance().account.setCurrentAccount();
-                    final FacebookAccounts accounts = FacebookAccounts.getAccounts();
                     accounts.accounts.add(TinderAPI.getInstance().account);
                     accounts.save();
-                    activity.sessionManager.createLoginSession(fbId, token);
+                    activity.sessionManager.saveLoginSession(TinderAPI.getInstance().account);
                     TinderAPI.getInstance().auth(activity);
                     activity.finish();
                 }

@@ -1,10 +1,11 @@
 package fr.kayrnt.tindplayer.model;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import fr.kayrnt.tindplayer.client.TinderAPI;
 
@@ -21,6 +22,8 @@ public class FacebookAccount {
     public String name;
     @Expose
     public String token;
+    @Expose
+    public String profilePicture;
 
     private ProfileDrawerItem profileDrawerItem;
 
@@ -48,6 +51,14 @@ public class FacebookAccount {
         this.token = token;
     }
 
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
     private static FacebookAccount getFromJSON(String json) {
         return gson.fromJson(json, FacebookAccount.class);
     }
@@ -59,6 +70,7 @@ public class FacebookAccount {
     }
 
     public void setCurrentAccount() {
+        Log.i("Facebook account", "Current account set to :" + name);
         TinderAPI.getInstance().mEditor.putString("current_facebook_account", serialize());
         TinderAPI.getInstance().mEditor.apply();
     }
@@ -69,6 +81,7 @@ public class FacebookAccount {
                     .withIdentifier(id)
                     .withName(name)
                     .withNameShown(true);
+            if(profilePicture != null) profileDrawerItem.withIcon(profilePicture);
         }
         return profileDrawerItem;
     }

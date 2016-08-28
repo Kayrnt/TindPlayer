@@ -9,6 +9,7 @@ import android.webkit.CookieManager;
 import fr.kayrnt.tindplayer.activity.FacebookLoginActivity;
 import fr.kayrnt.tindplayer.MyApplication;
 import fr.kayrnt.tindplayer.client.TinderAPI;
+import fr.kayrnt.tindplayer.model.FacebookAccount;
 import fr.kayrnt.tindplayer.model.FacebookAccounts;
 
 import java.util.HashMap;
@@ -19,6 +20,7 @@ public class SessionManager {
     public static final String KEY_FB_TOKEN = "fb_auth_token";
     public static final String KEY_TINDER_ID = "tinder_id";
     public static final String KEY_TINDER_TOKEN = "tinder_auth_token";
+    public static final String KEY_TINDER_PROFILE_PICTURE = "tinder_profile_picture";
     public Context _context;
     SharedPreferences.Editor editor;
     SharedPreferences pref;
@@ -39,6 +41,11 @@ public class SessionManager {
         this.editor.apply();
     }
 
+    public void addProfilePicture(String url) {
+        this.editor.putString(KEY_TINDER_PROFILE_PICTURE, url);
+        this.editor.apply();
+    }
+
     public void authTinder(Activity activity) {
         if (!hasTinderToken()) TinderAPI.getInstance().auth(activity);
     }
@@ -53,10 +60,10 @@ public class SessionManager {
         }
     }
 
-    public void createLoginSession(Long fbId, String fbAuthToken) {
+    public void saveLoginSession(FacebookAccount account) {
         this.editor.putBoolean(IS_LOGIN, true);
-        this.editor.putString(KEY_FB_ID, fbId.toString());
-        this.editor.putString(KEY_FB_TOKEN, fbAuthToken);
+        this.editor.putString(KEY_FB_ID, account.getId().toString());
+        this.editor.putString(KEY_FB_TOKEN, account.getToken());
         this.editor.commit();
     }
 
@@ -66,6 +73,10 @@ public class SessionManager {
 
     public String getTinderToken() {
         return this.pref.getString(KEY_TINDER_TOKEN, null);
+    }
+
+    public String getTinderProfilePicture() {
+        return this.pref.getString(KEY_TINDER_PROFILE_PICTURE, null);
     }
 
     public HashMap<String, String> getUserDetails() {
@@ -84,30 +95,35 @@ public class SessionManager {
         return this.pref.getBoolean(IS_LOGIN, false);
     }
 
-    public void switchUser() {
-        Intent intent = new Intent(this._context, FacebookLoginActivity.class);
-        this._context.startActivity(intent);
+    public void switchUser(Activity activity) {
+        Intent intent = new Intent(activity, FacebookLoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        activity.startActivity(intent);
 
         CookieManager.getInstance().removeAllCookie();
-        FacebookAccounts accounts = FacebookAccounts.getAccounts();
         this.editor.clear();
         this.editor.putString("liked_profiles", TinderAPI.getInstance().likedProfiles.serialize());
         this.editor.apply();
-        accounts.save();
 
         TinderAPI.dispose();
     }
 
-    public void logoutUser() {
-        Intent intent = new Intent(this._context, FacebookLoginActivity.class);
+    public void logoutUser(Activity activity) {
+        Intent intent = new Intent(activity, FacebookLoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.setFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-        this._context.startActivity(intent);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        activity.startActivity(intent);
 
         CookieManager.getInstance().removeAllCookie();
+        FacebookAccounts accounts = FacebookAccounts.getInstance();
         this.editor.clear();
         this.editor.putString("liked_profiles", TinderAPI.getInstance().likedProfiles.serialize());
         this.editor.apply();
+        accounts.accounts.remove(FacebookAccount.getCurrentAccount());
+        accounts.save();
 
         TinderAPI.dispose();
     }

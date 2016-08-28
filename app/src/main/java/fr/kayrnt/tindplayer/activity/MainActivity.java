@@ -57,9 +57,6 @@ public class MainActivity extends DrawerActivity {
 
     public boolean onOptionsItemSelected(MenuItem paramMenuItem) {
         switch (paramMenuItem.getItemId()) {
-            case R.id.action_settings:
-                sessionManager.logoutUser();
-                return true;
             case R.id.action_feedback:
                 startActivity(new Intent(this, FeedbackActivity.class));
                 return true;

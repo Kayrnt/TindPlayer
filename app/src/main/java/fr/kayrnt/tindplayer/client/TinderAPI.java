@@ -31,9 +31,9 @@ public abstract class TinderAPI implements IApi {
 
     public String tinderId;
     public String token;
+    public String profilePicture;
 
     public boolean authInProgress;
-
     public int likeCount;
     public ProfileHistory likedProfiles;
     public ProfileHistory passedProfiles;

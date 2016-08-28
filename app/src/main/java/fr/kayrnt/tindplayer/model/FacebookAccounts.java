@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
 import java.util.LinkedList;
+import java.util.Objects;
 
 import fr.kayrnt.tindplayer.client.TinderAPI;
 
@@ -14,6 +15,8 @@ public class FacebookAccounts {
 
     private static final String ACCOUNTS_KEY = "facebook_accounts";
 
+    static FacebookAccounts instance;
+
     @Expose
     public LinkedList<FacebookAccount> accounts = new LinkedList<FacebookAccount>();
 
@@ -21,7 +24,7 @@ public class FacebookAccounts {
         return accounts.isEmpty();
     }
 
-    public static FacebookAccounts getFromJSON(String json) {
+    private static FacebookAccounts getFromJSON(String json) {
         return FacebookAccount.gson.fromJson(json, FacebookAccounts.class);
     }
 
@@ -30,11 +33,35 @@ public class FacebookAccounts {
     }
 
 
-    public static FacebookAccounts getAccounts() {
-        String str = TinderAPI.getInstance().mPrefs.getString(ACCOUNTS_KEY, null);
-        if(str != null){
-            return getFromJSON(str);
-        } else  return new FacebookAccounts();
+    public static FacebookAccounts getInstance() {
+        if (instance == null) {
+            String str = TinderAPI.getInstance().mPrefs.getString(ACCOUNTS_KEY, null);
+            if (str != null) {
+                instance = getFromJSON(str);
+            } else instance = new FacebookAccounts();
+        }
+        return instance;
+    }
+
+    public void saveWithCurrentAccount() {
+        FacebookAccount currentAccount = FacebookAccount.getCurrentAccount();
+        boolean currentAccountAlreadyExists = false;
+        if (currentAccount != null) {
+        for(FacebookAccount account: accounts) {
+                if(account.getId().equals(currentAccount.getId())){
+                    account.setName(currentAccount.name);
+                    account.setProfilePicture(currentAccount.profilePicture);
+                    currentAccountAlreadyExists = true;
+                }
+            }
+        }
+        if(!currentAccountAlreadyExists) accounts.add(currentAccount);
+        save();
+    }
+
+    public void logoutCurrentAccount() {
+        accounts.remove(FacebookAccount.getCurrentAccount());
+        save();
     }
 
     public void save() {
