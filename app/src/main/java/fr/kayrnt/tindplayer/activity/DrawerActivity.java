@@ -112,7 +112,7 @@ public class DrawerActivity extends AppCompatActivity {
                         @Override
                         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                             TinderAPI.getInstance().getSessionManager().logoutUser(DrawerActivity
-                                    .this);
+                                    .this, false);
                             return true;
                         }
                     });
@@ -120,7 +120,8 @@ public class DrawerActivity extends AppCompatActivity {
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                 @Override
                 public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                    TinderAPI.getInstance().getSessionManager().switchUser(DrawerActivity.this);
+                    TinderAPI.getInstance().getSessionManager().logoutUser(DrawerActivity.this,
+                            true);
                     return true;
                 }
             });

@@ -37,6 +37,7 @@ public class AuthenticationAPIListener implements Response.Listener<AuthAPIModel
             this.tinderAPI.sessionManager.addProfilePicture(this.tinderAPI.profilePicture);
             tinderAPI.account.setProfilePicture(this.tinderAPI.profilePicture);
             tinderAPI.account.setCurrentAccount();
+            FacebookAccounts.getInstance().saveWithCurrentAccount();
         }
         this.tinderAPI.sessionManager.addTinderToken(this.tinderAPI.token);
         this.tinderAPI.sessionManager.addTinderId(this.tinderAPI.tinderId);

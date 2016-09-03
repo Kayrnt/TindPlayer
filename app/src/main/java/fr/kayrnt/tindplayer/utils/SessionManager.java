@@ -95,36 +95,19 @@ public class SessionManager {
         return this.pref.getBoolean(IS_LOGIN, false);
     }
 
-    public void switchUser(Activity activity) {
+    public void logoutUser(Activity activity, boolean onlySwitchAccount) {
+        CookieManager.getInstance().removeAllCookie();
+        this.editor.clear();
+        this.editor.putString("liked_profiles", TinderAPI.getInstance().likedProfiles.serialize());
+        this.editor.apply();
+        if(!onlySwitchAccount) FacebookAccounts.getInstance().logoutCurrentAccount();
+
+        TinderAPI.dispose();
+
         Intent intent = new Intent(activity, FacebookLoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         activity.startActivity(intent);
-
-        CookieManager.getInstance().removeAllCookie();
-        this.editor.clear();
-        this.editor.putString("liked_profiles", TinderAPI.getInstance().likedProfiles.serialize());
-        this.editor.apply();
-
-        TinderAPI.dispose();
-    }
-
-    public void logoutUser(Activity activity) {
-        Intent intent = new Intent(activity, FacebookLoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        activity.startActivity(intent);
-
-        CookieManager.getInstance().removeAllCookie();
-        FacebookAccounts accounts = FacebookAccounts.getInstance();
-        this.editor.clear();
-        this.editor.putString("liked_profiles", TinderAPI.getInstance().likedProfiles.serialize());
-        this.editor.apply();
-        accounts.accounts.remove(FacebookAccount.getCurrentAccount());
-        accounts.save();
-
-        TinderAPI.dispose();
     }
 }

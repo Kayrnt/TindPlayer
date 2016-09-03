@@ -25,8 +25,6 @@ public class FacebookAccount {
     @Expose
     public String profilePicture;
 
-    private ProfileDrawerItem profileDrawerItem;
-
     public Long getId() {
         return id;
     }
@@ -64,7 +62,6 @@ public class FacebookAccount {
     }
 
 
-
     private String serialize() {
         return gson.toJson(this);
     }
@@ -76,13 +73,11 @@ public class FacebookAccount {
     }
 
     public ProfileDrawerItem getProfileDrawerItem() {
-        if(profileDrawerItem == null) {
-            profileDrawerItem = new ProfileDrawerItem()
-                    .withIdentifier(id)
-                    .withName(name)
-                    .withNameShown(true);
-            if(profilePicture != null) profileDrawerItem.withIcon(profilePicture);
-        }
+        ProfileDrawerItem profileDrawerItem = new ProfileDrawerItem()
+                .withIdentifier(id)
+                .withName(name)
+                .withNameShown(true);
+        if (profilePicture != null) profileDrawerItem.withIcon(profilePicture);
         return profileDrawerItem;
     }
 
@@ -90,12 +85,10 @@ public class FacebookAccount {
 
     public static FacebookAccount getCurrentAccount() {
         String str = TinderAPI.getInstance().mPrefs.getString("current_facebook_account", null);
-        if(str != null){
+        if (str != null) {
             return getFromJSON(str);
-        } else  return null;
+        } else return null;
     }
-
-
 
 
 }

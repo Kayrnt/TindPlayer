@@ -3,6 +3,7 @@ package fr.kayrnt.tindplayer.model;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -44,7 +45,7 @@ public class FacebookAccounts {
     }
 
     public void saveWithCurrentAccount() {
-        FacebookAccount currentAccount = FacebookAccount.getCurrentAccount();
+        FacebookAccount currentAccount = TinderAPI.getInstance().account;
         boolean currentAccountAlreadyExists = false;
         if (currentAccount != null) {
         for(FacebookAccount account: accounts) {
@@ -60,7 +61,12 @@ public class FacebookAccounts {
     }
 
     public void logoutCurrentAccount() {
-        accounts.remove(FacebookAccount.getCurrentAccount());
+        FacebookAccount currentAccount = TinderAPI.getInstance().account;
+        FacebookAccount toRemove = null;
+        for(FacebookAccount account: accounts) {
+            if (currentAccount.getId().equals(account.getId())) toRemove = account;
+        }
+        accounts.remove(toRemove);
         save();
     }
 

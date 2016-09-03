@@ -289,7 +289,7 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                alertDialog.hide();
+                if(alertDialog.isShowing()) alertDialog.hide();
             }
         });
     }
