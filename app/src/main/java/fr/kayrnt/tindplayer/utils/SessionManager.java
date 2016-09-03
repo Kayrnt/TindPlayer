@@ -100,14 +100,16 @@ public class SessionManager {
         this.editor.clear();
         this.editor.putString("liked_profiles", TinderAPI.getInstance().likedProfiles.serialize());
         this.editor.apply();
-        if(!onlySwitchAccount) FacebookAccounts.getInstance().logoutCurrentAccount();
+        if (!onlySwitchAccount) FacebookAccounts.getInstance().logoutCurrentAccount();
 
         TinderAPI.dispose();
 
-        Intent intent = new Intent(activity, FacebookLoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        activity.startActivity(intent);
+        if (activity != null) {
+            Intent intent = new Intent(activity, FacebookLoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            activity.startActivity(intent);
+        }
     }
 }
