@@ -1,7 +1,10 @@
 package fr.kayrnt.tindplayer.client;
 
 import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 
+import fr.kayrnt.tindplayer.activity.FriendListActivity;
+import fr.kayrnt.tindplayer.fragment.ProfileDetailFragment;
 import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
 import fr.kayrnt.tindplayer.model.Profile;
 
@@ -17,5 +20,6 @@ public interface IApi {
     public void saveProfileHistory();
     public void getProfiles(ProfileListFragment fragment);
     public void addLikedProfile(Profile profile);
-
+    public void getFriends(FriendListActivity activity);
+    void getProfile(ProfileDetailFragment fragment, String userId);
 }

@@ -107,6 +107,14 @@ public class DrawerActivity extends AppCompatActivity {
                             return true;
                         }
                     });
+            PrimaryDrawerItem friends = new PrimaryDrawerItem().withName("Friends")
+                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                        @Override
+                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                            TinderAPI.getInstance().goFriendList(DrawerActivity.this);
+                            return true;
+                        }
+                    });
             PrimaryDrawerItem logout = new PrimaryDrawerItem().withName("Logout")
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                         @Override
@@ -126,6 +134,7 @@ public class DrawerActivity extends AppCompatActivity {
                 }
             });
             drawer.addItem(home);
+            drawer.addItem(friends);
             drawer.addItem(addAccount);
             drawer.addItem(logout);
         }
@@ -144,7 +153,9 @@ public class DrawerActivity extends AppCompatActivity {
         super.onPostResume();
         headerdrawer.clear();
         for(FacebookAccount account: FacebookAccounts.getInstance().accounts){
-            headerdrawer.addProfiles(account.getProfileDrawerItem());
+            if(account != null) {
+                headerdrawer.addProfiles(account.getProfileDrawerItem());
+            }
         }
     }
 

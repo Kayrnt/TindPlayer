@@ -62,11 +62,14 @@ public class FacebookAccounts {
 
     public void logoutCurrentAccount() {
         FacebookAccount currentAccount = TinderAPI.getInstance().account;
-        FacebookAccount toRemove = null;
-        for(FacebookAccount account: accounts) {
-            if (currentAccount.getId().equals(account.getId())) toRemove = account;
+        if(currentAccount != null) {
+            FacebookAccount toRemove = null;
+            for (FacebookAccount account : accounts) {
+                if (account != null && currentAccount.getId().equals(account.getId()))
+                    toRemove = account;
+            }
+            accounts.remove(toRemove);
         }
-        accounts.remove(toRemove);
         save();
     }
 

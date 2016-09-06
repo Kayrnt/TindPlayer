@@ -9,11 +9,14 @@ import android.util.Log;
 import com.android.volley.Response;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import fr.kayrnt.tindplayer.MyApplication;
+import fr.kayrnt.tindplayer.activity.FriendListActivity;
 import fr.kayrnt.tindplayer.activity.MainActivity;
 import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
 import fr.kayrnt.tindplayer.model.FacebookAccount;
+import fr.kayrnt.tindplayer.model.FriendProfile;
 import fr.kayrnt.tindplayer.model.ProfileHistory;
 import fr.kayrnt.tindplayer.model.PositionAPIModel;
 import fr.kayrnt.tindplayer.model.Profile;
@@ -44,6 +47,7 @@ public abstract class TinderAPI implements IApi {
     public int offerCounter;
     public final LinkedList<Profile> profiles = new LinkedList<>();
     public SessionManager sessionManager;
+    private List<FriendProfile> friendProfiles = new LinkedList<>();
 
     public void goProfileList(Activity activity) {
         Log.i("Tinder API", "go profile activity");
@@ -53,6 +57,16 @@ public abstract class TinderAPI implements IApi {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            activity.startActivity(intent);
+            activity.finish();
+        }
+    }
+
+    public void goFriendList(Activity activity) {
+        Log.i("Tinder API", "go friend activity");
+        authInProgress = false;
+        if (activity != null) {
+            Intent intent = new Intent(activity, FriendListActivity.class);
             activity.startActivity(intent);
             activity.finish();
         }
@@ -212,5 +226,13 @@ public abstract class TinderAPI implements IApi {
             listener, Response.ErrorListener errorListener);
 
     public abstract void updatePosition(Context context, PositionAPIModel position);
+
+    public void setFriendProfiles(List<FriendProfile> friendProfiles) {
+        this.friendProfiles = friendProfiles;
+    }
+
+    public List<FriendProfile> getFriendProfiles() {
+        return friendProfiles;
+    }
 
 }

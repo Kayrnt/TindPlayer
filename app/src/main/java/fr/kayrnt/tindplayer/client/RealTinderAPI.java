@@ -2,6 +2,7 @@ package fr.kayrnt.tindplayer.client;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -14,16 +15,24 @@ import java.util.HashMap;
 import fr.kayrnt.tindplayer.MyApplication;
 import fr.kayrnt.tindplayer.api.APIErrorListener;
 import fr.kayrnt.tindplayer.api.auth.AuthenticationAPIListener;
+import fr.kayrnt.tindplayer.api.detail.ProfileDetailFetchAPIErrorListener;
+import fr.kayrnt.tindplayer.api.detail.ProfileDetailFetchAPIListener;
+import fr.kayrnt.tindplayer.api.friends.FriendListAPIErrorListener;
+import fr.kayrnt.tindplayer.api.friends.FriendListAPIListener;
 import fr.kayrnt.tindplayer.api.like.LikeAPIErrorListener;
 import fr.kayrnt.tindplayer.api.like.LikeAPIListener;
 import fr.kayrnt.tindplayer.api.position.PositionAPIErrorListener;
 import fr.kayrnt.tindplayer.api.position.PositionAPIListener;
 import fr.kayrnt.tindplayer.api.profile.ProfileAPIErrorListener;
 import fr.kayrnt.tindplayer.api.profile.ProfileAPIListener;
+import fr.kayrnt.tindplayer.activity.FriendListActivity;
+import fr.kayrnt.tindplayer.fragment.ProfileDetailFragment;
 import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
 import fr.kayrnt.tindplayer.model.AuthAPIModel;
+import fr.kayrnt.tindplayer.model.FriendRequest;
 import fr.kayrnt.tindplayer.model.PositionAPIModel;
 import fr.kayrnt.tindplayer.model.Profile;
+import fr.kayrnt.tindplayer.model.ProfileRequest;
 import fr.kayrnt.tindplayer.model.RecResponse;
 import fr.kayrnt.tindplayer.utils.GsonRequest;
 
@@ -53,7 +62,7 @@ public class RealTinderAPI extends TinderAPI {
         sessionManager = MyApplication.session();
         String fbId = sessionManager.getUserDetails().get("fb_id");
         String fbAuthToken = sessionManager.getUserDetails().get("fb_auth_token");
-        Log.i("Tinder API", "auth... id : "+fbId+ " token "+fbAuthToken);
+        Log.i("Tinder API", "auth... fb id : "+fbId+ "fb token "+fbAuthToken);
         if (fbAuthToken != null) {
             map.put("facebook_id", fbId);
             map.put("facebook_token", fbAuthToken);
@@ -127,6 +136,32 @@ public class RealTinderAPI extends TinderAPI {
                         authHeaders, null,
                         new PositionAPIListener(context, position),
                         new PositionAPIErrorListener(this, context, position));
+        MyApplication.getInstance().withSessionManager(request);
+    }
+
+    @Override
+    public void getFriends(FriendListActivity activity) {
+        HashMap<String, String> authHeaders = getAuthHeaders(true);
+        GsonRequest<FriendRequest> request =
+                new GsonRequest<FriendRequest>(
+                        Request.Method.GET,
+                        API_URL + "/group/friends",
+                        FriendRequest.class,
+                        authHeaders, null, new FriendListAPIListener(this, activity),
+                        new FriendListAPIErrorListener(this, activity));
+        MyApplication.getInstance().withSessionManager(request);
+    }
+
+    @Override
+    public void getProfile(ProfileDetailFragment fragment, String userId) {
+        HashMap<String, String> authHeaders = getAuthHeaders(true);
+        GsonRequest<ProfileRequest> request =
+                new GsonRequest<ProfileRequest>(
+                        Request.Method.GET,
+                        API_URL + "/user/"+userId,
+                        ProfileRequest.class,
+                        authHeaders, null, new ProfileDetailFetchAPIListener(this, fragment),
+                        new ProfileDetailFetchAPIErrorListener(this, fragment));
         MyApplication.getInstance().withSessionManager(request);
     }
 }

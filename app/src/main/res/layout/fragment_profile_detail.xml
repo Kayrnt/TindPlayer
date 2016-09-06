@@ -53,10 +53,10 @@
                 android:id="@+id/detail_action_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/primary"
-                android:visibility="gone"
                 android:layout_margin="10dp"
-                android:text="placeholder" />
+                android:background="@color/primary"
+                android:text="placeholder"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/about_label" android:layout_width="wrap_content"
@@ -65,7 +65,8 @@
                 android:textAppearance="?android:textAppearanceMedium"/>
 
             <TextView
-                android:id="@+id/bio" android:layout_width="wrap_content"
+                android:id="@+id/bio"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:alpha="@string/light"
                 android:fontFamily="@string/light_font" android:lineSpacingExtra="0.5sp"
                 android:text="@string/bio_ph"/>

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import fr.kayrnt.tindplayer.R;
 import fr.kayrnt.tindplayer.activity.ProfileDetailActivity;
@@ -67,11 +68,16 @@ public abstract class HistoryBasedFragment extends Fragment implements AdapterVi
 
     @Override
     public void onItemClick(AdapterView<?> paramAdapterView, View paramView, int location, long paramLong) {
-        String str = getHistory().profiles.get(location).getId();
-        Intent localIntent = new Intent(this.getActivity(), ProfileDetailActivity.class);
-        localIntent.putExtra("item_id", str);
-        localIntent.putExtra("profile_type", getType());
-        this.startActivity(localIntent);
+        try {
+            String str = getHistory().profiles.get(location).getId();
+            Intent localIntent = new Intent(this.getActivity(), ProfileDetailActivity.class);
+            localIntent.putExtra("item_id", str);
+            localIntent.putExtra("profile_type", getType());
+            this.startActivity(localIntent);
+        } catch(ArrayIndexOutOfBoundsException e) {
+            Toast.makeText(getActivity(), "Corrupted history, please restart the app", Toast
+                    .LENGTH_SHORT).show();
+        }
     }
 
 

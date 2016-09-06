@@ -10,6 +10,8 @@ import com.android.volley.Response;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.kayrnt.tindplayer.activity.FriendListActivity;
+import fr.kayrnt.tindplayer.fragment.ProfileDetailFragment;
 import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
 import fr.kayrnt.tindplayer.model.PositionAPIModel;
 import fr.kayrnt.tindplayer.model.Profile;
@@ -90,6 +92,16 @@ public class MockTinderAPI extends TinderAPI {
                 fragment.updateListUI();
             }
         });
+    }
+
+    @Override
+    public void getFriends(FriendListActivity activity) {
+
+    }
+
+    @Override
+    public void getProfile(ProfileDetailFragment fragment, String userId) {
+
     }
 
     @Override

@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import fr.kayrnt.tindplayer.api.detail.ProfileDetailFetchTask;
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.model.Profile;
 import fr.kayrnt.tindplayer.R;
@@ -25,6 +26,7 @@ import fr.kayrnt.tindplayer.adapter.PhotoAdapter;
 import com.gc.materialdesign.views.ButtonRectangle2;
 import com.viewpagerindicator.CirclePageIndicator;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class ProfileDetailFragment extends Fragment {
@@ -35,6 +37,8 @@ public class ProfileDetailFragment extends Fragment {
     private Profile profile;
     private String type;
     ButtonRectangle2 actionButton;
+    View view;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,14 +63,32 @@ public class ProfileDetailFragment extends Fragment {
 
     private void setupButton() {
         switch (type) {
-            case "liked":
+            case "liked" :
+                setupButtonLiked();
+                return;
+            case "matched" :
                 setupButtonLiked();
                 return;
             case "passed":
                 setupButtonPassed();
                 return;
+            case "api":
+                setupButtonAPI();
+                return;
             default:
                 return;
+        }
+    }
+
+    private void setupButtonAPI() {
+        if(profile != null) {
+        //Check if profile inside the list of liked to either like or pass
+            boolean alreadyLiked = false;
+            for (Profile likedProfile : TinderAPI.getInstance().likedProfiles.profiles) {
+                if (profile.getId().equals(likedProfile.getId())) alreadyLiked = true;
+            }
+            if (alreadyLiked) setupButtonLiked();
+            else setupButtonPassed();
         }
     }
 
@@ -75,9 +97,7 @@ public class ProfileDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 TinderAPI.getInstance().likeProfile(profile, false);
-                synchronized (TinderAPI.getInstance().likedProfiles.profiles) {
-                    TinderAPI.getInstance().likedProfiles.profiles.remove(profile);
-                }
+                TinderAPI.getInstance().removeLikedProfiles(profile);
                 setupButtonPassed();
             }
         });
@@ -98,8 +118,12 @@ public class ProfileDetailFragment extends Fragment {
         actionButton.setVisibility(View.VISIBLE);
     }
 
-    private List<Profile> getProfileList(String listType) {
+    private List<Profile> getProfileList(String listType, String userId) {
         switch (listType) {
+            case "api":
+                new ProfileDetailFetchTask(TinderAPI.getInstance(), this, userId).execute();
+                profile = null;
+                return new LinkedList<>();
             case "profile":
                 return TinderAPI.getInstance().profiles;
             case "liked":
@@ -116,23 +140,29 @@ public class ProfileDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        View view = layoutInflater.inflate(R.layout.fragment_profile_detail, viewGroup,
-                false);
+        view = layoutInflater.inflate(R.layout.fragment_profile_detail, viewGroup, false);
         if (getArguments() != null && getArguments().containsKey("item_id")) {
             String id = getArguments().getString("item_id");
             type = getArguments().getString("profile_type");
-            List<Profile> profiles = getProfileList(type);
+            List<Profile> profiles = getProfileList(type, id);
             for (Profile currentProfile : profiles) {
                 if (id != null && id.equals(currentProfile.getId())) profile = currentProfile;
             }
         }
 
+        updateListUI(profile);
+
+        return view;
+    }
+
+    public void updateListUI(Profile profile) {
+        this.profile = profile;
         if ((profile != null) && (profile.getName() != null))
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(profile.getName());
 
         if (profile != null) {
+            Log.i("Profile details", "profile : " + profile.toString());
             photoContainer = new PhotoAdapter(getChildFragmentManager(), profile.getPhotos());
-            Log.i("PHOTO ADAPTER", photoContainer.toString());
             viewPager = ((ViewPager) view.findViewById(R.id.image_pager));
 
             metrics = new DisplayMetrics();
@@ -157,12 +187,10 @@ public class ProfileDetailFragment extends Fragment {
             ((TextView) view.findViewById(R.id.profile_detail)).setText("");
             ((TextView) view.findViewById(R.id.distance)).setText("");
             ((TextView) view.findViewById(R.id.last_active)).setText("");
-            ((TextView) view.findViewById(R.id.about_label)).setText("Profile not found");
-            view.findViewById(R.id.bio).setVisibility(View.GONE);
+            ((TextView) view.findViewById(R.id.about_label)).setText("Loading profile...");
+            ((TextView) view.findViewById(R.id.bio)).setText("");
         }
 
-        return view;
     }
-
 }
 
