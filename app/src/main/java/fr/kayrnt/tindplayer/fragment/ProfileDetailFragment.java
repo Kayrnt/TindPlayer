@@ -157,40 +157,40 @@ public class ProfileDetailFragment extends Fragment {
 
     public void updateListUI(Profile profile) {
         this.profile = profile;
-        if ((profile != null) && (profile.getName() != null))
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(profile.getName());
+        AppCompatActivity activity = ((AppCompatActivity) getActivity());
+        if(activity != null) {
+            if (profile != null) {
+                Log.i("Profile details", "profile : " + profile.toString());
+                photoContainer = new PhotoAdapter(getChildFragmentManager(), profile.getPhotos());
+                viewPager = ((ViewPager) view.findViewById(R.id.image_pager));
 
-        if (profile != null) {
-            Log.i("Profile details", "profile : " + profile.toString());
-            photoContainer = new PhotoAdapter(getChildFragmentManager(), profile.getPhotos());
-            viewPager = ((ViewPager) view.findViewById(R.id.image_pager));
-
-            metrics = new DisplayMetrics();
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            viewPager.getLayoutParams().height = metrics.widthPixels;
-            viewPager.setAdapter(photoContainer);
-            actionButton = (ButtonRectangle2) view.findViewById(R.id.detail_action_button);
-            setupButton();
-            circlePageIndicator = ((CirclePageIndicator) view.findViewById(R.id.circle_indicator));
-            circlePageIndicator.setViewPager(viewPager);
-            circlePageIndicator.setSnap(true);
-            ((TextView) view.findViewById(R.id.profile_detail)).setText(profile.getNameAndAge());
-            ((TextView) view.findViewById(R.id.distance)).setText(profile.getDistance());
-            ((TextView) view.findViewById(R.id.last_active)).setText(profile.getLastActive());
-            ((TextView) view.findViewById(R.id.about_label)).setText("About " + profile.getName());
-            if (profile.getBio().isEmpty()) {
-                view.findViewById(R.id.about_label).setVisibility(View.GONE);
-                view.findViewById(R.id.bio).setVisibility(View.GONE);
+                metrics = new DisplayMetrics();
+                getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                viewPager.getLayoutParams().height = metrics.widthPixels;
+                viewPager.setAdapter(photoContainer);
+                actionButton = (ButtonRectangle2) view.findViewById(R.id.detail_action_button);
+                setupButton();
+                circlePageIndicator = ((CirclePageIndicator) view.findViewById(R.id.circle_indicator));
+                circlePageIndicator.setViewPager(viewPager);
+                circlePageIndicator.setSnap(true);
+                activity.getSupportActionBar().setTitle(profile.getName());
+                ((TextView) view.findViewById(R.id.profile_detail)).setText(profile.getNameAndAge());
+                ((TextView) view.findViewById(R.id.distance)).setText(profile.getDistance());
+                ((TextView) view.findViewById(R.id.last_active)).setText(profile.getLastActive());
+                ((TextView) view.findViewById(R.id.about_label)).setText("About " + profile.getName());
+                if (profile.getBio().isEmpty()) {
+                    view.findViewById(R.id.about_label).setVisibility(View.GONE);
+                    view.findViewById(R.id.bio).setVisibility(View.GONE);
+                }
+                ((TextView) view.findViewById(R.id.bio)).setText(profile.getBio());
+            } else {
+                ((TextView) view.findViewById(R.id.profile_detail)).setText("");
+                ((TextView) view.findViewById(R.id.distance)).setText("");
+                ((TextView) view.findViewById(R.id.last_active)).setText("");
+                ((TextView) view.findViewById(R.id.about_label)).setText("Loading profile...");
+                ((TextView) view.findViewById(R.id.bio)).setText("");
             }
-            ((TextView) view.findViewById(R.id.bio)).setText(profile.getBio());
-        } else {
-            ((TextView) view.findViewById(R.id.profile_detail)).setText("");
-            ((TextView) view.findViewById(R.id.distance)).setText("");
-            ((TextView) view.findViewById(R.id.last_active)).setText("");
-            ((TextView) view.findViewById(R.id.about_label)).setText("Loading profile...");
-            ((TextView) view.findViewById(R.id.bio)).setText("");
         }
-
     }
 }
 
