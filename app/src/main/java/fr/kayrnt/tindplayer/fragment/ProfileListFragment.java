@@ -62,7 +62,11 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
         likeAllButton.invalidate();
         likeAllButton.setOnClickListener(likeAllListener);
         if ((alertDialog != null) && alertDialog.isShowing())
-            alertDialog.dismiss();
+            try {
+                alertDialog.dismiss();
+            } catch (IllegalArgumentException exception){
+
+            }
     }
 
     public View.OnClickListener stopLikeAllListener = new View.OnClickListener() {
@@ -93,14 +97,14 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
         }
     };
 
-
     public int getCount() {
-        List<Profile> profiles = tinderAPI.profiles;
-        int count = 0;
-        for (Profile profile : profiles) {
-            if (profile.shouldLike) count++;
+        synchronized (tinderAPI.profiles) {
+            int count = 0;
+            for (Profile profile : tinderAPI.profiles) {
+                if (profile.shouldLike) count++;
+            }
+            return count;
         }
-        return count;
     }
 
     public void updateLikeCount() {

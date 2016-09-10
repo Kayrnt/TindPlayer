@@ -63,10 +63,10 @@ public class ProfileDetailFragment extends Fragment {
 
     private void setupButton() {
         switch (type) {
-            case "liked" :
+            case "liked":
                 setupButtonLiked();
                 return;
-            case "matched" :
+            case "matched":
                 setupButtonLiked();
                 return;
             case "passed":
@@ -81,8 +81,8 @@ public class ProfileDetailFragment extends Fragment {
     }
 
     private void setupButtonAPI() {
-        if(profile != null) {
-        //Check if profile inside the list of liked to either like or pass
+        if (profile != null) {
+            //Check if profile inside the list of liked to either like or pass
             boolean alreadyLiked = false;
             for (Profile likedProfile : TinderAPI.getInstance().likedProfiles.profiles) {
                 if (profile.getId().equals(likedProfile.getId())) alreadyLiked = true;
@@ -144,7 +144,12 @@ public class ProfileDetailFragment extends Fragment {
         if (getArguments() != null && getArguments().containsKey("item_id")) {
             String id = getArguments().getString("item_id");
             type = getArguments().getString("profile_type");
-            List<Profile> profiles = getProfileList(type, id);
+            List<Profile> profiles;
+            if (type != null) {
+                profiles = getProfileList(type, id);
+            } else {
+                profiles = TinderAPI.getInstance().profiles;
+            }
             for (Profile currentProfile : profiles) {
                 if (id != null && id.equals(currentProfile.getId())) profile = currentProfile;
             }
@@ -158,7 +163,7 @@ public class ProfileDetailFragment extends Fragment {
     public void updateListUI(Profile profile) {
         this.profile = profile;
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
-        if(activity != null) {
+        if (activity != null) {
             if (profile != null) {
                 Log.i("Profile details", "profile : " + profile.toString());
                 photoContainer = new PhotoAdapter(getChildFragmentManager(), profile.getPhotos());

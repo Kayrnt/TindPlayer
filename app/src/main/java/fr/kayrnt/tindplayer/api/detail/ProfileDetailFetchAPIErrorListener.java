@@ -1,5 +1,6 @@
 package fr.kayrnt.tindplayer.api.detail;
 
+import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class ProfileDetailFetchAPIErrorListener
             this.tinderAPI.auth(null);
             Toast.makeText(fragment.getContext(), "Authenticating...", Toast.LENGTH_SHORT).show();
         }
-        fragment.getActivity().onBackPressed();
+        Activity activity = fragment.getActivity();
+        if(activity != null) activity.onBackPressed();
     }
 }
