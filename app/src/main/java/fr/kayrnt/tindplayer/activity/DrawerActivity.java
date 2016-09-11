@@ -44,7 +44,9 @@ public class DrawerActivity extends AppCompatActivity {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
                             for (FacebookAccount account : FacebookAccounts.getInstance().accounts) {
-                                if (profile.getIdentifier() == account.getProfileDrawerItem().getIdentifier()) {
+                                if (account != null && profile.getIdentifier() == account
+                                        .getProfileDrawerItem()
+                                        .getIdentifier()) {
                                     TinderAPI.getInstance().account = account;
                                     TinderAPI.getInstance().account.setCurrentAccount();
                                     TinderAPI.getInstance().getSessionManager().saveLoginSession(

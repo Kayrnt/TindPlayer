@@ -80,7 +80,7 @@ public class PositionFragment extends MapBasedFragment {
                 return;
             }
 
-            if (provider == null) {
+            if (provider != null) {
 
                 myLocation = locationManager.getLastKnownLocation(provider);
 

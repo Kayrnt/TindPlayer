@@ -96,7 +96,10 @@ public class SessionManager {
     }
 
     public void logoutUser(Activity activity, boolean onlySwitchAccount) {
-        CookieManager.getInstance().removeAllCookie();
+        try {
+            CookieManager.getInstance().removeAllCookie();
+        } catch (UnsatisfiedLinkError ignored){
+        }
         this.editor.clear();
         this.editor.putString("liked_profiles", TinderAPI.getInstance().likedProfiles.serialize());
         this.editor.apply();
