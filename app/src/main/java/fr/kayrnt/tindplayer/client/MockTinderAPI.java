@@ -64,6 +64,11 @@ public class MockTinderAPI extends TinderAPI {
 
     @Override
     public void auth(Activity activity) {
+        auth(activity, 3);
+    }
+
+    @Override
+    public void auth(Activity activity, int retryRemaining) {
         token = "";
         tinderId = "";
         sessionManager.addTinderToken(token);

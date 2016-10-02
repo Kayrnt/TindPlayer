@@ -107,8 +107,12 @@ public class ProfileAllAPIListener
 
     private void toast(final String newMessage) {
         Activity activity = fragment.getActivity();
-        if(!activity.isFinishing()) {
-            Toast.makeText(activity, newMessage, Toast.LENGTH_SHORT).show();
+        try {
+            if (!activity.isFinishing()) {
+                Toast.makeText(activity, newMessage, Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Log.e("ProfileAllAPIListener", "Can't test", e);
         }
     }
 

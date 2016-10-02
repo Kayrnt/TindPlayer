@@ -15,6 +15,7 @@ public interface IApi {
 
     public void requestUsers();
     public void auth(Activity activity);
+    public void auth(Activity activity, int retryRemaining);
     public void setupHistory();
     public void likeProfile(Profile profile, boolean shouldLike);
     public void saveProfileHistory();

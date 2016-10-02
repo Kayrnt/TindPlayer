@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -55,10 +56,12 @@ public class FacebookIdListener implements Response.Listener<JSONObject>, Respon
                     String accountName = input.getText().toString();
                     final FacebookAccounts accounts = FacebookAccounts.getInstance();
                     boolean accountAlreadyExists = false;
-                    for(FacebookAccount account: accounts.accounts){
-                        if(account.getId() == fbId) {
-                            TinderAPI.getInstance().account = account;
-                            accountAlreadyExists = true;
+                    for(FacebookAccount account: accounts.accounts) {
+                        if (account != null) {
+                            if (account.getId() == fbId) {
+                                TinderAPI.getInstance().account = account;
+                                accountAlreadyExists = true;
+                            }
                         }
                     }
                     if (!accountAlreadyExists) TinderAPI.getInstance().account = new FacebookAccount();
@@ -98,6 +101,8 @@ public class FacebookIdListener implements Response.Listener<JSONObject>, Respon
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Log.e("FacebookIdListener", "failed "+ error.getMessage());
+        String errorMessage = error.getMessage();
+        Log.e("FacebookIdListener", "failed "+ errorMessage);
+        Toast.makeText(activity, "Tinder auth error: " + errorMessage, Toast.LENGTH_SHORT).show();
     }
 }

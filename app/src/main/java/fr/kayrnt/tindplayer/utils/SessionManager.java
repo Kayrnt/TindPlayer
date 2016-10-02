@@ -64,7 +64,7 @@ public class SessionManager {
         this.editor.putBoolean(IS_LOGIN, true);
         this.editor.putString(KEY_FB_ID, account.getId().toString());
         this.editor.putString(KEY_FB_TOKEN, account.getToken());
-        this.editor.commit();
+        this.editor.apply();
     }
 
     public String getTinderId() {

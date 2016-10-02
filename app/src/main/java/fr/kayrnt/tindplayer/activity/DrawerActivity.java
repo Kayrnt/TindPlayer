@@ -1,5 +1,6 @@
 package fr.kayrnt.tindplayer.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,10 +44,16 @@ public class DrawerActivity extends AppCompatActivity {
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
-                            for (FacebookAccount account : FacebookAccounts.getInstance().accounts) {
-                                if (account != null && profile.getIdentifier() == account
-                                        .getProfileDrawerItem()
-                                        .getIdentifier()) {
+                        for (FacebookAccount account : FacebookAccounts.getInstance().accounts) {
+                            if (account != null && profile.getIdentifier() == account
+                                    .getProfileDrawerItem()
+                                    .getIdentifier()) {
+                                if (account.getId() == profile.getIdentifier()){
+                                    if(!(DrawerActivity.this instanceof MainActivity)) {
+                                        TinderAPI.getInstance().auth(DrawerActivity.this);
+                                        DrawerActivity.this.finish();
+                                    }
+                                } else {
                                     TinderAPI.getInstance().account = account;
                                     TinderAPI.getInstance().account.setCurrentAccount();
                                     TinderAPI.getInstance().getSessionManager().saveLoginSession(
@@ -54,6 +61,7 @@ public class DrawerActivity extends AppCompatActivity {
                                     TinderAPI.getInstance().auth(DrawerActivity.this);
                                     DrawerActivity.this.finish();
                                 }
+                            }
                         }
                         return false;
                     }
@@ -109,6 +117,17 @@ public class DrawerActivity extends AppCompatActivity {
                             return true;
                         }
                     });
+            PrimaryDrawerItem myProfile = new PrimaryDrawerItem().withName("My profile")
+                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                        @Override
+                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                            Intent intent = new Intent(DrawerActivity.this, ProfileDetailActivity.class);
+                            intent.putExtra("item_id", TinderAPI.getInstance().tinderId);
+                            intent.putExtra("profile_type", "api");
+                            DrawerActivity.this.startActivity(intent);
+                            return true;
+                        }
+                    });
             PrimaryDrawerItem friends = new PrimaryDrawerItem().withName("Friends")
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                         @Override
@@ -128,14 +147,15 @@ public class DrawerActivity extends AppCompatActivity {
                     });
             PrimaryDrawerItem addAccount = new PrimaryDrawerItem().withName("Add account")
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                @Override
-                public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                    TinderAPI.getInstance().getSessionManager().logoutUser(DrawerActivity.this,
-                            true);
-                    return true;
-                }
-            });
+                        @Override
+                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                            TinderAPI.getInstance().getSessionManager().logoutUser(DrawerActivity.this,
+                                    true);
+                            return true;
+                        }
+                    });
             drawer.addItem(home);
+            drawer.addItem(myProfile);
             drawer.addItem(friends);
             drawer.addItem(addAccount);
             drawer.addItem(logout);
@@ -154,8 +174,8 @@ public class DrawerActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         headerdrawer.clear();
-        for(FacebookAccount account: FacebookAccounts.getInstance().accounts){
-            if(account != null) {
+        for (FacebookAccount account : FacebookAccounts.getInstance().accounts) {
+            if (account != null) {
                 headerdrawer.addProfiles(account.getProfileDrawerItem());
             }
         }

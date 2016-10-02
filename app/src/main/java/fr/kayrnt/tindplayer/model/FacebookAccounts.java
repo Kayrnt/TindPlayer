@@ -48,21 +48,25 @@ public class FacebookAccounts {
         FacebookAccount currentAccount = TinderAPI.getInstance().account;
         boolean currentAccountAlreadyExists = false;
         if (currentAccount != null) {
-        for(FacebookAccount account: accounts) {
-                if(account.getId().equals(currentAccount.getId())){
-                    account.setName(currentAccount.name);
-                    account.setProfilePicture(currentAccount.profilePicture);
-                    currentAccountAlreadyExists = true;
+            long currentAccountId = currentAccount.getId();
+            for (FacebookAccount account : accounts) {
+                if (account != null) {
+                    long id = account.getId();
+                    if (currentAccountId == id) {
+                        account.setName(currentAccount.name);
+                        account.setProfilePicture(currentAccount.profilePicture);
+                        currentAccountAlreadyExists = true;
+                    }
                 }
             }
         }
-        if(!currentAccountAlreadyExists) accounts.add(currentAccount);
+        if (!currentAccountAlreadyExists) accounts.add(currentAccount);
         save();
     }
 
     public void logoutCurrentAccount() {
         FacebookAccount currentAccount = TinderAPI.getInstance().account;
-        if(currentAccount != null) {
+        if (currentAccount != null) {
             FacebookAccount toRemove = null;
             for (FacebookAccount account : accounts) {
                 if (account != null && currentAccount.getId().equals(account.getId()))

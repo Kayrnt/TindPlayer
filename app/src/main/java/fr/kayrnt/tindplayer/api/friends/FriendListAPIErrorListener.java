@@ -34,14 +34,14 @@ public class FriendListAPIErrorListener
                 tinderAPI.getFriendProfiles();
             }
             else{
+                String body = new String(networkResponse.data);
                 Toast.makeText(activity, "Did you activate Tinder Social? You have to if you want to " +
-                        "see people here (error " + networkResponse.statusCode + ")", Toast.LENGTH_LONG)
+                        "see people here (error http" + networkResponse.statusCode + " "+ body + ")", Toast.LENGTH_LONG)
                         .show();
 
             }
         }  else{
             Toast.makeText(activity, "No response from Tinder", Toast.LENGTH_LONG).show();
-
         }
         activity.updateListUI();
     }

@@ -81,7 +81,7 @@ public class ProfileDetailFragment extends Fragment {
     }
 
     private void setupButtonAPI() {
-        if (profile != null) {
+        if (profile != null && !profile.getId().equals(TinderAPI.getInstance().tinderId)) {
             //Check if profile inside the list of liked to either like or pass
             boolean alreadyLiked = false;
             for (Profile likedProfile : TinderAPI.getInstance().likedProfiles.profiles) {

@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.model.PositionAPIModel;
+import fr.kayrnt.tindplayer.model.PositionResponseAPIModel;
 
 /**
  * by Kayrnt
@@ -18,7 +19,7 @@ import fr.kayrnt.tindplayer.model.PositionAPIModel;
  */
 
 public class PositionAPIListener
-        implements Response.Listener<JSONObject> {
+        implements Response.Listener<PositionResponseAPIModel> {
 
     private final Context context;
     private final PositionAPIModel position;
@@ -29,9 +30,11 @@ public class PositionAPIListener
     }
 
     @Override
-    public void onResponse(JSONObject jsonObject) {
-        Log.i("Like API Listener", "json : " + jsonObject);
-            Toast.makeText(context, "position successfully updated",
+    public void onResponse(PositionResponseAPIModel jsonObject) {
+        Log.i("Position API Listener", "json : " + jsonObject);
+        String error = jsonObject.getError();
+        String successOrError = error == null? "OK" : error;
+            Toast.makeText(context, "position updated (" + successOrError + ")",
     //        Toast.makeText(context, "updated position : lon " + position.getLon() + " lat : " + position.getLat(),
                     Toast.LENGTH_SHORT).show();
     }

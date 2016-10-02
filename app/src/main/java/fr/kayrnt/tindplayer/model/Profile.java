@@ -18,7 +18,6 @@ public class Profile {
     public boolean liked = false;
 
     @SerializedName("connection_count")
-    @Expose
     private Long connectionCount;
     @SerializedName("common_like_count")
     @Expose
@@ -27,19 +26,15 @@ public class Profile {
     @Expose
     private int commonFriendCount;
     @SerializedName("common_likes")
-    @Expose
     private List<Object> commonLikes = new ArrayList<Object>();
     @SerializedName("common_interests")
-    @Expose
     private List<CommonInterest> commonInterests = new ArrayList<CommonInterest>();
     @SerializedName("common_friends")
-    @Expose
     private List<Object> commonFriends = new ArrayList<Object>();
     @SerializedName("_id")
     @Expose
     private String Id;
     @SerializedName("badges")
-    @Expose
     private List<Object> badges = new ArrayList<Object>();
     @SerializedName("bio")
     @Expose
@@ -60,10 +55,8 @@ public class Profile {
     @Expose
     private List<Photo> photos = new ArrayList<Photo>();
     @SerializedName("jobs")
-    @Expose
     private List<Object> jobs = new ArrayList<Object>();
     @SerializedName("schools")
-    @Expose
     private List<School> schools = new ArrayList<School>();
     @SerializedName("birth_date_info")
     @Expose
@@ -72,7 +65,6 @@ public class Profile {
     @Expose
     private int distanceMi;
     @SerializedName("common_connections")
-    @Expose
     private List<CommonConnection> commonConnections = new ArrayList<CommonConnection>();
 
     public Profile(String id, String name, String birthDate, String url) {

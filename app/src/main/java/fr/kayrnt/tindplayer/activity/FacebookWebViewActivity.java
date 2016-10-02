@@ -7,6 +7,7 @@ import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.JsonObjectRequest;
 
@@ -48,7 +49,7 @@ public class FacebookWebViewActivity extends DrawerActivity {
             if (url.contains("access_token")) {
                 final String token = url.split("access_token=")[1].split("&")[0];
                 Log.i("AUTH_TOKEN", token);
-
+                Toast.makeText(activity, "FB login success... going to auth Tinder", Toast.LENGTH_SHORT).show();
                 //get facebook id
                 String fbUrl = "https://graph.facebook.com/me?access_token=" + token;
                 FacebookIdListener facebookIdListener = new FacebookIdListener(activity, token);

@@ -37,6 +37,13 @@ public class PositionFragment extends MapBasedFragment {
     private static final int MAP_ZOOM = 17;
     private Marker marker;
 
+    private static final String[] LOCATION_PERMS = {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+    };
+
+    private static final int PERMISSION_REQUEST = 1337;
+
     public PositionFragment() {
     }
 
@@ -47,82 +54,102 @@ public class PositionFragment extends MapBasedFragment {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST) {
+            if (permissions.length == 2 &&
+                    permissions[0] == Manifest.permission.ACCESS_FINE_LOCATION &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    permissions[1] == Manifest.permission.ACCESS_COARSE_LOCATION &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                setMyPosition();
+            } else {
+                Activity activity = getActivity();
+                if (!activity.isFinishing()) {
+                    Toast.makeText(activity, "We can't find your position to mark you", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+    @Override
     public void onMapCreated(GoogleMap googleMap) {
 //            LayoutInflater inflater = getActivity().getLayoutInflater();
         if (googleMap != null) {
             map = googleMap;
-            // Get LocationManager object from System Service LOCATION_SERVICE
-            LocationManager locationManager = (LocationManager) getActivity().getSystemService
-                    (Context.LOCATION_SERVICE);
-
-            // Create a criteria object to retrieve provider
-            Criteria criteria = new Criteria();
-
-            // Get the name of the best provider
-            String provider = locationManager.getBestProvider(criteria, true);
 
             //set map type
             map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
-            // Get Current Location
-            Location myLocation = null;
-
             if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission
-                    .ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission
-                            .ACCESS_COARSE_LOCATION) !=
-                            PackageManager.PERMISSION_GRANTED) {
-                Activity activity = getActivity();
-                if (!activity.isFinishing()) {
-                    Toast.makeText(activity, "We can't find your position to mark you", Toast
-                            .LENGTH_SHORT).show();
-                }
+                    .ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(LOCATION_PERMS, PERMISSION_REQUEST);
+            } else setMyPosition();
+
+
+        }
+    }
+
+    public void setMyPosition() {
+
+        // Get LocationManager object from System Service LOCATION_SERVICE
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService
+                (Context.LOCATION_SERVICE);
+
+        // Create a criteria object to retrieve provider
+        Criteria criteria = new Criteria();
+
+        // Get the name of the best provider
+        String provider = locationManager.getBestProvider(criteria, true);
+        // Get Current Location
+        Location myLocation = null;
+
+        if (provider != null) {
+
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
 
-            if (provider != null) {
+            myLocation = locationManager.getLastKnownLocation(provider);
 
-                myLocation = locationManager.getLastKnownLocation(provider);
+            if (myLocation != null) {
 
-                if (myLocation != null) {
+                // Get latitude of the current location
+                double latitude = myLocation.getLatitude();
 
-                    // Get latitude of the current location
-                    double latitude = myLocation.getLatitude();
+                // Get longitude of the current location
+                double longitude = myLocation.getLongitude();
 
-                    // Get longitude of the current location
-                    double longitude = myLocation.getLongitude();
+                // Create a LatLng object for the current location
+                LatLng latLng = new LatLng(latitude, longitude);
 
-                    // Create a LatLng object for the current location
-                    LatLng latLng = new LatLng(latitude, longitude);
+                // Show the current location in Google Map and Zoom in the Google Map
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, MAP_ZOOM));
 
-                    // Show the current location in Google Map and Zoom in the Google Map
-                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, MAP_ZOOM));
+                MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(latitude,
+                        longitude)).title("Your actual position !").
+                        icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_maps_indicator_current_position));
 
-                    MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(latitude,
-                            longitude)).title("Your actual position !").
-                            icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_maps_indicator_current_position));
+                map.addMarker(markerOptions);
 
-                    map.addMarker(markerOptions);
+                map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
 
-                    map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                        @Override
-                        public void onMapClick(LatLng latLng) {
+                        if (marker == null) {
+                            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title
+                                    ("Tinder thinks you're  here !");
 
-                            if (marker == null) {
-                                MarkerOptions markerOptions = new MarkerOptions().position(latLng).title
-                                        ("Tinder thinks you're  here !");
+                            marker = map.addMarker(markerOptions);
+                        } else marker.setPosition(latLng);
 
-                                marker = map.addMarker(markerOptions);
-                            } else marker.setPosition(latLng);
-
-                            marker.setPosition(latLng);
-                            PositionAPIModel positionAPIModel = new PositionAPIModel();
-                            positionAPIModel.setLat(latLng.latitude);
-                            positionAPIModel.setLon(latLng.longitude);
-                            TinderAPI.getInstance().updatePosition(getActivity(), positionAPIModel);
-                        }
-                    });
-                }
+                        marker.setPosition(latLng);
+                        PositionAPIModel positionAPIModel = new PositionAPIModel();
+                        positionAPIModel.setLat(latLng.latitude);
+                        positionAPIModel.setLon(latLng.longitude);
+                        TinderAPI.getInstance().updatePosition(getActivity(), positionAPIModel);
+                    }
+                });
             }
         }
     }

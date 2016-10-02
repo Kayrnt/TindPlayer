@@ -2,18 +2,19 @@ package fr.kayrnt.tindplayer.client;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
 import fr.kayrnt.tindplayer.MyApplication;
-import fr.kayrnt.tindplayer.api.APIErrorListener;
+import fr.kayrnt.tindplayer.api.auth.APIErrorListener;
 import fr.kayrnt.tindplayer.api.auth.AuthenticationAPIListener;
 import fr.kayrnt.tindplayer.api.detail.ProfileDetailFetchAPIErrorListener;
 import fr.kayrnt.tindplayer.api.detail.ProfileDetailFetchAPIListener;
@@ -31,6 +32,7 @@ import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
 import fr.kayrnt.tindplayer.model.AuthAPIModel;
 import fr.kayrnt.tindplayer.model.FriendRequest;
 import fr.kayrnt.tindplayer.model.PositionAPIModel;
+import fr.kayrnt.tindplayer.model.PositionResponseAPIModel;
 import fr.kayrnt.tindplayer.model.Profile;
 import fr.kayrnt.tindplayer.model.ProfileRequest;
 import fr.kayrnt.tindplayer.model.RecResponse;
@@ -57,6 +59,10 @@ public class RealTinderAPI extends TinderAPI {
     }
 
     public void auth(Activity activity) {
+        auth(activity, 3);
+    }
+
+    public void auth(Activity activity, int retryRemaining) {
         String url = API_URL + "/auth";
         HashMap<String, String> map = new HashMap<String, String>();
         sessionManager = MyApplication.session();
@@ -71,7 +77,7 @@ public class RealTinderAPI extends TinderAPI {
                     new GsonRequest<AuthAPIModel>(Request.Method.POST, url,
                             AuthAPIModel.class, getAuthHeaders(false), body,
                             new AuthenticationAPIListener(this, activity),
-                            new APIErrorListener(this, activity));
+                            new APIErrorListener(this, activity, 3));
             MyApplication.getInstance().withSessionManager(request);
         }
     }
@@ -127,16 +133,25 @@ public class RealTinderAPI extends TinderAPI {
 
     @Override
     public void updatePosition(Context context, PositionAPIModel position) {
+        try {
         HashMap<String, String> authHeaders = getAuthHeaders(true);
-        GsonRequest<JSONObject> request =
-                new GsonRequest<JSONObject>(
-                        Request.Method.GET,
+        String body =
+            new JSONObject()
+                    .put("lon", position.getLon())
+                    .put("lat", position.getLat())
+                    .toString();
+        GsonRequest<PositionResponseAPIModel> request =
+                new GsonRequest<PositionResponseAPIModel>(
+                        Request.Method.POST,
                         API_URL + "/user/ping",
-                        JSONObject.class,
-                        authHeaders, null,
+                        PositionResponseAPIModel.class,
+                        authHeaders, body,
                         new PositionAPIListener(context, position),
                         new PositionAPIErrorListener(this, context, position));
         MyApplication.getInstance().withSessionManager(request);
+        } catch (JSONException e) {
+            Toast.makeText(context, "Unable to determine position to send", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
