@@ -24,12 +24,12 @@ public class ProfileAllAPIListener
     private ProfileListFragment fragment;
     private Random random = new Random();
 
-    public ProfileAllAPIListener(TinderAPI tinderAPI, final ProfileListFragment fragment) {
+    ProfileAllAPIListener(TinderAPI tinderAPI, final ProfileListFragment fragment) {
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
     }
 
-    public void likeAll() {
+    void likeAll() {
         while (!tinderAPI.profiles.isEmpty()) {
             synchronized (tinderAPI.profiles) {
                 Profile profile = tinderAPI.profiles.poll();
@@ -69,7 +69,7 @@ public class ProfileAllAPIListener
         }
     }
 
-    public void stop() {
+    private void stop() {
         fragment.getMoreProfileAndUpdateUI();
         fragment.updateListUI();
     }
@@ -95,13 +95,16 @@ public class ProfileAllAPIListener
             toast("We exhausted the target pool ! Try again later :)");
             Log.i("ProfileAll", "We exhausted the target pool ! Try again later :)");
             fragment.stopLikeAllListener.onClick(null);
-            fragment.getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    fragment.updateListUI();
-                }
-            });
-            fragment.disableLikeAllAlertDialog();
+            Activity activity = fragment.getActivity();
+            if (activity != null) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        fragment.updateListUI();
+                    }
+                });
+                fragment.disableLikeAllAlertDialog();
+            }
         }
     }
 

@@ -18,8 +18,8 @@ android {
         applicationId "fr.kayrnt.tindplayer"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 39
-        versionName "1.0.5f"
+        versionCode 41
+        versionName "1.0.5h"
 
         // Enabling multidex support.
         multiDexEnabled true
@@ -79,6 +79,7 @@ dependencies {
     compile('com.mikepenz:materialdrawer:5.3.4@aar') {
         transitive = true
     }
+    compile 'uk.co.samuelwall:material-tap-target-prompt:1.4.1'
     compile 'com.melnykov:floatingactionbutton:1.1.0'
     compile 'com.mcxiaoke.volley:library:1.0.19@aar'
     compile 'de.hdodenhof:circleimageview:1.2.0'

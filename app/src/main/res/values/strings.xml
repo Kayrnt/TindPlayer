@@ -29,6 +29,7 @@
     <string name="dialog_cancel">Cancel</string>
     <string name="title_facebook_connect">Connect to your facebook account</string>
     <string name="title_profile_detail">Profile Detail</string>
+    <string name="help">Help</string>
 
     <string name="light">.72</string>
     <string name="light_font">sans-serif-light</string>

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,14 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 
 import java.text.NumberFormat;
-import java.util.List;
 import java.util.Random;
 
 import fr.kayrnt.tindplayer.MyApplication;
@@ -41,6 +36,7 @@ import fr.kayrnt.tindplayer.api.profile.ProfileListUpdateTask;
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.model.Profile;
 import fr.kayrnt.tindplayer.utils.SessionManager;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     public ProfileAdapter listAdapter;
@@ -55,18 +51,30 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
     LinearLayout profilesLayout;
     TinderAPI tinderAPI = TinderAPI.getInstance();
     public boolean stopLikeAll = false;
+    View layout;
+
+    final String KEY_SHOW_TUTORIAL_LIKE_ALL_BUTTON = "tutorial_like_all_button";
+    final String KEY_SHOW_TUTORIAL_LIKE_BUTTON = "tutorial_like_button";
 
     public void stopLikeAll() {
         stopLikeAll = true;
         likeAllButton.setColorNormalResId(R.color.primary);
         likeAllButton.invalidate();
         likeAllButton.setOnClickListener(likeAllListener);
+        dismissProgressDialog();
+    }
+
+    public void dismissProgressDialog(){
         if ((alertDialog != null) && alertDialog.isShowing())
             try {
                 alertDialog.dismiss();
-            } catch (IllegalArgumentException exception){
+            } catch (IllegalArgumentException ignored){}
+    }
 
-            }
+    @Override
+    public void onDestroy() {
+        dismissProgressDialog();
+        super.onDestroy();
     }
 
     public View.OnClickListener stopLikeAllListener = new View.OnClickListener() {
@@ -159,12 +167,18 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
             case R.id.action_refresh:
                 this.getMoreProfileAndUpdateUI();
                 return true;
+            case R.id.action_help:
+                TinderAPI.getInstance().mEditor.putBoolean(KEY_SHOW_TUTORIAL_LIKE_ALL_BUTTON, true);
+                TinderAPI.getInstance().mEditor.putBoolean(KEY_SHOW_TUTORIAL_LIKE_BUTTON, true);
+                TinderAPI.getInstance().mEditor.apply();
+                if(layout != null) setupTutorial(layout);
+                return true;
         }
         return super.onOptionsItemSelected(menuItem);
     }
 
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
-        View layout = layoutInflater.inflate(R.layout.fragment_profile_list, null);
+        layout = layoutInflater.inflate(R.layout.fragment_profile_list, null);
         this.profileGridView = ((GridView) layout.findViewById(R.id.gridView));
         this.swipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout);
         this.swipeRefreshLayout.setOnRefreshListener(this);
@@ -191,6 +205,8 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
         likeAllButton.setOnClickListener(likeAllListener);
 
         this.profilesLayout = ((LinearLayout) layout.findViewById(R.id.profile_fragment));
+
+        setupTutorial(layout);
 
         return layout;
     }
@@ -296,6 +312,53 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
                 if(alertDialog.isShowing()) alertDialog.hide();
             }
         });
+    }
+
+    // Show tutorial for buttons
+
+    public void setupTutorial(View layout) {
+
+        if(TinderAPI.getInstance().mPrefs.getBoolean(KEY_SHOW_TUTORIAL_LIKE_ALL_BUTTON, true)) {
+            new MaterialTapTargetPrompt.Builder(getActivity())
+                    .setTarget(layout.findViewById(R.id.like_all_button))
+                    .setPrimaryText("Press to like until you run out of likes!")
+                    .setSecondaryText("It takes some times and runs until you're out of recommendations!")
+                    .setBackgroundColourFromRes(R.color.colorPrimary)
+                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                        @Override
+                        public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
+                            TinderAPI.getInstance().mEditor.putBoolean(KEY_SHOW_TUTORIAL_LIKE_ALL_BUTTON, false);
+                            TinderAPI.getInstance().mEditor.apply();
+                        }
+
+                        @Override
+                        public void onHidePromptComplete() {
+
+                        }
+                    })
+                    .show();
+        }
+
+        if(TinderAPI.getInstance().mPrefs.getBoolean(KEY_SHOW_TUTORIAL_LIKE_BUTTON, true)) {
+            new MaterialTapTargetPrompt.Builder(getActivity())
+                    .setTarget(layout.findViewById(R.id.like_button))
+                    .setPrimaryText("Press to like all visible profiles!")
+                    .setSecondaryText("Then it refreshes the grid until you run out of recommendations!")
+                    .setBackgroundColourFromRes(R.color.colorPrimary)
+                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                        @Override
+                        public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
+                            TinderAPI.getInstance().mEditor.putBoolean(KEY_SHOW_TUTORIAL_LIKE_BUTTON, false);
+                            TinderAPI.getInstance().mEditor.apply();
+                        }
+
+                        @Override
+                        public void onHidePromptComplete() {
+
+                        }
+                    })
+                    .show();
+        }
     }
 
 }
