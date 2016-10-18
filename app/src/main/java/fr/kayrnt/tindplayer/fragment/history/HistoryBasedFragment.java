@@ -3,6 +3,7 @@ package fr.kayrnt.tindplayer.fragment.history;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,9 +20,10 @@ import fr.kayrnt.tindplayer.adapter.ProfileAdapter;
 import fr.kayrnt.tindplayer.model.ProfileHistory;
 
 public abstract class HistoryBasedFragment extends Fragment implements AdapterView
-        .OnItemClickListener {
+        .OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
     ProfileAdapter profileAdapter;
     GridView gridView;
+    public SwipeRefreshLayout swipeRefreshLayout;
 
     abstract String getType();
 
@@ -33,10 +35,16 @@ public abstract class HistoryBasedFragment extends Fragment implements AdapterVi
         this.setHasOptionsMenu(true);
     }
 
+    @Override
+    public void onRefresh() {
+        refreshItems();
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
     protected abstract void refreshItems();
 
-    protected void update() {
-        refreshItems();
+    public void update() {
+        onRefresh();
     }
 
     public void onResume() {
@@ -63,6 +71,8 @@ public abstract class HistoryBasedFragment extends Fragment implements AdapterVi
         profileAdapter = new ProfileAdapter(getActivity(), getHistory().profiles, true);
         this.gridView.setAdapter(profileAdapter);
         this.gridView.setOnItemClickListener(this);
+        this.swipeRefreshLayout = (SwipeRefreshLayout) localView.findViewById(R.id.swipeRefreshLayout);
+        this.swipeRefreshLayout.setOnRefreshListener(this);
         return localView;
     }
 

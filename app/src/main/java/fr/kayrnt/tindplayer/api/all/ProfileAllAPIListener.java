@@ -57,6 +57,7 @@ public class ProfileAllAPIListener
 
         if (!fragment.stopLikeAll) new ProfileLikeAllTask(tinderAPI, fragment).execute();
         else {
+            tinderAPI.saveProfileHistory();
             Activity activity = fragment.getActivity();
             if (activity != null) {
                 activity.runOnUiThread(new Runnable() {

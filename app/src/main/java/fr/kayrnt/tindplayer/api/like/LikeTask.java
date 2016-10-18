@@ -59,6 +59,8 @@ public class LikeTask extends AsyncTask<Void, Void, Void> {
             }
         }
 
+        tinderAPI.saveProfileHistory();
+
         return null;
     }
 

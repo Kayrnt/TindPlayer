@@ -1,32 +1,44 @@
 package fr.kayrnt.tindplayer.model;
 
-import com.google.gson.Gson;
+import android.content.SharedPreferences;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import fr.kayrnt.tindplayer.client.TinderAPI;
+
 public class ProfileHistory {
     public final LinkedList<Profile> profiles = new LinkedList<Profile>();
 
     public static ProfileHistory create(String json) {
-        return new Gson().fromJson(json, ProfileHistory.class);
+        return TinderAPI.getInstance().gson.fromJson(json, ProfileHistory.class);
     }
 
-    public String serialize() {
+    public void serialize(String preferenceKey) {
         try {
             synchronized (profiles) {
-                ProfileHistory toSave = new ProfileHistory();
-                int count = 0;
-                Iterator<Profile> profileIterator = profiles.iterator();
-                while(profileIterator.hasNext() && !(count >= 300)){
-                    toSave.profiles.add(profileIterator.next());
-                    count++;
+                TinderAPI tinderAPI = TinderAPI.getInstance();
+                final int slices = Math.min(profiles.size() / 50, 10);
+                final Iterator<Profile> profileIterator = profiles.iterator();
+                for (int i = 0; i <= slices; i++) {
+                    int count = 0;
+                    final ProfileHistory toSave = new ProfileHistory();
+                    final SharedPreferences.Editor edit = tinderAPI.mPrefs.edit();
+                    while (profileIterator.hasNext() && count <= 50) {
+                        toSave.profiles.add(profileIterator.next());
+                        count++;
+                    }
+                    final String sliceJson = tinderAPI.gson.toJson(toSave);
+                    edit.putString(preferenceKey + "_" + i, sliceJson);
+                    edit.apply();
                 }
-                return new Gson().toJson(this);
+                final SharedPreferences.Editor edit = tinderAPI.mPrefs.edit();
+                edit.putInt(preferenceKey + "_slices", slices);
+                edit.apply();
             }
         } catch (ConcurrentModificationException e) {
-            return serialize();
+            serialize(preferenceKey);
         }
     }
 }

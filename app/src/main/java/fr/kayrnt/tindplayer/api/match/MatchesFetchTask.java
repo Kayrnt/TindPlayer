@@ -4,35 +4,28 @@ import android.os.AsyncTask;
 
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.fragment.ProfileDetailFragment;
+import fr.kayrnt.tindplayer.fragment.history.MatchedFragment;
 
 
 /**
  * Created by Kayrnt on 07/12/14.
  */
-public class ProfileDetailFetchTask extends AsyncTask<Void, Void, Void> {
+public class MatchesFetchTask extends AsyncTask<Void, Void, Void> {
 
     private TinderAPI tinderAPI;
-    private ProfileDetailFragment fragment;
-    private final String userId;
+    private MatchedFragment fragment;
 
-    public ProfileDetailFetchTask(TinderAPI tinderAPI, ProfileDetailFragment fragment, String
-            userId) {
+    public MatchesFetchTask(TinderAPI tinderAPI, MatchedFragment fragment) {
         super();
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
-        this.userId = userId;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
     }
 
     @Override
     protected Void doInBackground(Void... params) {
 
         if (tinderAPI.sessionManager.getTinderToken() != null)
-            tinderAPI.getProfile(fragment, userId);
+            tinderAPI.getMatches(fragment);
 
         return null;
     }

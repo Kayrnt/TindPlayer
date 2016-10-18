@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.android.volley.Response;
+import com.google.gson.Gson;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -48,6 +49,7 @@ public abstract class TinderAPI implements IApi {
     public final LinkedList<Profile> profiles = new LinkedList<>();
     public SessionManager sessionManager;
     private List<FriendProfile> friendProfiles = new LinkedList<>();
+    public Gson gson = new Gson();
 
     public void goProfileList(Activity activity) {
         Log.i("Tinder API", "go profile activity");
@@ -118,15 +120,14 @@ public abstract class TinderAPI implements IApi {
 
     public void saveProfileHistory() {
         synchronized (likedProfiles.profiles) {
-            mEditor.putString("liked_profiles", likedProfiles.serialize());
+            likedProfiles.serialize("liked_profiles");
         }
         synchronized (passedProfiles.profiles) {
-            mEditor.putString("passed_profiles", passedProfiles.serialize());
+            passedProfiles.serialize("passed_profiles");
         }
         synchronized (matchedProfiles.profiles) {
-            mEditor.putString("matched_profiles", matchedProfiles.serialize());
+            matchedProfiles.serialize("matched_profiles");
         }
-        mEditor.apply();
     }
 
     public static void dispose() {
@@ -182,28 +183,47 @@ public abstract class TinderAPI implements IApi {
         getMatchedProfiles();
     }
 
-    public void getLikedProfiles() {
-        String str = mPrefs.getString("liked_profiles", null);
+    private ProfileHistory getProfileListV1(String preferenceKey) {
+        String str = mPrefs.getString(preferenceKey, null);
         if (str != null) {
-            likedProfiles = ProfileHistory.create(str);
+            return ProfileHistory.create(str);
         }
-        else likedProfiles = new ProfileHistory();
+        else return new ProfileHistory();
+    }
+
+    private ProfileHistory getProfileListV2(String preferenceKey) {
+        int slices = mPrefs.getInt(preferenceKey + "_slices", -1);
+        if(slices > 0) {
+            ProfileHistory history = new ProfileHistory();
+            for (int i = 0; i < slices; i++) {
+                String str = mPrefs.getString(preferenceKey + "_" + i, null);
+                if (str != null) {
+                    history.profiles.addAll(ProfileHistory.create(str).profiles);
+                }
+            }
+            return history;
+        }
+        return null;
+    }
+
+    private ProfileHistory getProfileList(String preferenceKey) {
+        ProfileHistory history = getProfileListV2(preferenceKey);
+        if(history == null) {
+            history = getProfileListV1(preferenceKey);
+        }
+        return history;
+    }
+
+    public void getLikedProfiles() {
+        likedProfiles = getProfileList("liked_profiles");
     }
 
     public void getPassedProfiles() {
-        String str = mPrefs.getString("passed_profiles", null);
-        if (str != null) {
-            passedProfiles = ProfileHistory.create(str);
-        }
-        else passedProfiles = new ProfileHistory();
+        passedProfiles = getProfileList("passed_profiles");
     }
 
     public void getMatchedProfiles() {
-        String str = mPrefs.getString("matched_profiles", null);
-        if (str != null) {
-            matchedProfiles = ProfileHistory.create(str);
-        }
-        else matchedProfiles = new ProfileHistory();
+        matchedProfiles = getProfileList("matched_profiles");
     }
 
     public void initializeProperties() {

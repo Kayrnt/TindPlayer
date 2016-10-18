@@ -132,7 +132,7 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
         listAdapter.updateWith(tinderAPI.profiles);
         updateLikeCount();
         likeButton.setClickable(true);
-        tinderAPI.saveProfileHistory();
+//        tinderAPI.saveProfileHistory();
         saveLikeCount();
         swipeRefreshLayout.setRefreshing(false);
     }

@@ -1,11 +1,8 @@
 package fr.kayrnt.tindplayer.activity;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -16,8 +13,7 @@ import java.util.List;
 import fr.kayrnt.tindplayer.MyApplication;
 import fr.kayrnt.tindplayer.R;
 import fr.kayrnt.tindplayer.adapter.MainPageAdapter;
-import fr.kayrnt.tindplayer.model.FacebookAccount;
-import fr.kayrnt.tindplayer.model.FacebookAccounts;
+import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.utils.SessionManager;
 
 public class MainActivity extends DrawerActivity {
@@ -53,6 +49,12 @@ public class MainActivity extends DrawerActivity {
         sessionManager = MyApplication.session();
         sessionManager.checkLogin(this);
         if (sessionManager.isLoggedIn()) sessionManager.authTinder(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        TinderAPI.getInstance().saveProfileHistory();
     }
 
     public boolean onOptionsItemSelected(MenuItem paramMenuItem) {

@@ -28,14 +28,14 @@ public class ProfileDetailFetchAPIErrorListener
     public void onErrorResponse(VolleyError error) {
         Log.i("Profile API Listener", "Error : " + error.getMessage());
         NetworkResponse networkResponse = error.networkResponse;
+        Activity activity = fragment.getActivity();
         if ((networkResponse != null) &&
                 (networkResponse.statusCode == 401) &&
                 (!this.tinderAPI.authInProgress)) {
             this.tinderAPI.authInProgress = true;
             this.tinderAPI.auth(null);
-            Toast.makeText(fragment.getContext(), "Authenticating...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Authenticating...", Toast.LENGTH_SHORT).show();
         }
-        Activity activity = fragment.getActivity();
         if(activity != null) activity.onBackPressed();
     }
 }

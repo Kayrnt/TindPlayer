@@ -22,6 +22,8 @@ import fr.kayrnt.tindplayer.api.friends.FriendListAPIErrorListener;
 import fr.kayrnt.tindplayer.api.friends.FriendListAPIListener;
 import fr.kayrnt.tindplayer.api.like.LikeAPIErrorListener;
 import fr.kayrnt.tindplayer.api.like.LikeAPIListener;
+import fr.kayrnt.tindplayer.api.match.MatchesFetchAPIListener;
+import fr.kayrnt.tindplayer.api.match.MatchesFetchAPIErrorListener;
 import fr.kayrnt.tindplayer.api.position.PositionAPIErrorListener;
 import fr.kayrnt.tindplayer.api.position.PositionAPIListener;
 import fr.kayrnt.tindplayer.api.profile.ProfileAPIErrorListener;
@@ -29,8 +31,10 @@ import fr.kayrnt.tindplayer.api.profile.ProfileAPIListener;
 import fr.kayrnt.tindplayer.activity.FriendListActivity;
 import fr.kayrnt.tindplayer.fragment.ProfileDetailFragment;
 import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
+import fr.kayrnt.tindplayer.fragment.history.MatchedFragment;
 import fr.kayrnt.tindplayer.model.AuthAPIModel;
 import fr.kayrnt.tindplayer.model.FriendRequest;
+import fr.kayrnt.tindplayer.model.MatchesRequest;
 import fr.kayrnt.tindplayer.model.PositionAPIModel;
 import fr.kayrnt.tindplayer.model.PositionResponseAPIModel;
 import fr.kayrnt.tindplayer.model.Profile;
@@ -173,10 +177,24 @@ public class RealTinderAPI extends TinderAPI {
         GsonRequest<ProfileRequest> request =
                 new GsonRequest<ProfileRequest>(
                         Request.Method.GET,
-                        API_URL + "/user/"+userId,
+                        API_URL + "/user/" + userId,
                         ProfileRequest.class,
                         authHeaders, null, new ProfileDetailFetchAPIListener(this, fragment),
                         new ProfileDetailFetchAPIErrorListener(this, fragment));
         MyApplication.getInstance().withSessionManager(request);
     }
+
+    @Override
+    public void getMatches(MatchedFragment fragment) {
+        HashMap<String, String> authHeaders = getAuthHeaders(true);
+        GsonRequest<MatchesRequest> request =
+                new GsonRequest<MatchesRequest>(
+                        Request.Method.POST,
+                        API_URL + "/updates",
+                        MatchesRequest.class,
+                        authHeaders, null, new MatchesFetchAPIListener(this, fragment),
+                        new MatchesFetchAPIErrorListener(this, fragment));
+        MyApplication.getInstance().withSessionManager(request);
+    }
+
 }

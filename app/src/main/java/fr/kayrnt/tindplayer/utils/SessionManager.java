@@ -100,9 +100,7 @@ public class SessionManager {
             CookieManager.getInstance().removeAllCookie();
         } catch (UnsatisfiedLinkError ignored){
         }
-        this.editor.clear();
-        this.editor.putString("liked_profiles", TinderAPI.getInstance().likedProfiles.serialize());
-        this.editor.apply();
+        TinderAPI.getInstance().saveProfileHistory();
         if (!onlySwitchAccount) FacebookAccounts.getInstance().logoutCurrentAccount();
 
         TinderAPI.dispose();

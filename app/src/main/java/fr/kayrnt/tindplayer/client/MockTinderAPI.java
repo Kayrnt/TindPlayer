@@ -13,6 +13,7 @@ import java.util.List;
 import fr.kayrnt.tindplayer.activity.FriendListActivity;
 import fr.kayrnt.tindplayer.fragment.ProfileDetailFragment;
 import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
+import fr.kayrnt.tindplayer.fragment.history.MatchedFragment;
 import fr.kayrnt.tindplayer.model.PositionAPIModel;
 import fr.kayrnt.tindplayer.model.Profile;
 import fr.kayrnt.tindplayer.model.RecResponse;
@@ -101,6 +102,11 @@ public class MockTinderAPI extends TinderAPI {
 
     @Override
     public void getFriends(FriendListActivity activity) {
+
+    }
+
+    @Override
+    public void getMatches(MatchedFragment fragment) {
 
     }
 
