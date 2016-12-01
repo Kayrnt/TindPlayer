@@ -1,19 +1,20 @@
 package fr.kayrnt.tindplayer.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 
-import java.util.List;
-
+import fr.kayrnt.tindplayer.MyApplication;
 import fr.kayrnt.tindplayer.R;
 
 /**
  * by Kayrnt
  * 10/07/16 18:02
  */
-public class SettingsActivity extends PreferenceActivity {
+public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class SettingsActivity extends PreferenceActivity {
                 new GeneralPrefFragment()).commit();
     }
 
+
     /**
      * This fragment shows the preferences for the first header.
      */
@@ -29,6 +31,8 @@ public class SettingsActivity extends PreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+            getPreferenceManager().setSharedPreferencesName(MyApplication.sharedAndroidPrefKey);
 
             // Make sure default values are applied.  In a real app, you would
             // want this in a shared function that is used to retrieve the
@@ -39,6 +43,7 @@ public class SettingsActivity extends PreferenceActivity {
             // Load the preferences from an XML resource
             addPreferencesFromResource(R.xml.preference_general);
         }
+
     }
 
 }

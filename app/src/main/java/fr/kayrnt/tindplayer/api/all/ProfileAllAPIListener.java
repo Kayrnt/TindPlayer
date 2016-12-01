@@ -9,6 +9,7 @@ import com.android.volley.Response;
 import java.util.ArrayList;
 import java.util.Random;
 
+import fr.kayrnt.tindplayer.R;
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
 import fr.kayrnt.tindplayer.model.Profile;
@@ -20,6 +21,8 @@ import fr.kayrnt.tindplayer.model.RecResponse;
  */
 public class ProfileAllAPIListener
         implements Response.Listener<RecResponse> {
+    private final int likeDelay;
+    private final int likeJitter;
     TinderAPI tinderAPI;
     private ProfileListFragment fragment;
     private Random random = new Random();
@@ -27,6 +30,8 @@ public class ProfileAllAPIListener
     ProfileAllAPIListener(TinderAPI tinderAPI, final ProfileListFragment fragment) {
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
+        this.likeDelay = tinderAPI.mPrefs.getInt(fragment.getString(R.string.pref_liker_time), 1000);
+        this.likeJitter = tinderAPI.mPrefs.getInt(fragment.getString(R.string.pref_liker_jitter), 100);
     }
 
     void likeAll() {
@@ -36,7 +41,7 @@ public class ProfileAllAPIListener
                 if (profile != null) {
                     //sleep to avoid too many requests
                     try {
-                        Thread.sleep(100L + random.nextInt(100));
+                        Thread.sleep(likeDelay + random.nextInt(likeJitter));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -46,7 +51,7 @@ public class ProfileAllAPIListener
                 }
             }
             try {
-                Thread.sleep(100L + random.nextInt(100));
+                Thread.sleep(likeDelay + random.nextInt(likeJitter));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

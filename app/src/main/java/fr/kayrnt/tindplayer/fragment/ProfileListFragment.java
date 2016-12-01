@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,7 +40,6 @@ import fr.kayrnt.tindplayer.utils.SessionManager;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private int maxProfiles;
     public ProfileAdapter listAdapter;
     public FloatingActionButton likeButton;
     public FloatingActionButton likeAllButton;
@@ -140,9 +140,13 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     public void getMoreProfileAndUpdateUI() {
-        if (tinderAPI.profiles.size() < maxProfiles) {
+        int maxProfiles = tinderAPI.mPrefs.getInt(getString(R.string.pref_liker_max_profile), 10);
+        int profileCount = tinderAPI.profiles.size();
+        if (profileCount < maxProfiles) {
+            Log.i("Profile list fragment", "getting new profiles");
             new ProfileListUpdateTask(tinderAPI, this).execute();
         } else {
+            Log.i("Profile list fragment", "enough profiles (" + profileCount + ")");
             updateListUI();
         }
     }
@@ -207,7 +211,6 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
         likeAllButton.setOnClickListener(likeAllListener);
 
         this.profilesLayout = ((LinearLayout) layout.findViewById(R.id.profile_fragment));
-        maxProfiles = tinderAPI.mPrefs.getInt(getString(R.string.pref_liker_max_profile), 10);
 
         setupTutorial(layout);
 
@@ -251,7 +254,7 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
             public void run() {
                 getMoreProfileAndUpdateUI();
             }
-        }, 2000);
+        }, 1000);
     }
 
     public class ProfileItemListClickListener

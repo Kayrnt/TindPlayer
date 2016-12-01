@@ -5,20 +5,28 @@
     <PreferenceCategory
         android:title="Liker preference">
 
-        <EditTextPreference
-            android:key="@string/pref_liker_seconds"
+        <fr.kayrnt.tindplayer.utils.IntEditTextPreference
+            android:key="@string/pref_liker_time"
             android:title="Wait between likes"
-            android:summary="The amount of time in milliseconds the liker waits between each like (faster might get you flagged as a bot), default value is 1000"
+            android:summary="The amount of time in milliseconds the liker waits between each like (faster might get you flagged as a bot). Default value is 1000"
             android:dialogTitle="Wait between likes (in ms)"
-            android:digits="true"
+            android:inputType="number"
             android:defaultValue="1000"/>
 
-        <EditTextPreference
+        <fr.kayrnt.tindplayer.utils.IntEditTextPreference
+            android:key="@string/pref_liker_jitter"
+            android:title="Random time part between request"
+            android:summary="The random amount of time in milliseconds the liker waits between each like (faster might get you flagged as a bot). It's adding to the default timing but can range from 0 to the value. Default value is 100"
+            android:dialogTitle="Random time between likes (in ms)"
+            android:inputType="number"
+            android:defaultValue="100"/>
+
+        <fr.kayrnt.tindplayer.utils.IntEditTextPreference
             android:key="@string/pref_liker_max_profile"
             android:title="Maximum number of profiles in liker"
-            android:summary="Maximum number of profiles the liker can show in the grid"
-            android:dialogTitle="Maximum number of profiles in liker (higher can longer to load), default value is 10"
-            android:digits="true"
+            android:summary="Maximum number of profiles the liker can show in the grid (higher can longer to load). Default value is 10"
+            android:dialogTitle="Maximum number of profiles in liker"
+            android:inputType="number"
             android:defaultValue="10"/>
 
     </PreferenceCategory>

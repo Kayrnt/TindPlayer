@@ -17,16 +17,17 @@ import fr.kayrnt.tindplayer.model.Profile;
 public class LikeTask extends AsyncTask<Void, Void, Void> {
 
     private final int likeDelay;
+    private final int likeJitter;
     private TinderAPI tinderAPI;
     private ProfileListFragment fragment;
     private Random random = new Random();
-    private boolean updateHistory = false;
 
     public LikeTask(TinderAPI tinderAPI, ProfileListFragment fragment) {
         super();
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
-        this.likeDelay = tinderAPI.mPrefs.getInt(fragment.getString(R.string.pref_liker_seconds), 1000);
+        this.likeDelay = tinderAPI.mPrefs.getInt(fragment.getString(R.string.pref_liker_time), 1000);
+        this.likeJitter = tinderAPI.mPrefs.getInt(fragment.getString(R.string.pref_liker_jitter), 100);
     }
 
     @Override
@@ -53,7 +54,7 @@ public class LikeTask extends AsyncTask<Void, Void, Void> {
                 if (profile != null) {
                     //sleep to avoid too many requests
                     try {
-                        Thread.sleep(likeDelay + random.nextInt(100));
+                        Thread.sleep(likeDelay + random.nextInt(likeJitter));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

@@ -24,6 +24,7 @@ public class MyApplication extends MultiDexApplication {
     private RequestQueue requestQueue;
     private ImageLoader mImageLoader;
 
+    public static String sharedAndroidPrefKey = "AndroidPref";
     public static MyApplication getInstance() {
         if (myApplication == null)
             myApplication = new MyApplication();
@@ -38,7 +39,7 @@ public class MyApplication extends MultiDexApplication {
 
     public static SharedPreferences getSharedPreferences() {
         if (preferences == null)
-            preferences = myApplication.getSharedPreferences("AndroidPref", MODE_PRIVATE);
+            preferences = myApplication.getSharedPreferences(sharedAndroidPrefKey, MODE_PRIVATE);
         return preferences;
     }
 
