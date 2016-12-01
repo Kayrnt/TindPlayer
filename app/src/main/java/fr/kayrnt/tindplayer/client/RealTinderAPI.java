@@ -81,7 +81,7 @@ public class RealTinderAPI extends TinderAPI {
                     new GsonRequest<AuthAPIModel>(Request.Method.POST, url,
                             AuthAPIModel.class, getAuthHeaders(false), body,
                             new AuthenticationAPIListener(this, activity),
-                            new APIErrorListener(this, activity, 3));
+                            new APIErrorListener(this, activity, retryRemaining));
             MyApplication.getInstance().withSessionManager(request);
         }
     }

@@ -36,6 +36,7 @@ public class ProfileDetailFetchAPIErrorListener
             this.tinderAPI.auth(null);
             Toast.makeText(activity, "Authenticating...", Toast.LENGTH_SHORT).show();
         }
-        if(activity != null) activity.onBackPressed();
+        if(activity != null && !activity.isFinishing())
+            activity.onBackPressed();
     }
 }

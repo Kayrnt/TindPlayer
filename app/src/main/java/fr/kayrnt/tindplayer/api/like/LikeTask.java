@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import java.util.Random;
 
+import fr.kayrnt.tindplayer.R;
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
 import fr.kayrnt.tindplayer.model.Profile;
@@ -15,6 +16,7 @@ import fr.kayrnt.tindplayer.model.Profile;
  */
 public class LikeTask extends AsyncTask<Void, Void, Void> {
 
+    private final int likeDelay;
     private TinderAPI tinderAPI;
     private ProfileListFragment fragment;
     private Random random = new Random();
@@ -24,6 +26,7 @@ public class LikeTask extends AsyncTask<Void, Void, Void> {
         super();
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
+        this.likeDelay = tinderAPI.mPrefs.getInt(fragment.getString(R.string.pref_liker_seconds), 1000);
     }
 
     @Override
@@ -50,7 +53,7 @@ public class LikeTask extends AsyncTask<Void, Void, Void> {
                 if (profile != null) {
                     //sleep to avoid too many requests
                     try {
-                        Thread.sleep(100L + random.nextInt(100));
+                        Thread.sleep(likeDelay + random.nextInt(100));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

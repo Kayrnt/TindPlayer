@@ -84,7 +84,7 @@ public abstract class HistoryBasedFragment extends Fragment implements AdapterVi
             localIntent.putExtra("item_id", str);
             localIntent.putExtra("profile_type", getType());
             this.startActivity(localIntent);
-        } catch(ArrayIndexOutOfBoundsException e) {
+        } catch(IndexOutOfBoundsException e) {
             Toast.makeText(getActivity(), "Corrupted history, please restart the app", Toast
                     .LENGTH_SHORT).show();
         }

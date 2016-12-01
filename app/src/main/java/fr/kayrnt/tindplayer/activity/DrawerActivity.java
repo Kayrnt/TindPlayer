@@ -154,11 +154,21 @@ public class DrawerActivity extends AppCompatActivity {
                             return true;
                         }
                     });
+            PrimaryDrawerItem settings = new PrimaryDrawerItem().withName("Settings")
+                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                        @Override
+                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                            Intent intent = new Intent(DrawerActivity.this, SettingsActivity.class);
+                            DrawerActivity.this.startActivity(intent);
+                            return true;
+                        }
+                    });
             drawer.addItem(home);
             drawer.addItem(myProfile);
             drawer.addItem(friends);
             drawer.addItem(addAccount);
             drawer.addItem(logout);
+            drawer.addItem(settings);
         }
 
     }

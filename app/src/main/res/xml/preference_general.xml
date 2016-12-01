@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Liker preference">
+
+        <EditTextPreference
+            android:key="@string/pref_liker_seconds"
+            android:title="Wait between likes"
+            android:summary="The amount of time in milliseconds the liker waits between each like (faster might get you flagged as a bot), default value is 1000"
+            android:dialogTitle="Wait between likes (in ms)"
+            android:digits="true"
+            android:defaultValue="1000"/>
+
+        <EditTextPreference
+            android:key="@string/pref_liker_max_profile"
+            android:title="Maximum number of profiles in liker"
+            android:summary="Maximum number of profiles the liker can show in the grid"
+            android:dialogTitle="Maximum number of profiles in liker (higher can longer to load), default value is 10"
+            android:digits="true"
+            android:defaultValue="10"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -39,6 +39,7 @@ import fr.kayrnt.tindplayer.utils.SessionManager;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    private int maxProfiles;
     public ProfileAdapter listAdapter;
     public FloatingActionButton likeButton;
     public FloatingActionButton likeAllButton;
@@ -64,11 +65,12 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
         dismissProgressDialog();
     }
 
-    public void dismissProgressDialog(){
+    public void dismissProgressDialog() {
         if ((alertDialog != null) && alertDialog.isShowing())
             try {
                 alertDialog.dismiss();
-            } catch (IllegalArgumentException ignored){}
+            } catch (IllegalArgumentException ignored) {
+            }
     }
 
     @Override
@@ -138,7 +140,7 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     public void getMoreProfileAndUpdateUI() {
-        if (tinderAPI.profiles.size() < 10) {
+        if (tinderAPI.profiles.size() < maxProfiles) {
             new ProfileListUpdateTask(tinderAPI, this).execute();
         } else {
             updateListUI();
@@ -171,7 +173,7 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
                 TinderAPI.getInstance().mEditor.putBoolean(KEY_SHOW_TUTORIAL_LIKE_ALL_BUTTON, true);
                 TinderAPI.getInstance().mEditor.putBoolean(KEY_SHOW_TUTORIAL_LIKE_BUTTON, true);
                 TinderAPI.getInstance().mEditor.apply();
-                if(layout != null) setupTutorial(layout);
+                if (layout != null) setupTutorial(layout);
                 return true;
         }
         return super.onOptionsItemSelected(menuItem);
@@ -205,6 +207,7 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
         likeAllButton.setOnClickListener(likeAllListener);
 
         this.profilesLayout = ((LinearLayout) layout.findViewById(R.id.profile_fragment));
+        maxProfiles = tinderAPI.mPrefs.getInt(getString(R.string.pref_liker_max_profile), 10);
 
         setupTutorial(layout);
 
@@ -309,7 +312,7 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(alertDialog.isShowing()) alertDialog.hide();
+                if (alertDialog.isShowing()) alertDialog.hide();
             }
         });
     }
@@ -318,7 +321,7 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
 
     public void setupTutorial(View layout) {
 
-        if(TinderAPI.getInstance().mPrefs.getBoolean(KEY_SHOW_TUTORIAL_LIKE_ALL_BUTTON, true)) {
+        if (TinderAPI.getInstance().mPrefs.getBoolean(KEY_SHOW_TUTORIAL_LIKE_ALL_BUTTON, true)) {
             new MaterialTapTargetPrompt.Builder(getActivity())
                     .setTarget(layout.findViewById(R.id.like_all_button))
                     .setPrimaryText("Press to like until you run out of likes!")
@@ -339,7 +342,7 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
                     .show();
         }
 
-        if(TinderAPI.getInstance().mPrefs.getBoolean(KEY_SHOW_TUTORIAL_LIKE_BUTTON, true)) {
+        if (TinderAPI.getInstance().mPrefs.getBoolean(KEY_SHOW_TUTORIAL_LIKE_BUTTON, true)) {
             new MaterialTapTargetPrompt.Builder(getActivity())
                     .setTarget(layout.findViewById(R.id.like_button))
                     .setPrimaryText("Press to like all visible profiles!")
