@@ -26,8 +26,9 @@ public class IntEditTextPreference extends EditTextPreference {
     @Override
     protected String getPersistedString(String defaultReturnValue) {
         try {
-            return String.valueOf(getPersistedInt(-1));
-        } catch (ClassCastException e){
+            int defaultValue = Integer.parseInt(defaultReturnValue);
+            return String.valueOf(getPersistedInt(defaultValue));
+        } catch (Exception e){
             Log.e("Int edit", "get persisted string"+ defaultReturnValue, e);
             return "1";
         }
@@ -38,7 +39,7 @@ public class IntEditTextPreference extends EditTextPreference {
     protected boolean persistString(String value) {
         try {
             return persistInt(Integer.valueOf(value));
-        } catch (ClassCastException e){
+        } catch (Exception e){
             Log.e("Int edit", "persist from "+value, e);
             return false;
         }

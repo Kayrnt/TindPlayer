@@ -36,6 +36,7 @@ import fr.kayrnt.tindplayer.api.like.LikeTask;
 import fr.kayrnt.tindplayer.api.profile.ProfileListUpdateTask;
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.model.Profile;
+import fr.kayrnt.tindplayer.utils.PrefUtils;
 import fr.kayrnt.tindplayer.utils.SessionManager;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
@@ -56,6 +57,7 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
 
     final String KEY_SHOW_TUTORIAL_LIKE_ALL_BUTTON = "tutorial_like_all_button";
     final String KEY_SHOW_TUTORIAL_LIKE_BUTTON = "tutorial_like_button";
+    private String prefMaxProfile = "";
 
     public void stopLikeAll() {
         stopLikeAll = true;
@@ -140,7 +142,7 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     public void getMoreProfileAndUpdateUI() {
-        int maxProfiles = tinderAPI.mPrefs.getInt(getString(R.string.pref_liker_max_profile), 10);
+        int maxProfiles = PrefUtils.safeGetInt(tinderAPI.mPrefs, prefMaxProfile, 10);
         int profileCount = tinderAPI.profiles.size();
         if (profileCount < maxProfiles) {
             Log.i("Profile list fragment", "getting new profiles");
@@ -161,6 +163,7 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
         this.random = new Random();
         this.handler = new Handler();
         this.setHasOptionsMenu(true);
+        prefMaxProfile = getString(R.string.pref_liker_max_profile);
     }
 
     @Override

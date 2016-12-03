@@ -14,6 +14,7 @@ import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
 import fr.kayrnt.tindplayer.model.Profile;
 import fr.kayrnt.tindplayer.model.RecResponse;
+import fr.kayrnt.tindplayer.utils.PrefUtils;
 
 
 /**
@@ -30,8 +31,8 @@ public class ProfileAllAPIListener
     ProfileAllAPIListener(TinderAPI tinderAPI, final ProfileListFragment fragment) {
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
-        this.likeDelay = tinderAPI.mPrefs.getInt(fragment.getString(R.string.pref_liker_time), 1000);
-        this.likeJitter = tinderAPI.mPrefs.getInt(fragment.getString(R.string.pref_liker_jitter), 100);
+        this.likeDelay = PrefUtils.safeGetInt(tinderAPI.mPrefs, fragment.getString(R.string.pref_liker_time), 1000);
+        this.likeJitter = Math.min(PrefUtils.safeGetInt(tinderAPI.mPrefs, fragment.getString(R.string.pref_liker_jitter), 100), 1);
     }
 
     void likeAll() {
