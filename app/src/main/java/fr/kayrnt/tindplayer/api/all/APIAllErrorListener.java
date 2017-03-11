@@ -8,6 +8,7 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import fr.kayrnt.tindplayer.api.BaseAPIErrorListener;
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
 
@@ -15,13 +16,14 @@ import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
 /**
  * Created by Kayrnt on 03/12/14.
  */
-public class APIAllErrorListener
+public class APIAllErrorListener extends BaseAPIErrorListener
         implements Response.ErrorListener
 {
     TinderAPI tinderAPI;
     private final ProfileListFragment fragment;
 
     public APIAllErrorListener(TinderAPI tinderAPI, ProfileListFragment fragment) {
+        super(fragment.getContext());
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
     }
@@ -49,6 +51,8 @@ public class APIAllErrorListener
                     new ProfileAllAPIListener(tinderAPI, fragment).likeAll();
                 }
             }, 3000);
+        } else {
+            fallbackErrorResponse(error);
         }
         fragment.updateListUI();
     }

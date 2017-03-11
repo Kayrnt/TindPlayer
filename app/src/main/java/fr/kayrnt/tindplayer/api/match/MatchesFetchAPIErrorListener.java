@@ -8,17 +8,19 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import fr.kayrnt.tindplayer.api.BaseAPIErrorListener;
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.fragment.ProfileDetailFragment;
 import fr.kayrnt.tindplayer.fragment.history.MatchedFragment;
 
-public class MatchesFetchAPIErrorListener
+public class MatchesFetchAPIErrorListener extends BaseAPIErrorListener
         implements Response.ErrorListener {
 
     TinderAPI tinderAPI;
     private final MatchedFragment fragment;
 
     public MatchesFetchAPIErrorListener(TinderAPI tinderAPI, MatchedFragment fragment) {
+        super(fragment.getContext());
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
     }
@@ -33,6 +35,6 @@ public class MatchesFetchAPIErrorListener
             this.tinderAPI.authInProgress = true;
             this.tinderAPI.auth(null);
             Toast.makeText(fragment.getContext(), "Authenticating...", Toast.LENGTH_SHORT).show();
-        }
+        } else fallbackErrorResponse(error);
     }
 }

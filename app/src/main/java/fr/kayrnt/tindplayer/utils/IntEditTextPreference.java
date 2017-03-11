@@ -26,6 +26,7 @@ public class IntEditTextPreference extends EditTextPreference {
     @Override
     protected String getPersistedString(String defaultReturnValue) {
         try {
+            if(defaultReturnValue == null) defaultReturnValue = "100";
             int defaultValue = Integer.parseInt(defaultReturnValue);
             return String.valueOf(getPersistedInt(defaultValue));
         } catch (Exception e){

@@ -7,16 +7,18 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import fr.kayrnt.tindplayer.api.BaseAPIErrorListener;
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.activity.FriendListActivity;
 
-public class FriendListAPIErrorListener
+public class FriendListAPIErrorListener extends BaseAPIErrorListener
         implements Response.ErrorListener {
 
     TinderAPI tinderAPI;
     private final FriendListActivity activity;
 
     public FriendListAPIErrorListener(TinderAPI tinderAPI, FriendListActivity activity) {
+        super(activity);
         this.tinderAPI = tinderAPI;
         this.activity = activity;
     }
@@ -41,7 +43,7 @@ public class FriendListAPIErrorListener
 
             }
         }  else{
-            Toast.makeText(activity, "No response from Tinder", Toast.LENGTH_LONG).show();
+            fallbackErrorResponse(error);
         }
         activity.updateListUI();
     }

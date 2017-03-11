@@ -9,17 +9,19 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import fr.kayrnt.tindplayer.activity.FriendListActivity;
+import fr.kayrnt.tindplayer.api.BaseAPIErrorListener;
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.fragment.ProfileDetailFragment;
 import fr.kayrnt.tindplayer.model.Profile;
 
-public class ProfileDetailFetchAPIErrorListener
+public class ProfileDetailFetchAPIErrorListener extends BaseAPIErrorListener
         implements Response.ErrorListener {
 
     TinderAPI tinderAPI;
     private final ProfileDetailFragment fragment;
 
     public ProfileDetailFetchAPIErrorListener(TinderAPI tinderAPI, ProfileDetailFragment fragment) {
+        super(fragment.getContext());
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
     }
@@ -35,8 +37,10 @@ public class ProfileDetailFetchAPIErrorListener
             this.tinderAPI.authInProgress = true;
             this.tinderAPI.auth(null);
             Toast.makeText(activity, "Authenticating...", Toast.LENGTH_SHORT).show();
+        } else {
+            fallbackErrorResponse(error);
         }
-        if(activity != null && !activity.isFinishing())
-            activity.onBackPressed();
+        //behavior to check
+        if(activity != null && !activity.isFinishing()) activity.finish();
     }
 }

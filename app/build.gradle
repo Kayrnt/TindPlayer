@@ -12,14 +12,16 @@ apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "23.0.3"
+    buildToolsVersion '25.0.0'
+
+
 
     defaultConfig {
         applicationId "fr.kayrnt.tindplayer"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 48
-        versionName "1.0.6d"
+        versionCode 51
+        versionName "1.0.6g"
 
         // Enabling multidex support.
         multiDexEnabled true
@@ -74,7 +76,7 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:appcompat-v7:25.0.1"
+    compile "com.android.support:appcompat-v7:25.1.0"
 //    compile 'com.android.support:design:24.2.0'
     compile('com.mikepenz:materialdrawer:5.3.4@aar') {
         transitive = true
@@ -92,7 +94,7 @@ dependencies {
     compile 'com.jpardogo.materialtabstrip:library:1.0.8'
     compile 'com.github.vajro:MaterialDesignLibrary:1.6'
     compile 'com.android.support:multidex:1.0.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.0@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
         transitive = true;
     }
 }

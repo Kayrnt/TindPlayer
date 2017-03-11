@@ -8,10 +8,11 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import fr.kayrnt.tindplayer.api.BaseAPIErrorListener;
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.model.PositionAPIModel;
 
-public class PositionAPIErrorListener
+public class PositionAPIErrorListener extends BaseAPIErrorListener
         implements Response.ErrorListener {
 
     TinderAPI tinderAPI;
@@ -20,6 +21,7 @@ public class PositionAPIErrorListener
 
     public PositionAPIErrorListener(TinderAPI tinderAPI, Context context,
                                     PositionAPIModel position) {
+        super(context);
         this.tinderAPI = tinderAPI;
         this.context = context;
         this.position = position;
@@ -44,6 +46,6 @@ public class PositionAPIErrorListener
                    TinderAPI.getInstance().updatePosition(context, position);
                 }
             }, 3000);
-        }
+        } else fallbackErrorResponse(error);
     }
 }

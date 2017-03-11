@@ -29,7 +29,7 @@ public class ProfileLikeAllTask extends AsyncTask<Void, Void, Void> {
             if (tinderAPI.profiles.isEmpty())
                 tinderAPI.getProfiles(fragment,
                         new ProfileAllAPIListener(tinderAPI, fragment),
-                        new ProfileAPIErrorListener(tinderAPI, fragment));
+                        new APIAllErrorListener(tinderAPI, fragment));
             else {
                 // else like the one we have first
                 new ProfileAllAPIListener(tinderAPI, fragment).likeAll();

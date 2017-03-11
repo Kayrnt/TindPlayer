@@ -31,8 +31,8 @@ public class ProfileAllAPIListener
     ProfileAllAPIListener(TinderAPI tinderAPI, final ProfileListFragment fragment) {
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
-        this.likeDelay = PrefUtils.safeGetInt(tinderAPI.mPrefs, fragment.getString(R.string.pref_liker_time), 1000);
-        this.likeJitter = Math.min(PrefUtils.safeGetInt(tinderAPI.mPrefs, fragment.getString(R.string.pref_liker_jitter), 100), 1);
+        this.likeDelay = Math.min(PrefUtils.safeGetInt(tinderAPI.mPrefs, "liker_ms_between_likes", 1000), 1);
+        this.likeJitter = Math.min(PrefUtils.safeGetInt(tinderAPI.mPrefs, "liker_ms_jitter", 100), 1);
     }
 
     void likeAll() {
@@ -42,7 +42,7 @@ public class ProfileAllAPIListener
                 if (profile != null) {
                     //sleep to avoid too many requests
                     try {
-                        Thread.sleep(likeDelay + random.nextInt(likeJitter));
+                        Thread.sleep(likeDelay + random.nextInt(Math.max(1, likeJitter)));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -52,7 +52,7 @@ public class ProfileAllAPIListener
                 }
             }
             try {
-                Thread.sleep(likeDelay + random.nextInt(likeJitter));
+                Thread.sleep(likeDelay + random.nextInt(Math.max(1, likeJitter)));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -12,7 +12,8 @@ public class PrefUtils {
         try {
             return prefs.getInt(key, defaultValue);
         } catch (ClassCastException e) {
-            return Integer.valueOf(prefs.getString(key, null));
+            String stringValue = prefs.getString(key, null);
+            return stringValue != null ? Integer.valueOf(stringValue) : defaultValue;
         }
     }
 

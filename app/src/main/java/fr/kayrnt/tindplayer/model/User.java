@@ -36,7 +36,7 @@ public class User {
     private String birthDate;
     @SerializedName("distance_filter")
     @Expose
-    private int distanceFilter;
+    private double distanceFilter;
     @SerializedName("full_name")
     @Expose
     private String fullName;
@@ -246,7 +246,7 @@ public class User {
      * @return
      *     The distanceFilter
      */
-    public int getDistanceFilter() {
+    public double getDistanceFilter() {
         return distanceFilter;
     }
 
@@ -255,11 +255,11 @@ public class User {
      * @param distanceFilter
      *     The distance_filter
      */
-    public void setDistanceFilter(int distanceFilter) {
+    public void setDistanceFilter(double distanceFilter) {
         this.distanceFilter = distanceFilter;
     }
 
-    public User withDistanceFilter(int distanceFilter) {
+    public User withDistanceFilter(double distanceFilter) {
         this.distanceFilter = distanceFilter;
         return this;
     }
