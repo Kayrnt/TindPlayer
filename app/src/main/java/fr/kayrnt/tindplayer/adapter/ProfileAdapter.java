@@ -82,7 +82,7 @@ public class ProfileAdapter extends ArrayAdapter<Profile> {
                     .getProcessedFiles()
                     .isEmpty()))
                 profileView.squareNetworkImageView.setImageUrl(profile.getPhotos().get(0)
-                        .getProcessedFiles().get(2).getUrl(), MyApplication.getInstance().imageLoader());
+                        .getProcessedFiles().get(2).getUrl());
 
 //        profileView.passScreen.setVisibility(View.GONE);
 //        profileView.passIcon.setVisibility(View.GONE);

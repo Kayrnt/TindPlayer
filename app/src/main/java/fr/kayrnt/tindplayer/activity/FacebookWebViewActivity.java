@@ -1,6 +1,5 @@
 package fr.kayrnt.tindplayer.activity;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,9 +8,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.androidnetworking.AndroidNetworking;
 
-import fr.kayrnt.tindplayer.MyApplication;
 import fr.kayrnt.tindplayer.R;
 import fr.kayrnt.tindplayer.api.facebookid.FacebookIdListener;
 import fr.kayrnt.tindplayer.utils.SessionManager;
@@ -52,11 +50,9 @@ public class FacebookWebViewActivity extends DrawerActivity {
                 Toast.makeText(activity, "FB login success... going to auth Tinder", Toast.LENGTH_SHORT).show();
                 //get facebook id
                 String fbUrl = "https://graph.facebook.com/me?access_token=" + token;
-                FacebookIdListener facebookIdListener = new FacebookIdListener(activity, token);
-                JsonObjectRequest request = new JsonObjectRequest(fbUrl, null,
-                        facebookIdListener, facebookIdListener);
-                MyApplication.getInstance().queue().add(request);
-
+                AndroidNetworking.get(fbUrl)
+                        .build()
+                        .getAsJSONObject(new FacebookIdListener(activity, token));
             }
         }
 

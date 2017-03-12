@@ -1,17 +1,8 @@
 package fr.kayrnt.tindplayer;
 
-import android.app.Application;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.support.multidex.MultiDexApplication;
-import android.support.v4.util.LruCache;
-import android.util.Log;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.Volley;
 
 import fr.kayrnt.tindplayer.utils.SessionManager;
 
@@ -26,13 +17,6 @@ public class MyApplication extends MultiDexApplication {
     private static MyApplication myApplication;
     private static SessionManager sessionManager;
     private static SharedPreferences preferences;
-    private RequestQueue requestQueue;
-    private ImageLoader mImageLoader;
-
-    private DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(
-            (int) TimeUnit.SECONDS.toMillis(15),
-            2,
-            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
 
     public static String sharedAndroidPrefKey = "AndroidPref";
 
@@ -53,42 +37,6 @@ public class MyApplication extends MultiDexApplication {
             preferences = myApplication.getSharedPreferences(sharedAndroidPrefKey, MODE_PRIVATE);
         return preferences;
     }
-
-    public <T> void withSessionManager(Request<T> request) {
-        Log.i("HTTP API Request", "url : " + request.getUrl());
-        request.setRetryPolicy(retryPolicy);
-//        request.setTag(sessionManager);
-        queue().add(request);
-    }
-
-    public RequestQueue queue() {
-        if (this.requestQueue == null) {
-            this.requestQueue = Volley.newRequestQueue(this);
-        }
-        return this.requestQueue;
-    }
-
-    public ImageLoader imageLoader() {
-        if (mImageLoader == null)
-            mImageLoader = new ImageLoader(queue(), new ImageLoader.ImageCache() {
-                private final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(10);
-
-                public void putBitmap(String url, Bitmap bitmap) {
-                    mCache.put(url, bitmap);
-                }
-
-                public Bitmap getBitmap(String url) {
-                    return mCache.get(url);
-                }
-            });
-        return mImageLoader;
-    }
-//    public sh f() {
-//        queue();
-//        if (this.queue == null)
-//            this.queue = new sh(this.requestQueue, new LruBitmapCache());
-//        return this.queue;
-//    }
 
     public void onCreate() {
         super.onCreate();

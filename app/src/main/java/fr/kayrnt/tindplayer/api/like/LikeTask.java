@@ -17,18 +17,18 @@ import fr.kayrnt.tindplayer.utils.PrefUtils;
  */
 public class LikeTask extends AsyncTask<Void, Void, Void> {
 
-    private final int likeDelay;
-    private final int likeJitter;
+//    private final int likeDelay;
+//    private final int likeJitter;
     private TinderAPI tinderAPI;
     private ProfileListFragment fragment;
-    private Random random = new Random();
+//    private Random random = new Random();
 
     public LikeTask(TinderAPI tinderAPI, ProfileListFragment fragment) {
         super();
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
-        this.likeDelay = Math.min(PrefUtils.safeGetInt(tinderAPI.mPrefs, "liker_ms_between_likes", 1000), 1);
-        this.likeJitter = Math.min(PrefUtils.safeGetInt(tinderAPI.mPrefs, "liker_ms_jitter", 100), 1);
+//        this.likeDelay = Math.min(PrefUtils.safeGetInt(tinderAPI.mPrefs, "liker_ms_between_likes", 1000), 1);
+//        this.likeJitter = Math.min(PrefUtils.safeGetInt(tinderAPI.mPrefs, "liker_ms_jitter", 100), 1);
     }
 
     @Override
@@ -47,33 +47,10 @@ public class LikeTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
 
-        while (!tinderAPI.profiles.isEmpty()) {
-            Profile profile;
-            synchronized (tinderAPI.profiles) {
-                profile = tinderAPI.profiles.poll();
-
-                if (profile != null) {
-                    //sleep to avoid too many requests
-                    try {
-                        Thread.sleep(likeDelay + random.nextInt(Math.max(1, likeJitter)));
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    tinderAPI.likeProfile(profile, profile.shouldLike);
-                }
-            }
+        synchronized (tinderAPI.profiles) {
+            tinderAPI.likeProfiles(tinderAPI.profiles, fragment);
         }
-
-        tinderAPI.saveProfileHistory();
-
         return null;
     }
 
-    @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-        fragment.updateListUI();
-        fragment.getMoreProfileAndUpdateUI();
-
-    }
 }

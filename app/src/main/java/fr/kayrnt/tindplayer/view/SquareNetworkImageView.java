@@ -3,12 +3,12 @@ package fr.kayrnt.tindplayer.view;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.android.volley.toolbox.NetworkImageView;
+import com.androidnetworking.widget.ANImageView;
 
 /**
  * NetworkImageView with forced 1:1 aspect ratio.
  */
-public class SquareNetworkImageView extends NetworkImageView {
+public class SquareNetworkImageView extends ANImageView {
 
     public SquareNetworkImageView(Context context) {
         super(context);

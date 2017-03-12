@@ -7,16 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.volley.toolbox.NetworkImageView;
+import com.androidnetworking.widget.ANImageView;
 
-import fr.kayrnt.tindplayer.MyApplication;
 import fr.kayrnt.tindplayer.R;
 
 public class PhotoSlideFragment extends Fragment {
     String imageUrl = "";
     DisplayMetrics displayMetrics;
     public int width = 0;
-    public NetworkImageView imageView;
+    public ANImageView imageView;
     int position = 0;
 
     public static PhotoSlideFragment init(int position, String url) {
@@ -44,8 +43,8 @@ public class PhotoSlideFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_photo_slide, container, false);
-        this.imageView = (NetworkImageView) root.findViewById(R.id.imageView);
-        this.imageView.setImageUrl(imageUrl, MyApplication.getInstance().imageLoader());
+        this.imageView = (ANImageView) root.findViewById(R.id.imageView);
+        this.imageView.setImageUrl(imageUrl);
         this.imageView.getLayoutParams().width = width;
 //        this.imageView.setDefaultImageResId(R.drawable.pass);
         return root;

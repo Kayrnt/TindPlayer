@@ -2,7 +2,6 @@ package fr.kayrnt.tindplayer.api.all;
 
 import android.os.AsyncTask;
 
-import fr.kayrnt.tindplayer.api.profile.ProfileAPIErrorListener;
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
 
@@ -27,12 +26,10 @@ public class ProfileLikeAllTask extends AsyncTask<Void, Void, Void> {
         if (tinderAPI.sessionManager.getTinderToken() != null) {
             //lets get some profiles if none
             if (tinderAPI.profiles.isEmpty())
-                tinderAPI.getProfiles(fragment,
-                        new ProfileAllAPIListener(tinderAPI, fragment),
-                        new APIAllErrorListener(tinderAPI, fragment));
+                tinderAPI.getProfiles(fragment);
             else {
                 // else like the one we have first
-                new ProfileAllAPIListener(tinderAPI, fragment).likeAll();
+                new ProfileAllJSONListener(tinderAPI, fragment).likeAll();
             }
 
         }

@@ -43,19 +43,20 @@ public class DrawerActivity extends AppCompatActivity {
                 .withHeaderBackground(R.drawable.background_repeat_tile)
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
-                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+                    public boolean onProfileChanged(View view, IProfile profile, boolean supposedCurrentProfile) {
                         for (FacebookAccount account : FacebookAccounts.getInstance().accounts) {
-                            if (account != null && profile.getIdentifier() == account
-                                    .getProfileDrawerItem()
-                                    .getIdentifier()) {
-                                if (account.getId() == profile.getIdentifier()){
+                            if (account != null &&
+                                    profile.getIdentifier() == account.getProfileDrawerItem().getIdentifier()) {
+                                boolean isCurrentAccount = account.getId().equals(TinderAPI.getInstance().account.getId()) ||
+                                        TinderAPI.getInstance().account == null;
+                                if (isCurrentAccount){
                                     if(!(DrawerActivity.this instanceof MainActivity)) {
                                         TinderAPI.getInstance().auth(DrawerActivity.this);
                                         DrawerActivity.this.finish();
                                     }
                                 } else {
                                     TinderAPI.getInstance().account = account;
-                                    TinderAPI.getInstance().account.setCurrentAccount();
+                                    TinderAPI.getInstance().account.saveCurrentAccount();
                                     TinderAPI.getInstance().getSessionManager().saveLoginSession(
                                             TinderAPI.getInstance().account);
                                     TinderAPI.getInstance().auth(DrawerActivity.this);

@@ -76,7 +76,7 @@ public class FriendProfileAdapter extends ArrayAdapter<FriendProfile> {
                     .getProcessedFiles()
                     .isEmpty()))
                 profileView.squareNetworkImageView.setImageUrl(friendProfile.getPhoto().get(0)
-                        .getProcessedFiles().get(2).getUrl(), MyApplication.getInstance().imageLoader());
+                        .getProcessedFiles().get(2).getUrl());
 
                 profileView.passScreen.setVisibility(View.GONE);
                 profileView.passIcon.setVisibility(View.GONE);

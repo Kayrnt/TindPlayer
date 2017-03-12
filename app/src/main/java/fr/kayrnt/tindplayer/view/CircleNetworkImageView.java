@@ -11,9 +11,9 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 
-import com.android.volley.toolbox.NetworkImageView;
+import com.androidnetworking.widget.ANImageView;
 
-public class CircleNetworkImageView extends NetworkImageView {
+public class CircleNetworkImageView extends ANImageView {
     Context mContext;
 
     public CircleNetworkImageView(Context context) {

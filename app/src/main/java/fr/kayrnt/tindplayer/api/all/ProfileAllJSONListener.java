@@ -1,15 +1,17 @@
 package fr.kayrnt.tindplayer.api.all;
 
 import android.app.Activity;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.volley.Response;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.ParsedRequestListener;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import fr.kayrnt.tindplayer.R;
+import fr.kayrnt.tindplayer.api.BaseAPIErrorListener;
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
 import fr.kayrnt.tindplayer.model.Profile;
@@ -20,15 +22,16 @@ import fr.kayrnt.tindplayer.utils.PrefUtils;
 /**
  * Created by Kayrnt on 06/12/14.
  */
-public class ProfileAllAPIListener
-        implements Response.Listener<RecResponse> {
+public class ProfileAllJSONListener extends BaseAPIErrorListener
+        implements ParsedRequestListener<RecResponse> {
     private final int likeDelay;
     private final int likeJitter;
-    TinderAPI tinderAPI;
+    private TinderAPI tinderAPI;
     private ProfileListFragment fragment;
     private Random random = new Random();
 
-    ProfileAllAPIListener(TinderAPI tinderAPI, final ProfileListFragment fragment) {
+    ProfileAllJSONListener(TinderAPI tinderAPI, final ProfileListFragment fragment) {
+        super(fragment.getContext());
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
         this.likeDelay = Math.min(PrefUtils.safeGetInt(tinderAPI.mPrefs, "liker_ms_between_likes", 1000), 1);
@@ -113,6 +116,32 @@ public class ProfileAllAPIListener
                 fragment.disableLikeAllAlertDialog();
             }
         }
+    }
+
+    @Override
+    public void onError(ANError error) {
+        Log.i("Profile API Listener", "Error : " + error.getMessage());
+        if ((error.getErrorCode() == 401) &&
+                (!this.tinderAPI.authInProgress)) {
+            this.tinderAPI.authInProgress = true;
+            this.tinderAPI.auth(null);
+            Toast.makeText(fragment.getActivity(), "Authenticating...",
+                    Toast.LENGTH_SHORT).show();
+            new ProfileAllJSONListener(tinderAPI, fragment).likeAll();
+
+        } else if ((error.getErrorCode() == 429)){
+            //we retry because too many requests in 3 sec
+            Handler handler = new Handler();
+            handler.postAtTime(new Runnable() {
+                @Override
+                public void run() {
+                    new ProfileAllJSONListener(tinderAPI, fragment).likeAll();
+                }
+            }, 3000);
+        } else {
+            fallbackErrorResponse(error);
+        }
+        fragment.updateListUI();
     }
 
     private void toast(final String newMessage) {

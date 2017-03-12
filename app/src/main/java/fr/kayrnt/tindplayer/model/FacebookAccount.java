@@ -66,7 +66,7 @@ public class FacebookAccount {
         return gson.toJson(this);
     }
 
-    public void setCurrentAccount() {
+    public void saveCurrentAccount() {
         Log.i("Facebook account", "Current account set to :" + name);
         TinderAPI.getInstance().mEditor.putString("current_facebook_account", serialize());
         TinderAPI.getInstance().mEditor.apply();

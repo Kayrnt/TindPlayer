@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.android.volley.Response;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 
 import java.util.LinkedList;
@@ -93,7 +93,35 @@ public abstract class TinderAPI implements IApi {
         synchronized (profiles) {
             profiles.remove(profile);
         }
-        likeProfileImpl(profile, shouldLike);
+        likeProfileImpl(null, null, profile, shouldLike);
+    }
+
+    public void likeProfiles(List<Profile> profiles, final ProfileListFragment fragment) {
+        if(!profiles.isEmpty()) {
+            Profile profile = profiles.get(0);
+            boolean shouldLike = profile.shouldLike;
+            if (shouldLike) {
+                Log.i("PROFILE LIKED", profile.getId());
+                addLikedProfile(profile);
+            } else {
+                Log.i("PROFILE PASSED", profile.getId());
+                addPassedProfile(profile);
+            }
+            profiles.remove(profile);
+            likeProfileImpl(fragment, profiles, profile, shouldLike);
+        }
+        else {
+            TinderAPI.getInstance().saveProfileHistory();
+            Activity activity = fragment.getActivity();
+            if(activity != null && !activity.isFinishing()){
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        fragment.getMoreProfileAndUpdateUI();
+                    }
+                });
+            }
+        }
     }
 
     public void removeLikedProfiles(Profile profile) {
@@ -108,7 +136,7 @@ public abstract class TinderAPI implements IApi {
         }
     }
 
-    public abstract void likeProfileImpl(Profile profile, boolean shouldLike);
+    public abstract void likeProfileImpl(ProfileListFragment fragment, List<Profile> profiles, Profile profile, boolean shouldLike);
 
     public void addProfile(Profile profile) {
         //I suspect GSON to fuck up with that value
@@ -119,6 +147,7 @@ public abstract class TinderAPI implements IApi {
     }
 
     public void saveProfileHistory() {
+        Log.i(this.getClass().getSimpleName(), "Saving history...");
         synchronized (likedProfiles.profiles) {
             likedProfiles.serialize("liked_profiles");
         }
@@ -192,7 +221,7 @@ public abstract class TinderAPI implements IApi {
     }
 
     private ProfileHistory getProfileListV2(String preferenceKey) {
-        int slices = mPrefs.getInt(preferenceKey + "_slices", -1);
+        int slices = mPrefs.getInt(preferenceKey + "_slices", -1) + 1;
         if(slices > 0) {
             ProfileHistory history = new ProfileHistory();
             for (int i = 0; i < slices; i++) {
@@ -241,9 +270,6 @@ public abstract class TinderAPI implements IApi {
         authInProgress = false;
         account = FacebookAccount.getCurrentAccount();
     }
-
-    public abstract void getProfiles(ProfileListFragment fragment, Response.Listener<RecResponse>
-            listener, Response.ErrorListener errorListener);
 
     public abstract void updatePosition(Context context, PositionAPIModel position);
 

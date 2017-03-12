@@ -4,35 +4,42 @@ import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.volley.NetworkResponse;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.ParsedRequestListener;
 
-import fr.kayrnt.tindplayer.activity.FriendListActivity;
 import fr.kayrnt.tindplayer.api.BaseAPIErrorListener;
 import fr.kayrnt.tindplayer.client.TinderAPI;
 import fr.kayrnt.tindplayer.fragment.ProfileDetailFragment;
 import fr.kayrnt.tindplayer.model.Profile;
+import fr.kayrnt.tindplayer.model.ProfileRequest;
 
-public class ProfileDetailFetchAPIErrorListener extends BaseAPIErrorListener
-        implements Response.ErrorListener {
 
+/**
+ * Created by Kayrnt on 06/12/14.
+ */
+public class ProfileDetailFetchJSONListener extends BaseAPIErrorListener
+        implements ParsedRequestListener<ProfileRequest> {
     TinderAPI tinderAPI;
-    private final ProfileDetailFragment fragment;
+    private ProfileDetailFragment fragment;
 
-    public ProfileDetailFetchAPIErrorListener(TinderAPI tinderAPI, ProfileDetailFragment fragment) {
+    public ProfileDetailFetchJSONListener(TinderAPI tinderAPI, ProfileDetailFragment fragment) {
         super(fragment.getContext());
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
     }
 
     @Override
-    public void onErrorResponse(VolleyError error) {
+    public void onResponse(ProfileRequest profileRequest) {
+        Log.i("Profile API Listener", "user API");
+        Profile profile = profileRequest.getProfile();
+        fragment.updateListUI(profile);
+    }
+
+    @Override
+    public void onError(ANError error) {
         Log.i("Profile API Listener", "Error : " + error.getMessage());
-        NetworkResponse networkResponse = error.networkResponse;
         Activity activity = fragment.getActivity();
-        if ((networkResponse != null) &&
-                (networkResponse.statusCode == 401) &&
+        if ((error.getErrorCode() == 401) &&
                 (!this.tinderAPI.authInProgress)) {
             this.tinderAPI.authInProgress = true;
             this.tinderAPI.auth(null);

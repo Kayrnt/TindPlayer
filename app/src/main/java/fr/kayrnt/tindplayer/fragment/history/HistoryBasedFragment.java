@@ -43,16 +43,12 @@ public abstract class HistoryBasedFragment extends Fragment implements AdapterVi
 
     protected abstract void refreshItems();
 
-    public void update() {
-        onRefresh();
-    }
-
     public void onResume() {
         super.onResume();
         if (!getUserVisibleHint()) {
             return;
         }
-        update();
+        onRefresh();
     }
 
     @Override

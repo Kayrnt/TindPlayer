@@ -6,8 +6,8 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +22,7 @@ import fr.kayrnt.tindplayer.model.FacebookAccounts;
  * by Kayrnt
  * 28/03/16 01:43
  */
-public class FacebookIdListener implements Response.Listener<JSONObject>, Response.ErrorListener {
+public class FacebookIdListener implements JSONObjectRequestListener {
 
     FacebookWebViewActivity activity;
     private final String token;
@@ -68,7 +68,7 @@ public class FacebookIdListener implements Response.Listener<JSONObject>, Respon
                     TinderAPI.getInstance().account.setId(fbId);
                     TinderAPI.getInstance().account.setToken(token);
                     TinderAPI.getInstance().account.setName(accountName);
-                    TinderAPI.getInstance().account.setCurrentAccount();
+                    TinderAPI.getInstance().account.saveCurrentAccount();
                     accounts.accounts.add(TinderAPI.getInstance().account);
                     accounts.save();
                     activity.sessionManager.saveLoginSession(TinderAPI.getInstance().account);
@@ -100,9 +100,10 @@ public class FacebookIdListener implements Response.Listener<JSONObject>, Respon
     }
 
     @Override
-    public void onErrorResponse(VolleyError error) {
+    public void onError(ANError error) {
         String errorMessage = error.getMessage();
         Log.e("FacebookIdListener", "failed "+ errorMessage);
         Toast.makeText(activity, "Tinder auth error: " + errorMessage, Toast.LENGTH_SHORT).show();
     }
+
 }
