@@ -24,64 +24,45 @@ import fr.kayrnt.tindplayer.utils.PrefUtils;
  */
 public class ProfileAllJSONListener extends BaseAPIErrorListener
         implements ParsedRequestListener<RecResponse> {
-    private final int likeDelay;
-    private final int likeJitter;
+    //    private final int likeDelay;
+//    private final int likeJitter;
     private TinderAPI tinderAPI;
     private ProfileListFragment fragment;
-    private Random random = new Random();
+//    private Random random = new Random();
 
     ProfileAllJSONListener(TinderAPI tinderAPI, final ProfileListFragment fragment) {
         super(fragment.getContext());
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
-        this.likeDelay = Math.min(PrefUtils.safeGetInt(tinderAPI.mPrefs, "liker_ms_between_likes", 1000), 1);
-        this.likeJitter = Math.min(PrefUtils.safeGetInt(tinderAPI.mPrefs, "liker_ms_jitter", 100), 1);
+//        this.likeDelay = Math.min(PrefUtils.safeGetInt(tinderAPI.mPrefs, "liker_ms_between_likes", 1000), 1);
+//        this.likeJitter = Math.min(PrefUtils.safeGetInt(tinderAPI.mPrefs, "liker_ms_jitter", 100), 1);
     }
 
     void likeAll() {
-        while (!tinderAPI.profiles.isEmpty()) {
-            synchronized (tinderAPI.profiles) {
+        synchronized (tinderAPI.profiles) {
+            if (!fragment.stopLikeAll) {
                 Profile profile = tinderAPI.profiles.poll();
                 if (profile != null) {
-                    //sleep to avoid too many requests
-                    try {
-                        Thread.sleep(likeDelay + random.nextInt(Math.max(1, likeJitter)));
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     //stop process when we are done
-                    tinderAPI.likeProfile(profile, true);
-                    fragment.updateLikeAllCount();
+                    tinderAPI.likeProfiles(tinderAPI.profiles, fragment, true);
                 }
-            }
-            try {
-                Thread.sleep(likeDelay + random.nextInt(Math.max(1, likeJitter)));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        Log.i("ProfileAll", "Finished batch...");
-        fragment.updateLikeCount();
-
-        if (!fragment.stopLikeAll) new ProfileLikeAllTask(tinderAPI, fragment).execute();
-        else {
-            tinderAPI.saveProfileHistory();
-            Activity activity = fragment.getActivity();
-            if (activity != null) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        stop();
-                    }
-                });
+            } else {
+                Log.i("ProfileAll", "Stopping like all");
+                Activity activity = fragment.getActivity();
+                if (activity != null) {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            stop();
+                        }
+                    });
+                }
             }
         }
     }
 
     private void stop() {
         fragment.getMoreProfileAndUpdateUI();
-        fragment.updateListUI();
     }
 
     @Override
@@ -97,7 +78,9 @@ public class ProfileAllJSONListener extends BaseAPIErrorListener
         }
         if (!filteredProfiles.isEmpty()) {
             synchronized (tinderAPI.profiles) {
-                tinderAPI.profiles.addAll(filteredProfiles);
+                for (Profile profile : filteredProfiles) {
+                    tinderAPI.addProfile(profile);
+                }
             }
             likeAll();
         } else {
@@ -129,7 +112,7 @@ public class ProfileAllJSONListener extends BaseAPIErrorListener
                     Toast.LENGTH_SHORT).show();
             new ProfileAllJSONListener(tinderAPI, fragment).likeAll();
 
-        } else if ((error.getErrorCode() == 429)){
+        } else if ((error.getErrorCode() == 429)) {
             //we retry because too many requests in 3 sec
             Handler handler = new Handler();
             handler.postAtTime(new Runnable() {

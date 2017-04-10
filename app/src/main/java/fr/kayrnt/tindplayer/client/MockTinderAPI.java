@@ -5,6 +5,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.androidnetworking.interfaces.ParsedRequestListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,7 @@ import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
 import fr.kayrnt.tindplayer.fragment.history.MatchedFragment;
 import fr.kayrnt.tindplayer.model.PositionAPIModel;
 import fr.kayrnt.tindplayer.model.Profile;
+import fr.kayrnt.tindplayer.model.RecResponse;
 
 /**
  * Created by Kayrnt on 21/12/14.
@@ -76,14 +79,19 @@ public class MockTinderAPI extends TinderAPI {
     }
 
     @Override
-    public void likeProfileImpl(ProfileListFragment fragment, List<Profile> profiles, Profile profile, boolean shouldLike) {
+    public void likeProfileImpl(ProfileListFragment fragment, List<Profile> profiles, Profile profile, boolean shouldLike, boolean likeAll) {
         if (shouldLike){
             Log.i("LIKE", "profile " + profile.getId() + " has been liked");
         }
         else {
             Log.i("LIKE", "profile " + profile.getId() + " has been passed");
         }
-        likeProfiles(profiles, fragment);
+        likeProfiles(profiles, fragment, likeAll);
+    }
+
+    @Override
+    public void getProfiles(ParsedRequestListener<RecResponse> listener) {
+
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.interfaces.ParsedRequestListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,7 +93,7 @@ public class RealTinderAPI extends TinderAPI {
     }
 
     @Override
-    public void likeProfileImpl(ProfileListFragment fragment, List<Profile> profiles, Profile profile, boolean shouldLike) {
+    public void likeProfileImpl(ProfileListFragment fragment, List<Profile> profiles, Profile profile, boolean shouldLike, boolean likeAll) {
         String likeOrPassAPI = shouldLike ? "/like/" : "/pass/";
         String url = API_URL + likeOrPassAPI + profile.getId();
 
@@ -100,16 +101,22 @@ public class RealTinderAPI extends TinderAPI {
                 .addHeaders(getAuthHeaders(true))
                 .setUserAgent(USER_AGENT)
                 .build()
-                .getAsJSONObject(new LikeJSONListener(this, fragment, profiles, profile, shouldLike));
+                .getAsJSONObject(new LikeJSONListener(this, fragment, profiles, profile, shouldLike, likeAll));
     }
 
+    @Override
     public void getProfiles(ProfileListFragment fragment) {
+        getProfiles(new ProfileJSONListener(this, fragment));
+    }
+
+    @Override
+    public void getProfiles(ParsedRequestListener<RecResponse> listener) {
         HashMap<String, String> authHeaders = getAuthHeaders(true);
         String url = API_URL + "/user/recs";
         AndroidNetworking.get(url)
                 .addHeaders(authHeaders)
                 .build()
-                .getAsObject(RecResponse.class, new ProfileJSONListener(this, fragment));
+                .getAsObject(RecResponse.class, listener);
     }
 
     @Override

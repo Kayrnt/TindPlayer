@@ -26,7 +26,7 @@ public class ProfileLikeAllTask extends AsyncTask<Void, Void, Void> {
         if (tinderAPI.sessionManager.getTinderToken() != null) {
             //lets get some profiles if none
             if (tinderAPI.profiles.isEmpty())
-                tinderAPI.getProfiles(fragment);
+                tinderAPI.getProfiles(new ProfileAllJSONListener(tinderAPI, fragment));
             else {
                 // else like the one we have first
                 new ProfileAllJSONListener(tinderAPI, fragment).likeAll();

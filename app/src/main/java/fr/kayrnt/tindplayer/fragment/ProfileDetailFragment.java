@@ -183,7 +183,7 @@ public class ProfileDetailFragment extends Fragment {
                 ((TextView) view.findViewById(R.id.distance)).setText(profile.getDistance());
                 ((TextView) view.findViewById(R.id.last_active)).setText(profile.getLastActive());
                 ((TextView) view.findViewById(R.id.about_label)).setText("About " + profile.getName());
-                if (profile.getBio().isEmpty()) {
+                if (profile.getBio() != null && profile.getBio().isEmpty()) {
                     view.findViewById(R.id.about_label).setVisibility(View.GONE);
                     view.findViewById(R.id.bio).setVisibility(View.GONE);
                 }

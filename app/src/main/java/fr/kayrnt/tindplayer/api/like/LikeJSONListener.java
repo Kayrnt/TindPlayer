@@ -27,18 +27,21 @@ public class LikeJSONListener
     private final List<Profile> profiles;
     private final Profile profile;
     private boolean liked;
+    private final boolean likeAll;
 
-    public LikeJSONListener(TinderAPI tinderAPI, ProfileListFragment fragment, List<Profile> profiles, Profile profile, boolean liked) {
+    public LikeJSONListener(TinderAPI tinderAPI, ProfileListFragment fragment, List<Profile> profiles, Profile profile, boolean liked, boolean likeAll) {
         this.tinderAPI = tinderAPI;
         this.fragment = fragment;
         this.profiles = profiles;
         this.profile = profile;
         this.liked = liked;
+        this.likeAll = likeAll;
     }
 
     @Override
     public void onResponse(JSONObject jsonObject) {
         Log.i("Like API Listener", "json : " + jsonObject);
+        if(likeAll) fragment.updateLikeAllCount();
         if (jsonObject != null) {
             if(jsonObject.optBoolean("match", false)){
                 Log.i("PROFILE MATCHED", this.profile.getId());
@@ -46,7 +49,7 @@ public class LikeJSONListener
             }
         }
         if(profiles != null && fragment != null)
-            tinderAPI.likeProfiles(profiles, fragment);
+            tinderAPI.likeProfiles(profiles, fragment, likeAll);
     }
 
     @Override
@@ -64,7 +67,7 @@ public class LikeJSONListener
             handler.postAtTime(new Runnable() {
                 @Override
                 public void run() {
-                    TinderAPI.getInstance().likeProfileImpl(fragment, profiles, profile, liked);
+                    TinderAPI.getInstance().likeProfileImpl(fragment, profiles, profile, liked, likeAll);
                 }
             }, 3000);
         }

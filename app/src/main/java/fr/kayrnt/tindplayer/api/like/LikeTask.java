@@ -48,7 +48,7 @@ public class LikeTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... params) {
 
         synchronized (tinderAPI.profiles) {
-            tinderAPI.likeProfiles(tinderAPI.profiles, fragment);
+            tinderAPI.likeProfiles(tinderAPI.profiles, fragment, false);
         }
         return null;
     }
