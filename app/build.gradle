@@ -18,8 +18,8 @@ android {
         applicationId "fr.kayrnt.tindplayer"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 53
-        versionName "1.0.7a"
+        versionCode 54
+        versionName "1.0.7b"
 
         // Enabling multidex support.
         multiDexEnabled true

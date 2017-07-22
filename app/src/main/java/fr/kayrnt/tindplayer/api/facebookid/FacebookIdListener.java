@@ -38,7 +38,10 @@ public class FacebookIdListener implements JSONObjectRequestListener {
         try {
 
             final long fbId = jsonObject.getLong("id");
-            final String name = jsonObject.getString("first_name");
+            String name = "Account 1";
+            try {
+                name = jsonObject.getString("name");
+            } catch (Exception ignored){}
 
             final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
 
