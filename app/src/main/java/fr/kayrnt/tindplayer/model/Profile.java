@@ -114,6 +114,7 @@ public class Profile {
         int i = 0;
         try {
             Date date1 = format.parse(str);
+            if(date1.before(new Date(2015, 1, 1))) return "Last seen unavailable";
             double d = Math.floor((date.getTime() - date1.getTime()) / 86400000L);
             i = (int) d;
             if (i == 0)

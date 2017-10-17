@@ -40,7 +40,7 @@ public class RealTinderAPI extends TinderAPI {
     private static final String CONTENT_TYPE = "application/json; charset=utf-8";
     private static final String OS_VERSION = "90000000001";
     private static final String PLATFORM = "android";
-    private static final String USER_AGENT = "Tinder/4.6.1 (iPhone; iOS 9.0.1; Scale/2.00)";
+    private static final String USER_AGENT = "Tinder/7.5.3 (iPhone; iOS 10.3.2; Scale/2.00)";
 
     @Override
     public void requestUsers() {
