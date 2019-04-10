@@ -36,16 +36,16 @@ public class AuthJSONListener implements ParsedRequestListener<AuthAPIModel> {
     @Override
     public void onResponse(AuthAPIModel authAPIModel) {
         Log.i("Auth API Listener", "api : "+ authAPIModel);
-        this.tinderAPI.token = authAPIModel.getToken();
-        this.tinderAPI.tinderId = authAPIModel.getUser().getId();
-        List<Photo> photoList = authAPIModel.getUser().getPhotos();
-        if(!photoList.isEmpty()) {
-            this.tinderAPI.profilePicture = photoList.get(0).getUrl();
-            this.tinderAPI.sessionManager.addProfilePicture(this.tinderAPI.profilePicture);
-            tinderAPI.account.setProfilePicture(this.tinderAPI.profilePicture);
-            tinderAPI.account.saveCurrentAccount();
-            FacebookAccounts.getInstance().saveWithCurrentAccount();
-        }
+        this.tinderAPI.token = authAPIModel.getData().getApiToken();
+        this.tinderAPI.tinderId = authAPIModel.getData().getId();
+//        List<Photo> photoList = authAPIModel.getUser().getPhotos();
+//        if(!photoList.isEmpty()) {
+//            this.tinderAPI.profilePicture = photoList.get(0).getUrl();
+//            this.tinderAPI.sessionManager.addProfilePicture(this.tinderAPI.profilePicture);
+//            tinderAPI.account.setProfilePicture(this.tinderAPI.profilePicture);
+//            tinderAPI.account.saveCurrentAccount();
+//            FacebookAccounts.getInstance().saveWithCurrentAccount();
+//        }
         this.tinderAPI.sessionManager.addTinderToken(this.tinderAPI.token);
         this.tinderAPI.sessionManager.addTinderId(this.tinderAPI.tinderId);
         FacebookAccounts.getInstance().saveWithCurrentAccount();

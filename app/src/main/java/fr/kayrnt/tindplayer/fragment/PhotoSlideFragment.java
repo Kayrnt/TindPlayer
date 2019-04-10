@@ -1,7 +1,6 @@
 package fr.kayrnt.tindplayer.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.androidnetworking.widget.ANImageView;
 
+import androidx.fragment.app.Fragment;
 import fr.kayrnt.tindplayer.R;
 
 public class PhotoSlideFragment extends Fragment {

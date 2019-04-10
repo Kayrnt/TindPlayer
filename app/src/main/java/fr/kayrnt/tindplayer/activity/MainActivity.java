@@ -2,7 +2,6 @@ package fr.kayrnt.tindplayer.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -10,6 +9,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.viewpager.widget.ViewPager;
 import fr.kayrnt.tindplayer.MyApplication;
 import fr.kayrnt.tindplayer.R;
 import fr.kayrnt.tindplayer.adapter.MainPageAdapter;

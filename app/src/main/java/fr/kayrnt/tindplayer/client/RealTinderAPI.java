@@ -6,7 +6,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
+import com.androidnetworking.interfaces.StringRequestListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,14 +34,14 @@ import fr.kayrnt.tindplayer.model.*;
  */
 public class RealTinderAPI extends TinderAPI {
 
-    private static final String ACCEPT = "*/*";
+    private static final String ACCEPT = "application/json";
     private static final String ACCEPT_LANGUAGE = "en;q=1, fr;q=0.9, de;q=0.8, zh-Hans;q=0.7, zh-Hant;q=0.6, ja;q=0.5";
     private static final String API_URL = "https://api.gotinder.com";
-    private static final String APP_VERSION = "371";
+    private static final String APP_VERSION = "6.9.4";
     private static final String CONNECTION = "keep-alive";
     private static final String CONTENT_TYPE = "application/json; charset=utf-8";
     private static final String OS_VERSION = "90000000001";
-    private static final String PLATFORM = "android";
+    private static final String PLATFORM = "ios";
     private static final String USER_AGENT = "Tinder/7.5.3 (iPhone; iOS 10.3.2; Scale/2.00)";
 
     @Override
@@ -52,15 +54,15 @@ public class RealTinderAPI extends TinderAPI {
     }
 
     public void auth(Activity activity, int retryRemaining) {
-        String url = API_URL + "/auth";
+        String url = API_URL + "/v2/auth/login/facebook";
         HashMap<String, String> map = new HashMap<String, String>();
         sessionManager = MyApplication.session();
         String fbId = sessionManager.getUserDetails().get("fb_id");
         String fbAuthToken = sessionManager.getUserDetails().get("fb_auth_token");
-        Log.i("Tinder API", "auth... fb id : "+fbId+ "fb token "+fbAuthToken);
+        Log.i("Tinder API", "auth... fb id : " + fbId + "fb token " + fbAuthToken);
         if (fbAuthToken != null) {
             map.put("facebook_id", fbId);
-            map.put("facebook_token", fbAuthToken);
+            map.put("token", fbAuthToken);
             String body = new JSONObject(map).toString();
 
             AndroidNetworking.post(url)
@@ -76,13 +78,14 @@ public class RealTinderAPI extends TinderAPI {
 
     private HashMap<String, String> getAuthHeaders(boolean loggedIn) {
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("Accept-Language", ACCEPT_LANGUAGE);
+//        map.put("Accept-Language", ACCEPT_LANGUAGE);
         map.put("app-version", APP_VERSION);
         map.put("User-Agent", USER_AGENT);
-        map.put("os_version", OS_VERSION);
+//        map.put("os_version", OS_VERSION);
         map.put("Accept", ACCEPT);
+//        map.put("content-type", ACCEPT);
         map.put("platform", PLATFORM);
-        map.put("Connection", CONNECTION);
+//        map.put("Connection", CONNECTION);
         if (loggedIn) {
             map.put("X-Auth-Token", sessionManager.getTinderToken());
             map.put("Authorization", "Token token=\"" + sessionManager.getTinderToken() + "\"");
@@ -122,13 +125,13 @@ public class RealTinderAPI extends TinderAPI {
     @Override
     public void updatePosition(Context context, PositionAPIModel position) {
         try {
-        HashMap<String, String> authHeaders = getAuthHeaders(true);
-        String url = API_URL + "/user/ping";
-        String body =
-            new JSONObject()
-                    .put("lon", position.getLon())
-                    .put("lat", position.getLat())
-                    .toString();
+            HashMap<String, String> authHeaders = getAuthHeaders(true);
+            String url = API_URL + "/user/ping";
+            String body =
+                    new JSONObject()
+                            .put("lon", position.getLon())
+                            .put("lat", position.getLat())
+                            .toString();
 
             AndroidNetworking.post(url)
                     .addHeaders(authHeaders)

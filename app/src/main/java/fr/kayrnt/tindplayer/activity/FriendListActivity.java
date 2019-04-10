@@ -3,8 +3,6 @@ package fr.kayrnt.tindplayer.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import fr.kayrnt.tindplayer.MyApplication;
 import fr.kayrnt.tindplayer.R;
 import fr.kayrnt.tindplayer.adapter.FriendProfileAdapter;

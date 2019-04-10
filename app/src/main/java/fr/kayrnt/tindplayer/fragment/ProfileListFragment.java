@@ -6,8 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,6 +25,8 @@ import com.melnykov.fab.FloatingActionButton;
 import java.text.NumberFormat;
 import java.util.Random;
 
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import fr.kayrnt.tindplayer.MyApplication;
 import fr.kayrnt.tindplayer.R;
 import fr.kayrnt.tindplayer.activity.ProfileDetailActivity;
@@ -332,17 +332,15 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
                     .setTarget(layout.findViewById(R.id.like_all_button))
                     .setPrimaryText("Press to like until you run out of likes!")
                     .setSecondaryText("It takes some times and runs until you're out of recommendations!")
-                    .setBackgroundColourFromRes(R.color.colorPrimary)
-                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                    .setBackgroundColour(getResources().getColor(R.color.colorPrimary))
+                    .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
                         @Override
-                        public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
-                            TinderAPI.getInstance().mEditor.putBoolean(KEY_SHOW_TUTORIAL_LIKE_ALL_BUTTON, false);
-                            TinderAPI.getInstance().mEditor.apply();
-                        }
-
-                        @Override
-                        public void onHidePromptComplete() {
-
+                        public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                            if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED) {
+                                // User has pressed the prompt target
+                                TinderAPI.getInstance().mEditor.putBoolean(KEY_SHOW_TUTORIAL_LIKE_ALL_BUTTON, false);
+                                TinderAPI.getInstance().mEditor.apply();
+                            }
                         }
                     })
                     .show();
@@ -353,17 +351,15 @@ public class ProfileListFragment extends Fragment implements SwipeRefreshLayout.
                     .setTarget(layout.findViewById(R.id.like_button))
                     .setPrimaryText("Press to like all visible profiles!")
                     .setSecondaryText("Then it refreshes the grid until you run out of recommendations!")
-                    .setBackgroundColourFromRes(R.color.colorPrimary)
-                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                    .setBackgroundColour(getResources().getColor(R.color.colorPrimary))
+                    .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
                         @Override
-                        public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
-                            TinderAPI.getInstance().mEditor.putBoolean(KEY_SHOW_TUTORIAL_LIKE_BUTTON, false);
-                            TinderAPI.getInstance().mEditor.apply();
-                        }
-
-                        @Override
-                        public void onHidePromptComplete() {
-
+                        public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                            if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED) {
+                                // User has pressed the prompt target
+                                TinderAPI.getInstance().mEditor.putBoolean(KEY_SHOW_TUTORIAL_LIKE_BUTTON, false);
+                                TinderAPI.getInstance().mEditor.apply();
+                            }
                         }
                     })
                     .show();

@@ -2,8 +2,7 @@ package fr.kayrnt.tindplayer.fragment.history;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import fr.kayrnt.tindplayer.R;
 import fr.kayrnt.tindplayer.activity.ProfileDetailActivity;
 import fr.kayrnt.tindplayer.adapter.ProfileAdapter;

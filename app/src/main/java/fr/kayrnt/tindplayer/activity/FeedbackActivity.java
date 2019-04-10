@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -16,6 +15,7 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.gc.materialdesign.views.ButtonRectangle2;
 
+import androidx.annotation.Nullable;
 import fr.kayrnt.tindplayer.R;
 
 /**

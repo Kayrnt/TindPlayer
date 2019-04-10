@@ -1,9 +1,8 @@
 package fr.kayrnt.tindplayer.activity;
 
-import android.support.v4.app.FragmentTransaction;
+import androidx.core.app.NavUtils;
+import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import fr.kayrnt.tindplayer.fragment.ProfileDetailFragment;

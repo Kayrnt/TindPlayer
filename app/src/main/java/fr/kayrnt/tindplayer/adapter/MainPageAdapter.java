@@ -4,18 +4,17 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import fr.kayrnt.tindplayer.fragment.history.HistoryFragment;
 import fr.kayrnt.tindplayer.fragment.PositionFragment;
 import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
 
-public class MainPageAdapter extends FragmentPagerAdapter implements OnPageChangeListener {
+public class MainPageAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener {
     public List<String> titles;
     public Fragment currentFragment;
 

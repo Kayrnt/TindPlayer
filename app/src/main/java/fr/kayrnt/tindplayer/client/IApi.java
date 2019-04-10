@@ -1,7 +1,7 @@
 package fr.kayrnt.tindplayer.client;
 
 import android.app.Activity;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import fr.kayrnt.tindplayer.activity.FriendListActivity;
 import fr.kayrnt.tindplayer.fragment.ProfileDetailFragment;

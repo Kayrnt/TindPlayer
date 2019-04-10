@@ -2,114 +2,48 @@
 package fr.kayrnt.tindplayer.model;
 
 import com.google.gson.annotations.Expose;
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import com.google.gson.annotations.SerializedName;
 
 public class AuthAPIModel {
 
+    @SerializedName("meta")
     @Expose
-    private String token;
+    private Meta meta;
+    @SerializedName("data")
     @Expose
-    private User user;
-    @Expose
-    private Versions versions;
-    @Expose
-    private Globals globals;
+    private Data data;
 
-    /**
-     * 
-     * @return
-     *     The token
-     */
-    public String getToken() {
-        return token;
+    public Meta getMeta() {
+        return meta;
     }
 
-    /**
-     * 
-     * @param token
-     *     The token
-     */
-    public void setToken(String token) {
-        this.token = token;
+    public void setMeta(Meta meta) {
+        this.meta = meta;
     }
 
-    public AuthAPIModel withToken(String token) {
-        this.token = token;
+    public AuthAPIModel withMeta(Meta meta) {
+        this.meta = meta;
         return this;
     }
 
-    /**
-     * 
-     * @return
-     *     The user
-     */
-    public User getUser() {
-        return user;
+    public Data getData() {
+        return data;
     }
 
-    /**
-     * 
-     * @param user
-     *     The user
-     */
-    public void setUser(User user) {
-        this.user = user;
+    public void setData(Data data) {
+        this.data = data;
     }
 
-    public AuthAPIModel withUser(User user) {
-        this.user = user;
-        return this;
-    }
-
-    /**
-     * 
-     * @return
-     *     The versions
-     */
-    public Versions getVersions() {
-        return versions;
-    }
-
-    /**
-     * 
-     * @param versions
-     *     The versions
-     */
-    public void setVersions(Versions versions) {
-        this.versions = versions;
-    }
-
-    public AuthAPIModel withVersions(Versions versions) {
-        this.versions = versions;
-        return this;
-    }
-
-    /**
-     * 
-     * @return
-     *     The globals
-     */
-    public Globals getGlobals() {
-        return globals;
-    }
-
-    /**
-     * 
-     * @param globals
-     *     The globals
-     */
-    public void setGlobals(Globals globals) {
-        this.globals = globals;
-    }
-
-    public AuthAPIModel withGlobals(Globals globals) {
-        this.globals = globals;
+    public AuthAPIModel withData(Data data) {
+        this.data = data;
         return this;
     }
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        return "AuthAPIModel{" +
+                "meta=" + meta +
+                ", data=" + data +
+                '}';
     }
-
 }

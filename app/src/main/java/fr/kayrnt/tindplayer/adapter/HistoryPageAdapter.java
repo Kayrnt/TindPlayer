@@ -1,18 +1,17 @@
 package fr.kayrnt.tindplayer.adapter;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import fr.kayrnt.tindplayer.fragment.history.LikedFragment;
 import fr.kayrnt.tindplayer.fragment.history.MatchedFragment;
 import fr.kayrnt.tindplayer.fragment.history.PassedFragment;
 
-public class HistoryPageAdapter extends FragmentPagerAdapter implements OnPageChangeListener {
+public class HistoryPageAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener {
     public List<String> titles;
     public Fragment currentFragment;
 

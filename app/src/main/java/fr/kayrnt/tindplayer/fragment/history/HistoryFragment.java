@@ -1,8 +1,6 @@
 package fr.kayrnt.tindplayer.fragment.history;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +12,8 @@ import com.astuetz.PagerSlidingTabStrip;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 import fr.kayrnt.tindplayer.R;
 import fr.kayrnt.tindplayer.adapter.HistoryPageAdapter;
 

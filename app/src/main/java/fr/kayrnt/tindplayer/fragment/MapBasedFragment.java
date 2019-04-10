@@ -1,14 +1,11 @@
 package fr.kayrnt.tindplayer.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import fr.kayrnt.tindplayer.R;
 import fr.kayrnt.tindplayer.utils.AdvSupportMapFragment;
 

@@ -1,9 +1,9 @@
 package fr.kayrnt.tindplayer;
 
 import android.content.SharedPreferences;
-import android.support.multidex.MultiDexApplication;
 
 
+import androidx.multidex.MultiDexApplication;
 import fr.kayrnt.tindplayer.utils.SessionManager;
 
 import com.crashlytics.android.Crashlytics;
