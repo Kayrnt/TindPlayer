@@ -17,6 +17,7 @@ import fr.kayrnt.tindplayer.MyApplication;
 import fr.kayrnt.tindplayer.activity.FriendListActivity;
 import fr.kayrnt.tindplayer.activity.MainActivity;
 import fr.kayrnt.tindplayer.api.all.ProfileLikeAllTask;
+import fr.kayrnt.tindplayer.fragment.ProfileDetailFragment;
 import fr.kayrnt.tindplayer.fragment.ProfileListFragment;
 import fr.kayrnt.tindplayer.model.FacebookAccount;
 import fr.kayrnt.tindplayer.model.FriendProfile;
@@ -288,5 +289,7 @@ public abstract class TinderAPI implements IApi {
     public List<FriendProfile> getFriendProfiles() {
         return friendProfiles;
     }
+
+    public abstract void superLikeProfile(ProfileDetailFragment fragment, Profile profile);
 
 }

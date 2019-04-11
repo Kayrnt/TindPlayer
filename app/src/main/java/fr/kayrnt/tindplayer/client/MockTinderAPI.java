@@ -137,4 +137,9 @@ public class MockTinderAPI extends TinderAPI {
                         .getLat(),
                 Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void superLikeProfile(ProfileDetailFragment fragment, Profile profile) {
+
+    }
 }

@@ -37,6 +37,7 @@ public class ProfileDetailFragment extends Fragment {
     private Profile profile;
     private String type;
     ButtonRectangle2 actionButton;
+    ButtonRectangle2 superLikeButton;
     View view;
 
 
@@ -90,6 +91,15 @@ public class ProfileDetailFragment extends Fragment {
             if (alreadyLiked) setupButtonLiked();
             else setupButtonPassed();
         }
+    }
+
+    private void setupSuperLikeButton() {
+        actionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TinderAPI.getInstance().superLikeProfile(ProfileDetailFragment.this, profile);
+            }
+        });
     }
 
     private void setupButtonLiked() {
@@ -174,7 +184,9 @@ public class ProfileDetailFragment extends Fragment {
                 viewPager.getLayoutParams().height = metrics.widthPixels;
                 viewPager.setAdapter(photoContainer);
                 actionButton = (ButtonRectangle2) view.findViewById(R.id.detail_action_button);
+                superLikeButton = (ButtonRectangle2) view.findViewById(R.id.super_like_action_button);
                 setupButton();
+                setupSuperLikeButton();
                 circlePageIndicator = ((CirclePageIndicator) view.findViewById(R.id.circle_indicator));
                 circlePageIndicator.setViewPager(viewPager);
                 circlePageIndicator.setSnap(true);

@@ -66,7 +66,7 @@ public class RealTinderAPI extends TinderAPI {
             String body = new JSONObject(map).toString();
 
             AndroidNetworking.post(url)
-                    .addHeaders(getAuthHeaders(false))
+                    .addHeaders(getAuthHeaders(false, false))
                     .setContentType(CONTENT_TYPE)
                     .setUserAgent(USER_AGENT)
                     .addStringBody(body)
@@ -76,22 +76,24 @@ public class RealTinderAPI extends TinderAPI {
         }
     }
 
-    private HashMap<String, String> getAuthHeaders(boolean loggedIn) {
+    private HashMap<String, String> getAuthHeaders(boolean loggedIn, boolean isLikeOrPass) {
         HashMap<String, String> map = new HashMap<String, String>();
-//        map.put("Accept-Language", ACCEPT_LANGUAGE);
-        map.put("app-version", APP_VERSION);
-        map.put("User-Agent", USER_AGENT);
-//        map.put("os_version", OS_VERSION);
-        map.put("Accept", ACCEPT);
-//        map.put("content-type", ACCEPT);
-        map.put("platform", PLATFORM);
-//        map.put("Connection", CONNECTION);
+        if(!isLikeOrPass) map.put("Content-type", CONTENT_TYPE);
         if (loggedIn) {
             map.put("X-Auth-Token", sessionManager.getTinderToken());
-            map.put("Authorization", "Token token=\"" + sessionManager.getTinderToken() + "\"");
+//            map.put("Authorization", "Token token=\"" + sessionManager.getTinderToken() + "\"");
         }
-        if (!loggedIn)
-            map.put("Content-type", CONTENT_TYPE);
+         else {
+//        map.put("Accept-Language", ACCEPT_LANGUAGE);
+            map.put("app-version", APP_VERSION);
+            map.put("User-Agent", USER_AGENT);
+//        map.put("os_version", OS_VERSION);
+            map.put("Accept", ACCEPT);
+//        map.put("content-type", ACCEPT);
+            map.put("platform", PLATFORM);
+//        map.put("Connection", CONNECTION);
+        }
+
         return map;
     }
 
@@ -101,7 +103,7 @@ public class RealTinderAPI extends TinderAPI {
         String url = API_URL + likeOrPassAPI + profile.getId();
 
         AndroidNetworking.get(url)
-                .addHeaders(getAuthHeaders(true))
+                .addHeaders(getAuthHeaders(true, true))
                 .setUserAgent(USER_AGENT)
                 .build()
                 .getAsJSONObject(new LikeJSONListener(this, fragment, profiles, profile, shouldLike, likeAll));
@@ -114,7 +116,7 @@ public class RealTinderAPI extends TinderAPI {
 
     @Override
     public void getProfiles(ParsedRequestListener<RecResponse> listener) {
-        HashMap<String, String> authHeaders = getAuthHeaders(true);
+        HashMap<String, String> authHeaders = getAuthHeaders(true, false);
         String url = API_URL + "/user/recs";
         AndroidNetworking.get(url)
                 .addHeaders(authHeaders)
@@ -125,7 +127,7 @@ public class RealTinderAPI extends TinderAPI {
     @Override
     public void updatePosition(Context context, PositionAPIModel position) {
         try {
-            HashMap<String, String> authHeaders = getAuthHeaders(true);
+            HashMap<String, String> authHeaders = getAuthHeaders(true, false);
             String url = API_URL + "/user/ping";
             String body =
                     new JSONObject()
@@ -149,7 +151,7 @@ public class RealTinderAPI extends TinderAPI {
 
     @Override
     public void getFriends(FriendListActivity activity) {
-        HashMap<String, String> authHeaders = getAuthHeaders(true);
+        HashMap<String, String> authHeaders = getAuthHeaders(true, false);
 
         String url = API_URL + "/group/friends";
         AndroidNetworking.get(url)
@@ -161,7 +163,7 @@ public class RealTinderAPI extends TinderAPI {
 
     @Override
     public void getProfile(ProfileDetailFragment fragment, String userId) {
-        HashMap<String, String> authHeaders = getAuthHeaders(true);
+        HashMap<String, String> authHeaders = getAuthHeaders(true, false);
         String url = API_URL + "/user/" + userId;
         AndroidNetworking.get(url)
                 .addHeaders(authHeaders)
@@ -172,8 +174,19 @@ public class RealTinderAPI extends TinderAPI {
     }
 
     @Override
+    public void superLikeProfile(ProfileDetailFragment fragment, Profile profile) {
+        String url = API_URL + "/like/" + profile.getId() + "/super";
+
+        AndroidNetworking.post(url)
+                .addHeaders(getAuthHeaders(true, false))
+                .setUserAgent(USER_AGENT)
+                .build()
+                .getAsJSONObject(new SuperLikeJSONListener(this, fragment, profile));
+    }
+
+    @Override
     public void getMatches(MatchedFragment fragment) {
-        HashMap<String, String> authHeaders = getAuthHeaders(true);
+        HashMap<String, String> authHeaders = getAuthHeaders(true, false);
         String url = API_URL + "/updates";
         AndroidNetworking.post(url)
                 .addHeaders(authHeaders)
